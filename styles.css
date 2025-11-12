@@ -1,21 +1,25 @@
 /* ===== CSS VARIABLES ===== */
 :root {
-  /* Colors - Warmer palette for inviting atmosphere */
-  --color-bg: #F9F6F0;
-  --color-text: #3E2723;
-  --color-accent: #9C6644;
-  --color-accent-light: #B8866B;
-  --color-border: #DDD5C7;
-  --color-context: #FFF8E1;
-  --color-context-border: #FFE082;
-  --color-highlight: #FFF3E0;
-  --color-example: #FFFDE7;
-  --color-example-border: #FFF59D;
+  /* Colors - Vibrant yet inviting palette */
+  --color-bg: #FFF9F5;
+  --color-text: #2C3E50;
+  --color-accent: #E85D75;
+  --color-accent-light: #F48FB1;
+  --color-accent-dark: #C2185B;
+  --color-secondary: #5C6BC0;
+  --color-secondary-light: #9FA8DA;
+  --color-tertiary: #26A69A;
+  --color-border: #E8DFD8;
+  --color-context: #E8EAF6;
+  --color-context-border: #9FA8DA;
+  --color-highlight: #FCE4EC;
+  --color-example: #FFF9C4;
+  --color-example-border: #FFF176;
   --color-added: #E8F5E9;
   --color-removed: #FFEBEE;
   --color-changed: #FFF9C4;
-  --color-writing-bg: #FFFEF8;
-  --color-writing-focus: #FFF9E6;
+  --color-writing-bg: #FFFFFF;
+  --color-writing-focus: #FFF3F8;
 
   /* Fonts */
   --font-serif: Georgia, "Palatino Linotype", "Book Antiqua", Palatino, serif;
@@ -29,10 +33,10 @@
   --spacing-xl: 72px;
 
   /* Other */
-  --border-radius: 6px;
+  --border-radius: 8px;
   --transition-speed: 300ms;
-  --max-width: 720px;
-  --max-width-wide: 960px;
+  --max-width: 900px;
+  --max-width-wide: 1100px;
 }
 
 /* ===== BASE STYLES ===== */
@@ -51,18 +55,17 @@ body {
   min-height: 100vh;
 }
 
-/* Subtle paper-like texture with warm overlay */
+/* Subtle background with colorful accents */
 body::before{
   content:"";
   position:fixed;
   inset:0;
   pointer-events:none;
-  opacity:.08;
+  opacity:.06;
   background:
-    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139,115,85,.015) 2px, rgba(139,115,85,.015) 4px),
-    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(139,115,85,.012) 2px, rgba(139,115,85,.012) 4px),
-    radial-gradient(1200px 800px at 20% 15%, rgba(156,102,68,.04), transparent 65%),
-    radial-gradient(900px 600px at 85% 30%, rgba(156,102,68,.03), transparent 60%);
+    radial-gradient(1400px 900px at 15% 20%, rgba(232, 93, 117, .04), transparent 70%),
+    radial-gradient(1200px 800px at 85% 40%, rgba(92, 107, 192, .03), transparent 65%),
+    radial-gradient(1000px 1000px at 50% 80%, rgba(38, 166, 154, .02), transparent 70%);
   z-index:0;
 }
 
@@ -150,14 +153,14 @@ body::before{
 }
 
 .intro-box {
-  background: linear-gradient(135deg, #FFFEF9 0%, #FFF9F0 100%);
-  border: 2px solid var(--color-border);
+  background: linear-gradient(135deg, #FFF9FC 0%, #F3F0FF 100%);
+  border: 3px solid var(--color-secondary-light);
   border-radius: var(--border-radius);
   padding: var(--spacing-lg);
   margin: var(--spacing-lg) 0;
   line-height: 1.8;
   text-align: left;
-  box-shadow: 0 2px 8px rgba(139, 115, 85, 0.06);
+  box-shadow: 0 3px 12px rgba(92, 107, 192, 0.15);
 }
 
 /* Context Screen */
@@ -240,13 +243,13 @@ body::before{
 }
 
 .context-box {
-  background: linear-gradient(135deg, var(--color-context) 0%, #FFF5D6 100%);
-  border: 2px solid var(--color-context-border);
+  background: linear-gradient(135deg, var(--color-context) 0%, #F0F2FF 100%);
+  border: 3px solid var(--color-context-border);
   border-radius: var(--border-radius);
   padding: var(--spacing-md);
   margin-bottom: var(--spacing-lg);
   position: relative;
-  box-shadow: 0 2px 6px rgba(255, 193, 7, 0.08);
+  box-shadow: 0 3px 12px rgba(92, 107, 192, 0.12);
   line-height: 1.7;
 }
 
@@ -259,7 +262,7 @@ body::before{
   text-transform: uppercase;
   letter-spacing: 1px;
   font-family: var(--font-sans);
-  color: var(--color-accent);
+  color: var(--color-secondary);
 }
 
 .question {
@@ -277,28 +280,28 @@ body::before{
 }
 
 .choice-card {
-  background: linear-gradient(135deg, #FFFFFF 0%, #FFFEF9 100%);
+  background: linear-gradient(135deg, #FFFFFF 0%, #FFFAFC 100%);
   border: 3px solid var(--color-border);
   border-radius: var(--border-radius);
   padding: var(--spacing-md);
   margin-bottom: var(--spacing-sm);
   cursor: pointer;
   transition: all 200ms ease;
-  box-shadow: 0 1px 3px rgba(139, 115, 85, 0.08);
+  box-shadow: 0 2px 8px rgba(232, 93, 117, 0.08);
 }
 
 .choice-card:hover {
   border-color: var(--color-accent-light);
-  background: linear-gradient(135deg, #FFFEF9 0%, #FFF9F0 100%);
+  background: linear-gradient(135deg, #FFF9FC 0%, #FFF0F5 100%);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(156, 102, 68, 0.12);
+  box-shadow: 0 4px 16px rgba(232, 93, 117, 0.15);
 }
 
 .choice-card.selected {
   border-color: var(--color-accent);
-  background: linear-gradient(135deg, var(--color-highlight) 0%, #FFF8E1 100%);
+  background: linear-gradient(135deg, var(--color-highlight) 0%, #FFE4EF 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(156, 102, 68, 0.18);
+  box-shadow: 0 6px 20px rgba(232, 93, 117, 0.25);
 }
 
 .choice-card label {
@@ -339,14 +342,14 @@ body::before{
 }
 
 .source-text-box {
-  background: linear-gradient(135deg, #FFFFFF 0%, #FFFEF9 100%);
+  background: linear-gradient(135deg, #FFFFFF 0%, #FFFAFD 100%);
   border: 3px solid var(--color-border);
   border-radius: var(--border-radius);
   padding: var(--spacing-lg);
   margin: var(--spacing-lg) 0;
   line-height: 1.8;
   font-size: 18px;
-  box-shadow: 0 2px 8px rgba(139, 115, 85, 0.08);
+  box-shadow: 0 3px 12px rgba(232, 93, 117, 0.08);
 }
 
 .source-text-box p:first-of-type::first-letter {
@@ -379,11 +382,11 @@ body::before{
 }
 
 .version-box {
-  background: linear-gradient(135deg, #FFFFFF 0%, #FFFEF9 100%);
+  background: linear-gradient(135deg, #FFFFFF 0%, #FFFAFD 100%);
   border: 3px solid var(--color-border);
   border-radius: var(--border-radius);
   padding: var(--spacing-lg);
-  box-shadow: 0 2px 8px rgba(139, 115, 85, 0.08);
+  box-shadow: 0 3px 12px rgba(232, 93, 117, 0.08);
 }
 
 .version-header {
@@ -432,12 +435,12 @@ body::before{
   font-weight: 500;
   margin-bottom: var(--spacing-md);
   line-height: 1.6;
-  color: var(--color-accent);
+  color: var(--color-accent-dark);
   padding: var(--spacing-md);
-  background: linear-gradient(135deg, #FFF9E6 0%, #FFFEF9 100%);
+  background: linear-gradient(135deg, #FFF5F8 0%, #FFF9FC 100%);
   border-radius: var(--border-radius);
-  border-left: 5px solid var(--color-accent-light);
-  box-shadow: 0 2px 8px rgba(156, 102, 68, 0.06);
+  border-left: 5px solid var(--color-accent);
+  box-shadow: 0 3px 12px rgba(232, 93, 117, 0.12);
 }
 
 .reflection-textarea {
@@ -453,7 +456,7 @@ body::before{
   margin: var(--spacing-md) 0;
   background: var(--color-writing-bg);
   transition: all 250ms ease;
-  box-shadow: inset 0 1px 3px rgba(139, 115, 85, 0.05);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .reflection-textarea:hover {
@@ -466,8 +469,8 @@ body::before{
   border-color: var(--color-accent);
   background: var(--color-writing-focus);
   box-shadow:
-    inset 0 1px 3px rgba(139, 115, 85, 0.05),
-    0 0 0 3px rgba(156, 102, 68, 0.1);
+    inset 0 1px 3px rgba(0, 0, 0, 0.03),
+    0 0 0 4px rgba(232, 93, 117, 0.15);
 }
 
 .reflection-textarea::placeholder {
@@ -477,14 +480,14 @@ body::before{
 }
 
 .example-box {
-  background: linear-gradient(135deg, var(--color-example) 0%, #FFFEF5 100%);
-  border: 2px solid var(--color-example-border);
+  background: linear-gradient(135deg, var(--color-example) 0%, #FFFEF0 100%);
+  border: 3px solid var(--color-example-border);
   border-radius: var(--border-radius);
   padding: var(--spacing-md);
   margin: var(--spacing-md) 0;
   font-size: 17px;
   line-height: 1.7;
-  box-shadow: 0 2px 6px rgba(255, 235, 59, 0.1);
+  box-shadow: 0 3px 12px rgba(255, 235, 59, 0.2);
 }
 
 .example-box::before {
@@ -494,7 +497,7 @@ body::before{
   margin-bottom: var(--spacing-sm);
   font-size: 15px;
   font-family: var(--font-sans);
-  color: var(--color-accent);
+  color: #F57C00;
   letter-spacing: 0.5px;
 }
 
@@ -517,14 +520,14 @@ body::before{
 }
 
 .time-marker {
-  border-top: 3px double var(--color-accent);
-  border-bottom: 3px double var(--color-accent);
+  border-top: 3px double var(--color-tertiary);
+  border-bottom: 3px double var(--color-tertiary);
   padding: var(--spacing-lg);
   margin: var(--spacing-xl) 0;
   font-size: 24px;
   font-style: italic;
-  color: var(--color-accent);
-  background: linear-gradient(135deg, #FFF9E6 0%, #FFFEF9 100%);
+  color: var(--color-tertiary);
+  background: linear-gradient(135deg, #E0F7F4 0%, #F0FFFC 100%);
   position: relative;
 }
 
@@ -532,9 +535,9 @@ body::before{
 .time-marker::after {
   content: "✦";
   display: inline-block;
-  color: var(--color-accent-light);
+  color: var(--color-tertiary);
   font-size: 18px;
-  opacity: 0.5;
+  opacity: 0.6;
   margin: 0 12px;
 }
 
@@ -593,29 +596,29 @@ body::before{
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--color-accent) 0%, #8B5C3F 100%);
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
   color: white;
   border: none;
   padding: 14px 36px;
   font-size: 18px;
   font-family: var(--font-sans);
-  font-weight: 500;
+  font-weight: 600;
   border-radius: var(--border-radius);
   cursor: pointer;
   transition: all 200ms ease;
-  box-shadow: 0 2px 8px rgba(156, 102, 68, 0.25);
+  box-shadow: 0 3px 12px rgba(232, 93, 117, 0.3);
   letter-spacing: 0.3px;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #8B5C3F 0%, var(--color-accent) 100%);
+  background: linear-gradient(135deg, var(--color-accent-dark) 0%, var(--color-accent) 100%);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(156, 102, 68, 0.35);
+  box-shadow: 0 6px 20px rgba(232, 93, 117, 0.4);
 }
 
 .btn-primary:active {
   transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(156, 102, 68, 0.3);
+  box-shadow: 0 3px 10px rgba(232, 93, 117, 0.3);
 }
 
 .btn-primary:disabled {
@@ -627,8 +630,8 @@ body::before{
 
 .btn-secondary {
   background: transparent;
-  color: var(--color-accent);
-  border: 3px solid var(--color-accent);
+  color: var(--color-secondary);
+  border: 3px solid var(--color-secondary);
   padding: 11px 30px;
   font-size: 17px;
   font-family: var(--font-sans);
@@ -641,32 +644,32 @@ body::before{
 }
 
 .btn-secondary:hover {
-  background: var(--color-accent);
+  background: var(--color-secondary);
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(156, 102, 68, 0.25);
+  box-shadow: 0 4px 16px rgba(92, 107, 192, 0.3);
 }
 
 .start-button {
-  background: linear-gradient(135deg, var(--color-accent) 0%, #8B5C3F 100%);
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
   color: white;
   border: none;
   padding: var(--spacing-sm) 56px;
   font-size: 19px;
   font-family: var(--font-sans);
-  font-weight: 500;
+  font-weight: 600;
   border-radius: var(--border-radius);
   cursor: pointer;
   margin-top: var(--spacing-lg);
   transition: all 200ms ease;
-  box-shadow: 0 3px 12px rgba(156, 102, 68, 0.3);
+  box-shadow: 0 4px 16px rgba(232, 93, 117, 0.35);
   letter-spacing: 0.5px;
 }
 
 .start-button:hover {
-  background: linear-gradient(135deg, #8B5C3F 0%, var(--color-accent) 100%);
+  background: linear-gradient(135deg, var(--color-accent-dark) 0%, var(--color-accent) 100%);
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(156, 102, 68, 0.4);
+  box-shadow: 0 8px 24px rgba(232, 93, 117, 0.45);
 }
 
 /* ===== FOOTER ===== */
