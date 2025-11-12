@@ -374,9 +374,20 @@ const gameContent = {
   },
 
   creativeWriting: {
+    inspiration: {
+      title: "Your Turn to Shape History",
+      text: "You've stepped into the minds of ancient authors. You've seen how they chose words, framed events, and shaped meaning.",
+      quote: "Every story we tell reveals as much about us as it does about the events themselves."
+    },
     title: "Now You Write",
     intro: "You have seen how Eusebius and Augustine shaped their stories.\nNow it's your turn to write.",
     prompt: "Write a short passage (3-5 sentences) about an event from history or your own life.\nThink about:\n• What details do you include?\n• What do you leave out?\n• How do you frame the story?\n• What do you want readers to think or feel?",
+    tips: [
+      "Choose a moment that matters to you",
+      "Think about your purpose in telling it",
+      "Consider what perspective you're writing from",
+      "Decide what details support your message"
+    ],
     example: "Example: \"When I moved to a new city, everything was difficult at first. But this challenge helped me grow stronger. Looking back now, I see it was the best decision I ever made.\"\n\n(Notice: This version emphasizes growth and positive outcome. A different version might focus on loneliness or struggle.)",
     followUp: "After writing, explain: What did you choose to emphasize? What did you leave out?"
   }
@@ -1186,14 +1197,17 @@ class ScreenRenderer {
   renderConclusionScreens(screenIndex) {
     // Screen sequence:
     // 0: Main conclusion with final reflection
-    // 1: Creative writing exercise
-    // 2: Final download/finish screen
+    // 1: Inspiration screen (new!)
+    // 2: Creative writing exercise
+    // 3: Final download/finish screen
 
     if (screenIndex === 0) {
       this.renderMainConclusion();
     } else if (screenIndex === 1) {
-      this.renderCreativeWriting();
+      this.renderInspiration();
     } else if (screenIndex === 2) {
+      this.renderCreativeWriting();
+    } else if (screenIndex === 3) {
       this.renderFinalScreen();
     }
   }
@@ -1259,6 +1273,34 @@ class ScreenRenderer {
     });
   }
 
+  renderInspiration() {
+    const content = gameContent.creativeWriting.inspiration;
+    const div = document.createElement('div');
+    div.className = 'transition-screen';
+
+    div.innerHTML = `
+      <div class="inspire-section">
+        <h2 class="inspire-title">${content.title}</h2>
+        <p class="inspire-text">${content.text}</p>
+        <div class="inspire-quote">${content.quote}</div>
+        <p class="inspire-text" style="margin-top: var(--spacing-lg); font-size: 20px;">
+          Take a moment to think about a story from your own life or from history.<br>
+          How would <em>you</em> tell it?
+        </p>
+      </div>
+      <div class="button-container center" style="margin-top: var(--spacing-xl);">
+        <button class="btn-primary" id="continue-btn">Begin Writing →</button>
+      </div>
+    `;
+
+    this.container.appendChild(div);
+
+    document.getElementById('continue-btn').addEventListener('click', () => {
+      this.gameState.nextScreen();
+      this.render();
+    });
+  }
+
   renderCreativeWriting() {
     const content = gameContent.creativeWriting;
     const div = document.createElement('div');
@@ -1269,35 +1311,51 @@ class ScreenRenderer {
 
     div.innerHTML = `
       <h2 class="chapter-title">${content.title}</h2>
-      <div class="context-text">
-        ${content.intro.split('\n').map(p => `<p>${p}</p>`).join('')}
+
+      <div class="creative-writing-container">
+        <div class="writing-prompt">Your Writing Challenge</div>
+
+        <div class="context-text">
+          ${content.intro.split('\n').map(p => `<p>${p}</p>`).join('')}
+        </div>
+
+        <div class="writing-tips">
+          ${content.tips.map(tip => `<div class="writing-tip">${tip}</div>`).join('')}
+        </div>
+
+        <div class="reflection-question" style="margin-top: var(--spacing-lg);">
+          ${content.prompt.split('\n').filter(p => !p.startsWith('•')).map(p => `<p>${p}</p>`).join('')}
+        </div>
+
+        <textarea
+          class="reflection-textarea"
+          id="creative-passage"
+          placeholder="Begin writing your passage here... (aim for 3-5 sentences)"
+          style="min-height: 200px;"
+        >${savedPassage}</textarea>
+        <div class="char-count" id="passage-count">0 characters</div>
+
+        <div class="example-box" style="margin-top: var(--spacing-lg);">
+          ${content.example.split('\n\n').map(p => `<p>${p}</p>`).join('')}
+        </div>
+
+        <div class="reflection-question" style="margin-top: var(--spacing-xl);">${content.followUp}</div>
+
+        <textarea
+          class="reflection-textarea"
+          id="creative-explanation"
+          placeholder="Reflect on your choices: what did you emphasize, what did you leave out, and why?"
+          style="min-height: 160px;"
+        >${savedExplanation}</textarea>
+        <div class="char-count" id="explanation-count">0 characters</div>
+
+        <p class="optional-note" style="margin-top: var(--spacing-md);">
+          (This creative writing is optional but helps deepen your understanding!)
+        </p>
       </div>
 
-      <div class="reflection-question">${content.prompt.split('\n').map(p => p.startsWith('•') ? `<li>${p.substring(2)}</li>` : `<p>${p}</p>`).join('')}</div>
-
-      <textarea
-        class="reflection-textarea"
-        id="creative-passage"
-        placeholder="Write your passage here (3-5 sentences)..."
-        style="min-height: 150px;"
-      >${savedPassage}</textarea>
-
-      <div class="example-box" style="margin-top: 20px;">
-        ${content.example.split('\n\n').map(p => `<p>${p}</p>`).join('')}
-      </div>
-
-      <div class="reflection-question" style="margin-top: 30px;">${content.followUp}</div>
-
-      <textarea
-        class="reflection-textarea"
-        id="creative-explanation"
-        placeholder="Explain your choices..."
-      >${savedExplanation}</textarea>
-
-      <p class="optional-note">(This creative writing is optional but helps deepen your understanding!)</p>
-
-      <div class="button-container center">
-        <button class="btn-primary" id="continue-btn">Continue →</button>
+      <div class="button-container center" style="margin-top: var(--spacing-xl);">
+        <button class="btn-primary" id="continue-btn">Complete & Continue →</button>
       </div>
     `;
 
@@ -1305,7 +1363,24 @@ class ScreenRenderer {
 
     const passageArea = document.getElementById('creative-passage');
     const explanationArea = document.getElementById('creative-explanation');
+    const passageCount = document.getElementById('passage-count');
+    const explanationCount = document.getElementById('explanation-count');
     let saveTimeout;
+
+    // Update character counts
+    const updateCount = (textarea, countEl) => {
+      const count = textarea.value.length;
+      countEl.textContent = `${count} character${count !== 1 ? 's' : ''}`;
+      if (count > 0) {
+        countEl.classList.add('active');
+      } else {
+        countEl.classList.remove('active');
+      }
+    };
+
+    // Initialize counts
+    updateCount(passageArea, passageCount);
+    updateCount(explanationArea, explanationCount);
 
     const saveWriting = () => {
       clearTimeout(saveTimeout);
@@ -1314,8 +1389,15 @@ class ScreenRenderer {
       }, 500);
     };
 
-    passageArea.addEventListener('input', saveWriting);
-    explanationArea.addEventListener('input', saveWriting);
+    passageArea.addEventListener('input', () => {
+      updateCount(passageArea, passageCount);
+      saveWriting();
+    });
+
+    explanationArea.addEventListener('input', () => {
+      updateCount(explanationArea, explanationCount);
+      saveWriting();
+    });
 
     document.getElementById('continue-btn').addEventListener('click', () => {
       this.gameState.recordCreativeWriting(passageArea.value, explanationArea.value);
