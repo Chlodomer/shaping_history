@@ -2,24 +2,24 @@
 const gameContent = {
   onboarding: [
     {
-      title: "Welcome to Shaping History",
-      content: "This game teaches you how ancient authors shaped their historical narratives.\n\nYou will experience this by becoming the authors yourself.",
+      title: "✍️ You Are the Writer",
+      content: "In this game, YOU become an ancient author.\n\nYou will write. You will make editorial choices. You will shape history.\n\nEvery writer—ancient or modern—faces the same questions:\n• What do I include?\n• What do I leave out?\n• How do I describe this?\n• What's my purpose?",
       buttonText: "Continue"
     },
     {
-      title: "What You'll Do",
-      content: "You will become two ancient Christian authors:\n\n• Eusebius (writing about persecution, 303-313 CE)\n• Augustine (writing about his conversion, 397 CE)\n\nFor each author, you will make editorial choices about how to tell their stories.",
+      title: "📖 Two Authors, Two Circumstances",
+      content: "You will become two ancient Christian writers:\n\n**EUSEBIUS** (303-313 CE)\n📍 In Caesarea during Roman persecution\n📝 Writing about violence you witnessed\n⏰ Then revising 10 years later when circumstances changed\n\n**AUGUSTINE** (397 CE)\n📍 In North Africa as a bishop\n📝 Writing about your conversion 11 years ago\n⏰ Memory shaped by time and your new role\n\nFor each author, you make the editorial choices.",
       buttonText: "Continue"
     },
     {
-      title: "No Right or Wrong Answers",
-      content: "Every choice teaches you something about how authors shape history.\n\nThere are no \"correct\" answers. We want to see your thinking.\n\nAfter making choices, you'll reflect on WHY you chose what you did.",
+      title: "🔄 How Circumstances Change Writing",
+      content: "Here's the key insight you'll discover:\n\nThe SAME events can be told DIFFERENT ways depending on:\n• When you're writing (during? years later?)\n• Where you are (in danger? safe?)\n• Who you are now (victim? leader? teacher?)\n• What you want readers to understand\n\nThis isn't lying—it's the reality of all historical writing.\n\nYou'll experience this by writing the same events from different circumstances.",
       buttonText: "Continue"
     },
     {
-      title: "What to Expect",
-      content: "• Time: 12-18 minutes\n• Two chapters with choices\n• Reflection questions after each chapter\n• A creative writing exercise at the end\n• Download your work when finished\n\nYour progress is saved automatically.",
-      buttonText: "Start Game"
+      title: "📝 Your Writing Matters",
+      content: "**What you'll do:**\n• Make editorial choices as Eusebius and Augustine\n• Reflect on WHY you chose what you did\n• Write your own passage using these techniques\n• Download all your work at the end\n\n**Remember:** There are no \"correct\" answers. Every choice teaches you something about authorship.\n\n**Time:** 12-18 minutes\n\n**Your work saves automatically** as you write.",
+      buttonText: "I'm Ready to Write"
     }
   ],
 
@@ -34,20 +34,32 @@ const gameContent = {
     intro: {
       title: "Chapter 1: Eusebius's Revisions",
       text: [
-        "You are Eusebius of Caesarea.",
-        "The year is 303 CE.",
+        "🖋️ **You are Eusebius of Caesarea.**",
+        "📅 The year is 303 CE.",
+        "📍 You are in Caesarea (modern-day Israel).",
         "",
-        "The Roman emperor Diocletian is persecuting Christians.",
-        "Soldiers are destroying churches and burning holy books.",
-        "Some Christians are being killed.",
+        "**Your situation:**",
+        "• The Roman emperor Diocletian is persecuting Christians",
+        "• Soldiers are destroying churches and burning holy books",
+        "• Church leaders are being arrested, some killed",
+        "• You are witnessing this violence firsthand",
+        "• You are in danger yourself",
         "",
-        "You are writing about what you see.",
-        "You want people to remember what happened."
+        "**Your task:**",
+        "Write about what you see.",
+        "You want people to remember what happened.",
+        "",
+        "**Historical note:**",
+        "The real Eusebius wrote \"Ecclesiastical History\" about these events.",
+        "Later, when circumstances changed, he revised his account."
       ]
     },
 
     sourceText: {
-      heading: "This is what happened during the persecution:",
+      heading: "📜 What Eusebius Actually Wrote:",
+      quote: "\"It was the nineteenth year of Diocletian's reign... when suddenly, throughout the whole world, edicts were published ordering the churches to be razed to the ground and the Scriptures destroyed by fire.\"",
+      quoteSource: "— Eusebius, Ecclesiastical History, Book 8",
+      heading2: "This is what happened during the persecution:",
       text: [
         "Church buildings were destroyed.",
         "Holy books were burned in public squares.",
@@ -211,26 +223,58 @@ const gameContent = {
     }
   },
 
+  augustineTransition: {
+    title: "🔄 A New Author, A New Circumstance",
+    text: [
+      "You've finished with Eusebius.",
+      "You experienced how changing circumstances (danger → safety, victim → bishop) changed how he told his story.",
+      "",
+      "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+      "",
+      "Now you'll become a different kind of author:",
+      "",
+      "**NEW CHALLENGE: Writing from Memory**",
+      "",
+      "• Eusebius revised a text he'd already written",
+      "• Augustine is constructing a story about the past",
+      "",
+      "You'll discover how TIME and DISTANCE from events shape storytelling.",
+      "",
+      "Ready to become Augustine?"
+    ]
+  },
+
   augustine: {
     intro: {
       title: "Chapter 2: Augustine's Garden",
       text: [
-        "You are Augustine of Hippo.",
-        "The year is 397 CE.",
+        "🖋️ **You are Augustine of Hippo.**",
+        "📅 The year is 397 CE.",
         "",
-        "You are writing a book called \"Confessions.\"",
-        "You are describing your conversion to Christianity.",
+        "**Your situation:**",
+        "• You are a bishop in North Africa",
+        "• You are writing a book called \"Confessions\"",
+        "• You are teaching other Christians about God's grace",
         "",
-        "The conversion happened in 386 CE in a garden in Milan.",
-        "That was eleven years ago.",
+        "**Your task:**",
+        "Write about your conversion to Christianity.",
         "",
-        "You are now a bishop.",
-        "You want to teach others about how God's grace works."
+        "**The challenge:**",
+        "• It happened in 386 CE in a garden in Milan",
+        "• That was ELEVEN YEARS AGO",
+        "• Your memory has changed",
+        "• You are now a different person (bishop vs. seeker)",
+        "• You have a purpose: teaching about grace",
+        "",
+        "How will being a teacher NOW affect how you write about being a seeker THEN?"
       ]
     },
 
     memories: {
-      heading: "What You Remember",
+      heading: "📜 What Augustine Actually Wrote:",
+      quote: "\"I heard from a neighboring house a voice, as of boy or girl, I know not, chanting and oft repeating, 'Take up and read; Take up and read.' ... I seized, opened, and in silence read... Instantly at the end of this sentence, a light as it were of serenity infused into my heart.\"",
+      quoteSource: "— Augustine, Confessions, Book 8",
+      heading2: "What You Remember from 386 CE:",
       intro: "You remember your conversion in the garden:",
       items: [
         "You were crying under a fig tree",
@@ -921,8 +965,21 @@ class ScreenRenderer {
     const div = document.createElement('div');
     div.className = 'text-display-screen';
 
+    const quoteHTML = content.quote ? `
+      <div class="example-box" style="margin-bottom: 2rem; font-style: italic;">
+        <p style="margin-bottom: 0.5rem;">${content.quote}</p>
+        <p style="font-size: 0.9em; text-align: right; margin-top: 0.5rem;">${content.quoteSource}</p>
+      </div>
+    ` : '';
+
+    const heading2HTML = content.heading2 ? `
+      <h3 class="screen-title" style="margin-top: 2rem;">${content.heading2}</h3>
+    ` : '';
+
     div.innerHTML = `
       <h3 class="screen-title">${content.heading}</h3>
+      ${quoteHTML}
+      ${heading2HTML}
       <div class="source-text-box">
         ${content.text.map(p => `<p>${p}</p>`).join('')}
       </div>
@@ -1061,8 +1118,21 @@ class ScreenRenderer {
     const div = document.createElement('div');
     div.className = 'text-display-screen';
 
+    const quoteHTML = content.quote ? `
+      <div class="example-box" style="margin-bottom: 2rem; font-style: italic;">
+        <p style="margin-bottom: 0.5rem;">${content.quote}</p>
+        <p style="font-size: 0.9em; text-align: right; margin-top: 0.5rem;">${content.quoteSource}</p>
+      </div>
+    ` : '';
+
+    const heading2HTML = content.heading2 ? `
+      <h3 class="screen-title" style="margin-top: 2rem;">${content.heading2}</h3>
+    ` : '';
+
     div.innerHTML = `
       <h3 class="screen-title">${content.heading}</h3>
+      ${quoteHTML}
+      ${heading2HTML}
       <div class="context-text">
         <p>${content.intro}</p>
       </div>
@@ -1161,17 +1231,17 @@ class ScreenRenderer {
   }
 
   renderChapterTransition() {
+    const content = gameContent.augustineTransition;
     const div = document.createElement('div');
     div.className = 'transition-screen';
 
     div.innerHTML = `
-      <h3 class="screen-title">End of Chapter 1</h3>
+      <h2 class="chapter-title">${content.title}</h2>
       <div class="new-situation">
-        <p>You experienced how Eusebius's changing situation shaped how he told the same story.</p>
-        <p>Now you will experience another author's choices.</p>
+        ${content.text.map(p => `<p>${p}</p>`).join('')}
       </div>
       <div class="button-container center">
-        <button class="btn-primary" id="continue-btn">Continue to Chapter 2 →</button>
+        <button class="btn-primary" id="continue-btn">Yes, Continue to Augustine →</button>
       </div>
     `;
 
