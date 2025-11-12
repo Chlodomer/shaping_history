@@ -27,7 +27,7 @@ This is an interactive learning experience about how ancient authors shaped thei
 
 ### Option 2: Local File
 1. Download the game files from: https://github.com/Chlodomer/shaping_history
-2. Open `src/index.html` in your browser
+2. Open `index.html` (in the repository root) in your browser
 3. No internet connection needed after download
 
 ---

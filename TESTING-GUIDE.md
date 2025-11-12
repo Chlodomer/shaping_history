@@ -9,9 +9,9 @@
 ## Quick Start Testing
 
 ### Opening the Game
-1. Navigate to: `/shaping-history-game/src/`
+1. Navigate to the repository root
 2. Open `index.html` in a web browser
-3. Or use command: `open src/index.html` (Mac) / `start src/index.html` (Windows)
+3. Or use command: `open index.html` (Mac) / `start index.html` (Windows)
 
 ---
 

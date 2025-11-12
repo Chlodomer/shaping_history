@@ -27,16 +27,14 @@ This game supplements lectures on:
 ## Project Structure
 
 ```
-shaping-history-game/
-├── docs/               # Documentation
-│   ├── PRD.md         # Product Requirements Document
+shaping_history/
+├── index.html        # Entry point (deploys from root)
+├── styles.css        # Styling (minimalist + subtle antiquity)
+├── game.js           # Game logic (vanilla JS)
+├── docs/             # Documentation
+│   ├── PRD.md        # Product Requirements Document
 │   ├── technical-spec.md
 │   └── content-guide.md
-├── src/               # Source code
-│   ├── index.html    # Main game file
-│   ├── styles.css    # Styling
-│   └── game.js       # Game logic
-├── assets/            # Images, fonts, etc.
 └── README.md         # This file
 ```
 
@@ -60,14 +58,14 @@ shaping-history-game/
 ### For Development
 
 1. Clone the repository
-2. Open `src/index.html` in a browser
+2. Open `index.html` in a browser (root folder)
 3. No build process needed - edit and refresh!
 
 ### For Deployment
 
 1. Push to GitHub
 2. Enable GitHub Pages in repository settings
-3. Point to main branch, `/src` folder
+3. Point to main branch, `/(root)` folder
 4. Access at: `https://[username].github.io/[repo-name]/`
 
 ## Target Audience

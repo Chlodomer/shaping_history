@@ -694,6 +694,7 @@ class ScreenRenderer {
     this.container = document.getElementById('game-container');
     this.progressContainer = document.getElementById('progress-container');
     this.progressText = document.getElementById('progress-text');
+    this.progressFill = document.getElementById('progress-fill');
   }
 
   render() {
@@ -732,6 +733,25 @@ class ScreenRenderer {
   updateProgress(text) {
     this.progressContainer.style.display = 'block';
     this.progressText.textContent = text;
+
+    // Compute chapter completion percent for gentle progress bar fill
+    const st = this.gameState.state;
+    let total = 0;
+    let idx = 0;
+    if (st.currentChapter === 'eusebius') {
+      // 0..10 inclusive = 11 screens
+      total = 11; idx = Math.min(st.currentScreen + 1, total);
+    } else if (st.currentChapter === 'augustine') {
+      // 0..8 inclusive = 9 screens
+      total = 9; idx = Math.min(st.currentScreen + 1, total);
+    } else {
+      total = 1; idx = 0;
+    }
+    const pct = Math.max(0, Math.min(100, Math.round((idx / total) * 100)));
+    if (this.progressFill) {
+      this.progressFill.style.width = pct + '%';
+      this.progressFill.setAttribute('aria-valuenow', String(pct));
+    }
   }
 
   renderOnboarding() {
