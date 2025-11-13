@@ -1622,35 +1622,68 @@ function resetGameState() {
 // ===== INITIALIZATION =====
 
 window.addEventListener('DOMContentLoaded', () => {
-  loadGameState();
+  console.log('=== Shaping History v2.1 Initializing ===');
 
-  // Route to appropriate screen based on game state
-  switch (gameState.currentStage) {
-    case 'title':
-      renderTitlePage();
-      break;
-    case 'onboarding':
-      renderOnboarding();
-      break;
-    case 'bio':
-      renderEusebiusBio();
-      break;
-    case 'intro':
-      renderIntro();
-      break;
-    case 'stage1':
-      renderChoice(gameState.currentScreen);
-      break;
-    case 'stage2':
-      renderStage2Intro();
-      break;
-    case 'stage3':
-      renderStage3Intro();
-      break;
-    case 'stage4':
-      renderStage4Export();
-      break;
-    default:
-      renderTitlePage();
+  try {
+    loadGameState();
+    console.log('Game state loaded:', gameState.currentStage);
+
+    // Route to appropriate screen based on game state
+    switch (gameState.currentStage) {
+      case 'title':
+        console.log('Rendering title page');
+        renderTitlePage();
+        break;
+      case 'onboarding':
+        console.log('Rendering onboarding');
+        renderOnboarding();
+        break;
+      case 'bio':
+        console.log('Rendering bio');
+        renderEusebiusBio();
+        break;
+      case 'intro':
+        console.log('Rendering intro');
+        renderIntro();
+        break;
+      case 'stage1':
+        console.log('Rendering stage 1');
+        renderChoice(gameState.currentScreen);
+        break;
+      case 'stage2':
+        console.log('Rendering stage 2');
+        renderStage2Intro();
+        break;
+      case 'stage3':
+        console.log('Rendering stage 3');
+        renderStage3Intro();
+        break;
+      case 'stage4':
+        console.log('Rendering stage 4');
+        renderStage4Export();
+        break;
+      default:
+        console.log('Rendering title page (default)');
+        renderTitlePage();
+    }
+
+    console.log('=== Initialization complete ===');
+  } catch (error) {
+    console.error('Initialization error:', error);
+    // Fallback: show error message
+    document.getElementById('game-container').innerHTML = `
+      <div class="screen">
+        <h1>Error Loading Game</h1>
+        <p>Something went wrong. Please try:</p>
+        <ol>
+          <li>Refresh the page</li>
+          <li>Clear your browser cache</li>
+          <li>Check the console for errors (F12)</li>
+        </ol>
+        <button class="primary-button" onclick="localStorage.clear(); location.reload();">
+          Clear Data and Restart
+        </button>
+      </div>
+    `;
   }
 });
