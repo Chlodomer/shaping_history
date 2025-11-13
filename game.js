@@ -3,14 +3,82 @@
 
 // ===== GAME STATE =====
 const gameState = {
-  currentStage: 'intro', // intro, stage1, stage2, stage3, stage4, stage5
+  currentStage: 'title', // title, onboarding, bio, intro, stage1, stage2, stage3, stage4
   currentScreen: 0,
+  onboardingStep: 0,
+  hasSeenOnboarding: false,
   choices: {},
   narrativeProfile: null,
   selectedComponents: [],
   componentSequence: [],
   rationalization: '',
   studentNarrative: ''
+};
+
+// ===== TITLE & ONBOARDING CONTENT =====
+
+const titleContent = {
+  title: "Shaping History",
+  subtitle: "Ancient Authors and Their Agendas",
+  tagline: "An interactive exploration of historiographical construction",
+  illustration: "[Illustration placeholder - will be replaced with actual art]"
+};
+
+const onboardingContent = {
+  steps: [
+    {
+      title: "Welcome to Shaping History",
+      content: [
+        "In this tool, you'll become ancient Christian historians writing about events they witnessed.",
+        "You'll make the same kinds of choices these authors faced: what to emphasize, what to omit, and how to frame events for your audience.",
+        "Through this hands-on experience, you'll discover how all historical narratives are shaped by authorial decisions."
+      ],
+      visual: "preview-welcome"
+    },
+    {
+      title: "What You'll Do",
+      content: [
+        "You'll work through 4 stages for each author:",
+        "• <strong>Stage 1:</strong> Make high-level compositional choices",
+        "• <strong>Stage 2:</strong> Select and arrange narrative components",
+        "• <strong>Stage 3:</strong> Write your own historical narrative",
+        "• <strong>Stage 4:</strong> Review and export your work"
+      ],
+      visual: "preview-stages"
+    },
+    {
+      title: "The Authors",
+      content: [
+        "You'll write as two different historians:",
+        "• <strong>Eusebius of Caesarea (303 CE):</strong> Writing during active persecution",
+        "• <strong>Augustine of Hippo (397 CE):</strong> Reflecting on a life-changing moment",
+        "Each author faces different challenges and audiences."
+      ],
+      visual: "preview-authors"
+    },
+    {
+      title: "There Are No Wrong Answers",
+      content: [
+        "This tool is about <em>experiencing</em> the compositional process, not getting it \"right.\"",
+        "Every choice you make is valid—just like every ancient historian made different choices.",
+        "Focus on understanding <em>why</em> you make certain choices and what effects they have.",
+        "Time to complete: 25-30 minutes"
+      ],
+      visual: "preview-export"
+    }
+  ]
+};
+
+const eusebiusBio = {
+  name: "Eusebius of Caesarea",
+  dates: "c. 260-339 CE",
+  image: "[Portrait placeholder]",
+  paragraphs: [
+    "Eusebius was a Christian scholar and bishop who lived through one of the most turbulent periods in early Christian history. Born around 260 CE, he witnessed the Great Persecution launched by Emperor Diocletian in 303 CE.",
+    "As bishop of Caesarea in Palestine, Eusebius saw firsthand the destruction of churches, burning of scriptures, and martyrdom of Christians. He documented these events in his <em>Ecclesiastical History</em>, becoming one of the most important early Christian historians.",
+    "In this exercise, you'll write as Eusebius in 303 CE, during the height of persecution. You're creating an account of what you've witnessed in Caesarea, knowing that your words will shape how future Christians understand this dark period."
+  ],
+  context: "You are writing in 303 CE, during active persecution. Your audience is other Christians who need to understand what is happening to their community."
 };
 
 // ===== STAGE 1 CONTENT =====
@@ -451,6 +519,215 @@ function generateNarrativeProfile(choices) {
 }
 
 // ===== UI RENDERING FUNCTIONS =====
+
+// Title Page
+function renderTitlePage() {
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="screen title-screen fade-in">
+      <div class="title-illustration">
+        <div class="illustration-placeholder">
+          ${titleContent.illustration}
+        </div>
+      </div>
+
+      <h1 class="main-title">${titleContent.title}</h1>
+      <h2 class="subtitle">${titleContent.subtitle}</h2>
+      <p class="tagline">${titleContent.tagline}</p>
+
+      <div class="title-actions">
+        <button class="primary-button large-button" onclick="startOnboarding()">
+          Begin Experience →
+        </button>
+        ${gameState.hasSeenOnboarding ?
+          '<button class="secondary-button" onclick="skipToEusebius()">Skip to Eusebius →</button>' :
+          ''}
+      </div>
+
+      <div class="title-footer">
+        <p>Bar-Ilan University • Introduction to Early Medieval Europe</p>
+      </div>
+    </div>
+  `;
+}
+
+// Onboarding
+function startOnboarding() {
+  gameState.currentStage = 'onboarding';
+  gameState.onboardingStep = 0;
+  saveGameState();
+  renderOnboarding();
+}
+
+function renderOnboarding() {
+  const step = onboardingContent.steps[gameState.onboardingStep];
+  const totalSteps = onboardingContent.steps.length;
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="screen onboarding-screen fade-in">
+      <div class="onboarding-progress">
+        <span>Step ${gameState.onboardingStep + 1} of ${totalSteps}</span>
+      </div>
+
+      <div class="onboarding-content">
+        <div class="onboarding-visual">
+          <div class="visual-mockup ${step.visual}">
+            ${getVisualMockup(step.visual)}
+          </div>
+        </div>
+
+        <div class="onboarding-text">
+          <h2>${step.title}</h2>
+          ${step.content.map(p => `<p>${p}</p>`).join('')}
+        </div>
+      </div>
+
+      <div class="onboarding-actions">
+        ${gameState.onboardingStep > 0 ?
+          '<button class="secondary-button" onclick="previousOnboardingStep()">← Back</button>' :
+          '<button class="secondary-button" onclick="skipOnboarding()">Skip Tutorial</button>'}
+        <button class="primary-button" onclick="nextOnboardingStep()">
+          ${gameState.onboardingStep < totalSteps - 1 ? 'Next →' : 'Start with Eusebius →'}
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function getVisualMockup(visualType) {
+  const mockups = {
+    'preview-welcome': `
+      <div class="mockup-card">
+        <div class="mockup-title">Welcome Screen</div>
+        <div class="mockup-body">
+          <div class="mockup-text-line"></div>
+          <div class="mockup-text-line short"></div>
+          <div class="mockup-button"></div>
+        </div>
+      </div>
+    `,
+    'preview-stages': `
+      <div class="mockup-stages">
+        <div class="mockup-stage">1<br/>Choose</div>
+        <div class="mockup-arrow">→</div>
+        <div class="mockup-stage">2<br/>Structure</div>
+        <div class="mockup-arrow">→</div>
+        <div class="mockup-stage">3<br/>Write</div>
+        <div class="mockup-arrow">→</div>
+        <div class="mockup-stage">4<br/>Export</div>
+      </div>
+    `,
+    'preview-authors': `
+      <div class="mockup-authors">
+        <div class="mockup-author-card">
+          <div class="mockup-portrait"></div>
+          <div class="mockup-name">Eusebius</div>
+          <div class="mockup-date">303 CE</div>
+        </div>
+        <div class="mockup-author-card">
+          <div class="mockup-portrait"></div>
+          <div class="mockup-name">Augustine</div>
+          <div class="mockup-date">397 CE</div>
+        </div>
+      </div>
+    `,
+    'preview-export': `
+      <div class="mockup-card">
+        <div class="mockup-title">Your Work</div>
+        <div class="mockup-body">
+          <div class="mockup-text-block"></div>
+          <div class="mockup-text-block"></div>
+          <div class="mockup-download-btn">↓ Download JSON</div>
+        </div>
+      </div>
+    `
+  };
+
+  return mockups[visualType] || '<div class="mockup-placeholder">Preview</div>';
+}
+
+function nextOnboardingStep() {
+  const totalSteps = onboardingContent.steps.length;
+
+  if (gameState.onboardingStep < totalSteps - 1) {
+    gameState.onboardingStep++;
+    saveGameState();
+    renderOnboarding();
+  } else {
+    // Finished onboarding, go to Eusebius bio
+    gameState.hasSeenOnboarding = true;
+    showEusebiusBio();
+  }
+}
+
+function previousOnboardingStep() {
+  if (gameState.onboardingStep > 0) {
+    gameState.onboardingStep--;
+    saveGameState();
+    renderOnboarding();
+  }
+}
+
+function skipOnboarding() {
+  gameState.hasSeenOnboarding = true;
+  saveGameState();
+  showEusebiusBio();
+}
+
+function skipToEusebius() {
+  showEusebiusBio();
+}
+
+// Author Biography
+function showEusebiusBio() {
+  gameState.currentStage = 'bio';
+  saveGameState();
+  renderEusebiusBio();
+}
+
+function renderEusebiusBio() {
+  const bio = eusebiusBio;
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="screen bio-screen fade-in">
+      <div class="bio-header">
+        <div class="bio-portrait">
+          <div class="portrait-placeholder">
+            ${bio.image}
+          </div>
+        </div>
+        <div class="bio-title">
+          <h1>${bio.name}</h1>
+          <p class="bio-dates">${bio.dates}</p>
+        </div>
+      </div>
+
+      <div class="bio-content">
+        ${bio.paragraphs.map(p => `<p>${p}</p>`).join('')}
+
+        <div class="bio-context">
+          <h3>Your Task</h3>
+          <p>${bio.context}</p>
+        </div>
+      </div>
+
+      <div class="bio-actions">
+        <button class="primary-button large-button" onclick="startEusebiusStage1()">
+          Begin Writing as Eusebius →
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function startEusebiusStage1() {
+  gameState.currentStage = 'intro';
+  saveGameState();
+  renderIntro();
+}
 
 function renderIntro() {
   const content = stage1Content.intro;
@@ -1316,8 +1593,10 @@ function loadGameState() {
 
 function resetGameState() {
   localStorage.removeItem('shapingHistory_gameState');
-  gameState.currentStage = 'intro';
+  gameState.currentStage = 'title';
   gameState.currentScreen = 0;
+  gameState.onboardingStep = 0;
+  gameState.hasSeenOnboarding = false;
   gameState.choices = {};
   gameState.narrativeProfile = null;
   gameState.selectedComponents = [];
@@ -1331,6 +1610,33 @@ function resetGameState() {
 window.addEventListener('DOMContentLoaded', () => {
   loadGameState();
 
-  // Always start at intro for now
-  renderIntro();
+  // Route to appropriate screen based on game state
+  switch (gameState.currentStage) {
+    case 'title':
+      renderTitlePage();
+      break;
+    case 'onboarding':
+      renderOnboarding();
+      break;
+    case 'bio':
+      renderEusebiusBio();
+      break;
+    case 'intro':
+      renderIntro();
+      break;
+    case 'stage1':
+      renderChoice(gameState.currentScreen);
+      break;
+    case 'stage2':
+      renderStage2Intro();
+      break;
+    case 'stage3':
+      renderStage3Intro();
+      break;
+    case 'stage4':
+      renderStage4Export();
+      break;
+    default:
+      renderTitlePage();
+  }
 });

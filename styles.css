@@ -1163,3 +1163,367 @@ body {
     font-size: 1.3rem;
   }
 }
+
+/* ===== TITLE PAGE ===== */
+.title-screen {
+  text-align: center;
+  padding: 60px 40px;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.title-illustration {
+  margin: 0 auto 40px;
+  max-width: 400px;
+}
+
+.illustration-placeholder {
+  background: linear-gradient(135deg, #3a3a3a 0%, #2d2d2d 100%);
+  border: 2px dashed #666;
+  border-radius: 12px;
+  padding: 80px 40px;
+  color: #888;
+  font-style: italic;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-title {
+  font-size: 4rem;
+  font-weight: 700;
+  margin: 20px 0;
+  background: linear-gradient(135deg, #E85D75 0%, #5C6BC0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -2px;
+}
+
+.subtitle {
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: #b8b8b8;
+  margin-bottom: 12px;
+}
+
+.tagline {
+  font-size: 1.1rem;
+  color: #888;
+  margin-bottom: 40px;
+  font-style: italic;
+}
+
+.title-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  margin: 40px 0;
+}
+
+.large-button {
+  padding: 18px 48px !important;
+  font-size: 1.2rem !important;
+}
+
+.title-footer {
+  margin-top: 60px;
+  padding-top: 30px;
+  border-top: 1px solid #444;
+  color: #777;
+  font-size: 0.9rem;
+}
+
+/* ===== ONBOARDING ===== */
+.onboarding-screen {
+  padding: 40px;
+}
+
+.onboarding-progress {
+  text-align: center;
+  margin-bottom: 32px;
+  color: #888;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.onboarding-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.onboarding-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.visual-mockup {
+  width: 100%;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.onboarding-text h2 {
+  font-size: 2rem;
+  margin-bottom: 24px;
+  color: #E85D75;
+}
+
+.onboarding-text p {
+  margin-bottom: 16px;
+  line-height: 1.8;
+}
+
+.onboarding-text p strong {
+  color: #5C6BC0;
+}
+
+.onboarding-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 30px;
+  border-top: 1px solid #444;
+}
+
+/* Visual Mockups */
+.mockup-card {
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 24px;
+  width: 100%;
+}
+
+.mockup-title {
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #E85D75;
+  font-size: 1.1rem;
+}
+
+.mockup-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mockup-text-line {
+  height: 12px;
+  background: #444;
+  border-radius: 4px;
+}
+
+.mockup-text-line.short {
+  width: 60%;
+}
+
+.mockup-button {
+  height: 40px;
+  background: linear-gradient(135deg, #E85D75 0%, #D44361 100%);
+  border-radius: 6px;
+  margin-top: 12px;
+}
+
+.mockup-text-block {
+  height: 60px;
+  background: #333;
+  border-radius: 4px;
+}
+
+.mockup-download-btn {
+  background: linear-gradient(135deg, #E85D75 0%, #D44361 100%);
+  color: white;
+  padding: 12px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 600;
+  margin-top: 16px;
+}
+
+.mockup-stages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.mockup-stage {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #5C6BC0 0%, #4A5AA8 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.mockup-arrow {
+  font-size: 1.5rem;
+  color: #666;
+}
+
+.mockup-authors {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+}
+
+.mockup-author-card {
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  width: 140px;
+}
+
+.mockup-portrait {
+  width: 80px;
+  height: 80px;
+  background: #444;
+  border-radius: 50%;
+  margin: 0 auto 16px;
+}
+
+.mockup-name {
+  font-weight: 600;
+  color: #E85D75;
+  margin-bottom: 8px;
+}
+
+.mockup-date {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.mockup-placeholder {
+  color: #666;
+  font-style: italic;
+}
+
+/* ===== BIOGRAPHY SCREEN ===== */
+.bio-screen {
+  padding: 48px;
+}
+
+.bio-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 2px solid #444;
+}
+
+.bio-portrait {
+  flex-shrink: 0;
+}
+
+.portrait-placeholder {
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(135deg, #3a3a3a 0%, #2d2d2d 100%);
+  border: 2px dashed #666;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+  font-size: 0.85rem;
+}
+
+.bio-title h1 {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+  color: #E85D75;
+}
+
+.bio-dates {
+  font-size: 1.2rem;
+  color: #888;
+  font-style: italic;
+}
+
+.bio-content {
+  margin-bottom: 40px;
+  line-height: 1.8;
+}
+
+.bio-content p {
+  margin-bottom: 20px;
+  font-size: 1.05rem;
+}
+
+.bio-content em {
+  color: #5C6BC0;
+  font-style: italic;
+}
+
+.bio-context {
+  background: linear-gradient(135deg, #2a2a2a 0%, #252525 100%);
+  border-left: 4px solid #E85D75;
+  padding: 24px;
+  border-radius: 8px;
+  margin-top: 32px;
+}
+
+.bio-context h3 {
+  color: #E85D75;
+  margin-bottom: 12px;
+  font-size: 1.3rem;
+}
+
+.bio-actions {
+  text-align: center;
+  padding-top: 32px;
+  border-top: 1px solid #444;
+}
+
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 2.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.3rem;
+  }
+
+  .onboarding-content {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .bio-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .mockup-stages {
+    flex-direction: column;
+  }
+
+  .mockup-arrow {
+    transform: rotate(90deg);
+  }
+}
