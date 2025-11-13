@@ -2,7 +2,10 @@
 // Stage 1: Multiple Choice Decisions
 
 // ===== GAME STATE =====
+const GAME_VERSION = '2.1'; // Increment when making breaking changes
+
 const gameState = {
+  version: GAME_VERSION,
   currentStage: 'title', // title, onboarding, bio, intro, stage1, stage2, stage3, stage4
   currentScreen: 0,
   onboardingStep: 0,
@@ -1587,12 +1590,23 @@ function saveGameState() {
 function loadGameState() {
   const saved = localStorage.getItem('shapingHistory_gameState');
   if (saved) {
-    Object.assign(gameState, JSON.parse(saved));
+    const savedState = JSON.parse(saved);
+
+    // Check version compatibility
+    if (savedState.version !== GAME_VERSION) {
+      console.log(`Version mismatch: saved=${savedState.version}, current=${GAME_VERSION}. Starting fresh.`);
+      // Don't load old state - let user start from title page
+      localStorage.removeItem('shapingHistory_gameState');
+      return;
+    }
+
+    Object.assign(gameState, savedState);
   }
 }
 
 function resetGameState() {
   localStorage.removeItem('shapingHistory_gameState');
+  gameState.version = GAME_VERSION;
   gameState.currentStage = 'title';
   gameState.currentScreen = 0;
   gameState.onboardingStep = 0;
