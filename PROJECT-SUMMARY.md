@@ -1,309 +1,376 @@
 # Project Summary
-## Shaping History: Ancient Authors and Their Agendas
+## Shaping History: Stage-Based Composition Tool
 
 **Created**: November 11, 2025
-**Status**: Documentation Phase Complete ✅
+**Updated**: November 13, 2025
+**Status**: Complete and Deployed ✅
+**Version**: 2.0
 
 ---
 
 ## What We've Created
 
-A complete set of documentation for an educational interactive game that teaches students about historiographical bias through hands-on experience as ancient authors (Eusebius and Augustine).
+A complete educational web application that teaches students about historiographical construction through a structured 4-stage composition process. Students become Eusebius of Caesarea in 303 CE, making deliberate choices about how to construct a narrative of Christian persecution.
 
 ---
 
 ## Project Structure
 
 ```
-shaping-history-game/
-├── docs/                          # All documentation
-│   ├── PRD.md                    # Product Requirements Document (comprehensive)
-│   ├── technical-spec.md         # Technical implementation details
-│   ├── content-guide.md          # All game text and passages
-│   ├── wireframes.md             # Visual design specifications
-│   └── project-tracker.md        # Development checklist and timeline
-├── src/                          # Source code (to be created)
-│   ├── index.html               # (Pending - Phase 2)
-│   ├── styles.css               # (Pending - Phase 2)
-│   └── game.js                  # (Pending - Phase 2)
-├── assets/                       # Images, fonts, etc. (future)
-├── README.md                     # Project overview
-└── PROJECT-SUMMARY.md            # This file
+shaping_history/
+├── index.html                 # Entry point (deploys from root)
+├── styles.css                 # Dark elegant design (~1165 lines)
+├── game.js                    # 4-stage composition logic (~1336 lines)
+├── docs/                      # Documentation
+│   ├── PRD.md                # Product Requirements Document
+│   ├── technical-spec.md     # Technical implementation details
+│   ├── content-guide.md      # All tool content
+│   ├── wireframes.md         # Visual design specifications
+│   └── project-tracker.md    # Development checklist
+├── STUDENT-INSTRUCTIONS.md    # For students
+├── INSTRUCTOR-GUIDE.md        # For instructors
+├── TESTING-GUIDE.md           # Testing protocols
+├── PROJECT-SUMMARY.md         # This file
+└── README.md                  # Quick reference
+
 ```
 
 ---
 
-## Documentation Overview
+## Tool Architecture
 
-### 1. PRD.md (Product Requirements Document)
-**68 pages | Comprehensive specification**
+### The 4-Stage Process
 
-**Contents**:
-- Executive summary and problem statement
-- Educational goals and learning outcomes
-- Target audience (non-native English speakers)
-- Detailed user stories
-- Complete feature specifications
-- Content specifications for both chapters
-- Technical requirements
-- Design requirements (minimalist + subtle antiquity)
-- Success metrics
-- Timeline and phases
+**Stage 1: Multiple Choice Decisions (5-7 minutes)**
+- Students make 4 high-level compositional choices:
+  1. **Emphasis**: What aspect to focus on (suffering, courage, cruelty, divine purpose)
+  2. **Protagonist**: Who is the central focus (martyrs, community, leaders, God)
+  3. **Violence detail**: How much to describe (graphic, factual, minimal, omit)
+  4. **Endpoint**: Where to end the narrative (death, burial, triumph, ongoing)
+- Mid-feedback after 2 choices to promote reflection
+- Final summary with "authorial profile" (e.g., "Theological Comforter", "Martyrological Chronicler")
 
-**Key sections**:
-- Two-chapter structure (Eusebius → Augustine)
-- Editorial choice mechanics
-- Reflection prompts
-- Comparison displays
-- No right/wrong answers approach
+**Stage 2: Structure Your Composition (5-7 minutes)**
+- **Component selection**: Choose 6-8 specific narrative components derived from Stage 1 choices
+  - Each Stage 1 choice unlocks 4 relevant components
+  - Total pool: 16 components tailored to student's choices
+- **Sequencing**: Drag-and-drop interface to arrange components in order
+- **Rationalization**: Explain the structural logic in writing (2-4 sentences)
+- Feedback on structural patterns (what opens/closes, emphasis distribution)
 
----
+**Stage 3: Write Your Narrative (5-7 minutes)**
+- Write 100-200 word narrative as Eusebius in 303 CE
+- Structure reference visible as sidebar guide
+- Real-time word counter with color coding
+- Auto-save functionality
+- Must reach minimum 100 words to continue
 
-### 2. technical-spec.md (Technical Specification)
-**48 pages | Implementation blueprint**
-
-**Contents**:
-- System architecture (client-side only)
-- Data models (game state, content structure)
-- Core components (state manager, screen manager)
-- File structure and organization
-- Key algorithms (navigation, text generation)
-- Performance optimization
-- Browser compatibility
-- Testing strategy
-- Deployment guide (GitHub Pages)
-- Security considerations
-
-**Tech stack**:
-- Pure HTML/CSS/JavaScript (no frameworks)
-- localStorage for data persistence
-- GitHub Pages for hosting
-- Mobile-responsive design
+**Stage 4: Export Your Work (2-3 minutes)**
+- Complete summary of all work:
+  - Stage 1 choices and authorial profile
+  - Stage 2 component sequence and rationalization
+  - Stage 3 narrative with word count
+- **JSON download** with structured data for instructor review
+- Options to revise narrative or start over
 
 ---
 
-### 3. content-guide.md (Content Guide)
-**42 pages | All game text**
+## Educational Philosophy
 
-**Contents**:
-- Writing guidelines (simple English, active voice)
-- Complete text for all screens:
-  - Welcome and introduction screens
-  - All decision points with choices
-  - Context boxes and tooltips
-  - Comparison displays
-  - Reflection prompts
-  - Conclusion screens
-- Text generation templates
-- Tooltips for terminology
-- Content review checklist
+### Learning Through Scaffolded Construction
 
-**Chapters**:
-- **Chapter 1**: Eusebius (303 CE → 313 CE revision)
-  - 5 decision points across two time periods
-  - Side-by-side comparison
-- **Chapter 2**: Augustine (397 CE construction)
-  - 4 decision points
-  - Narrative construction display
+Unlike traditional "make choices and see results" games, this tool explicitly scaffolds the composition process:
 
----
+1. **Abstract to Concrete**: Move from high-level decisions → specific components → actual writing
+2. **Metacognition**: Students must articulate WHY they structured things a certain way
+3. **Deliberate Practice**: Each stage requires active engagement, not just selection
 
-### 4. wireframes.md (Visual Design)
-**38 pages | Layout specifications**
+### Key Pedagogical Insights
 
-**Contents**:
-- Design principles recap
-- Wireframes for 6 screen types:
-  - Title/welcome screen
-  - Context/introduction screen
-  - Choice/decision screen
-  - Comparison screen (side-by-side)
-  - Reflection screen
-  - Transition/time jump screen
-- Common UI components
-- Responsive breakpoints
-- Accessibility features
-- Animation specifications
-- Complete CSS examples
+**What Students Experience**:
+- Authorship as a **series of constrained choices**, not free creation
+- How **early decisions limit later options** (component pool shaped by Stage 1)
+- The difference between **selecting emphasis** and **writing prose**
+- That **structure precedes** effective narrative
 
-**Design language**:
-- Minimalist and clean
-- Warm cream background (#F5F1E8)
-- Dark brown text (#3E2723)
-- Subtle antiquity hints (borders, lines)
-- Readable serif typography
-
----
-
-### 5. project-tracker.md (Development Tracker)
-**12 pages | Project management**
-
-**Contents**:
-- Phase-by-phase checklist:
-  - ✅ Phase 1: Documentation (Complete)
-  - ⏳ Phase 2: Core Development (Pending)
-  - ⏳ Phase 3: Polish (Pending)
-  - ⏳ Phase 4: Testing (Pending)
-  - ⏳ Phase 5: Deployment (Pending)
-  - ⏳ Phase 6: Launch (Pending)
-- Timeline estimates (2-3 weeks total)
-- Known issues log
-- Future enhancements list
-- Team contacts
-- Design decisions log
-
----
-
-### 6. README.md (Project Overview)
-**2 pages | Quick reference**
-
-**Contents**:
-- Project overview
-- Educational context
-- Technical stack
-- Development timeline
-- Key features
-- Getting started guide
-- Deployment instructions
-
----
-
-## Game Concept Summary
-
-### What Students Do
-1. **Become Eusebius** (Chapter 1)
-   - Edit a persecution account in 303 CE
-   - Revise the same account in 313 CE (after Constantine)
-   - See their two versions side-by-side
-   - Reflect on why their choices changed
-
-2. **Become Augustine** (Chapter 2)
-   - Construct the garden conversion narrative
-   - Make choices about emphasis and framing
-   - See the final constructed narrative
-   - Reflect on how time/role shaped the story
-
-### What Students Learn
-- Authors shape narratives through selection and emphasis
-- Changing circumstances change how events are told
-- "Truth" and "bias" aren't binary opposites
-- All historical writing involves construction
-- Silences matter as much as inclusions
-
-### Key Features
-- **10-minute playtime**: Fits class or homework
-- **Simple English**: Accessible to non-native speakers
-- **No right answers**: Focus on thoughtful engagement
-- **Reflection prompts**: Encourage metacognition
-- **Mobile-responsive**: Works on all devices
-- **No account needed**: Just open and play
+**What Students Learn**:
+- Historical narratives are constructed, not transcribed
+- Omission is as significant as inclusion
+- "Objectivity" is impossible; every choice creates perspective
+- Ancient authors faced real compositional constraints and decisions
 
 ---
 
 ## Technical Highlights
 
-### Why This Stack?
-- **Vanilla JS**: No frameworks = simple, fast, maintainable
-- **localStorage**: No backend needed, privacy-friendly
-- **GitHub Pages**: Free, easy deployment, no server maintenance
-- **Responsive CSS**: One codebase for all devices
+### Pure Vanilla JavaScript
+- No frameworks or dependencies
+- 1,336 lines of well-organized code
+- Modular structure (clear separation of content, logic, rendering)
+
+### State Management
+- `gameState` object tracks all progress
+- localStorage for automatic persistence
+- Handles browser refresh gracefully
+- Clean state transitions between stages
+
+### Modern Features
+- Drag-and-drop sequencing interface
+- Real-time validation and feedback
+- Dynamic component generation based on choices
+- JSON export with metadata
+
+### Responsive Design
+- Dark gradient background (#2d2d2d to #3a3a3a)
+- Vibrant accent colors (pink #E85D75, purple #5C6BC0, teal #26A69A)
+- Wider layout (900px max-width, up from 720px)
+- Mobile-friendly with touch support
 
 ### Performance
+- Total file size: ~52KB (well under 500KB target)
 - Load time: <2 seconds on 3G
-- File size: <500KB total
-- Works offline after first load
-- No external dependencies
-
-### Accessibility
-- WCAG AA compliant contrast
-- Keyboard navigable
-- Screen reader compatible
-- Mobile-friendly touch targets
+- Works offline after initial load
+- No external API calls
 
 ---
 
-## Next Steps
+## Content Design
 
-### Immediate (This Week)
-1. **Review documentation** for accuracy and completeness
-2. **Approve content** (passages, choices, questions)
-3. **Finalize design direction** (any tweaks to visual style?)
+### Historical Context: Eusebius 303 CE
 
-### Phase 2 (Next 2-3 Days)
-1. **Build HTML structure**
-2. **Write CSS styling**
-3. **Implement JavaScript game logic**
-4. **Integrate content**
+The tool focuses on a single historical moment:
+- **Who**: Eusebius of Caesarea, Christian scholar
+- **When**: 303 CE, during Diocletian's Great Persecution
+- **What**: Writing an account of persecution in Caesarea
+- **Why**: To document events for Christian audience
 
-### Phase 3 (1-2 Days)
-1. **Polish visual details**
-2. **Add accessibility features**
-3. **Optimize for mobile**
+This narrow focus allows deep engagement with compositional choices rather than historical breadth.
 
-### Phase 4 (1-2 Weeks)
-1. **Internal testing** (all browsers)
-2. **Pilot with 5-10 students**
-3. **Iterate based on feedback**
+### Component System
 
-### Phase 5 (Half Day)
-1. **Deploy to GitHub Pages**
-2. **Create student instructions**
-3. **Test live URL**
+16 total components across 4 categories:
+- **4 emphasis options** × 4 components each = varied thematic approaches
+- **4 protagonist options** × 4 components each = different narrative centers
+- **4 violence options** × 4 components each = control over graphic content
+- **4 endpoint options** × 4 components each = different narrative conclusions
+
+Components are specific enough to guide writing but abstract enough to allow creativity.
+
+---
+
+## Deployment
+
+### Current Status
+- **Live URL**: https://chlodomer.github.io/shaping_history/
+- **GitHub repo**: https://github.com/Chlodomer/shaping_history
+- **Hosting**: GitHub Pages (free, automatic deployment)
+- **Updates**: Push to main branch, live in 2-5 minutes
+
+### Browser Support
+- Chrome 90+
+- Firefox 88+
+- Safari 14+
+- Edge 90+
+
+### Data Privacy
+- All data stored locally in browser (localStorage)
+- No server, no database, no tracking
+- Students control their data via JSON export
+
+---
+
+## Assessment Integration
+
+### For Instructors
+
+**Submitted File**: JSON with structure:
+```json
+{
+  "metadata": { "timestamp", "wordCount", "version" },
+  "stage1": { "choices", "narrativeProfile" },
+  "stage2": { "componentSequence", "rationalization" },
+  "stage3": { "narrative", "wordCount" }
+}
+```
+
+**What to Assess**:
+1. Completion (did they finish all 4 stages?)
+2. Structural reasoning (Stage 2 rationalization quality)
+3. Narrative coherence (does Stage 3 follow Stage 2 structure?)
+4. Awareness of choices (do they recognize what they emphasized/omitted?)
+
+**Assessment Options**:
+- **Light**: Completion credit (5-10% of grade)
+- **Medium**: Completion + reasoning quality (10-15%)
+- **Heavy**: Full rubric evaluating narrative sophistication (15-20%)
+
+---
+
+## Comparison to Original Design
+
+### What Changed from v1.x
+
+**Original (November 11)**:
+- 2 chapters (Eusebius 303→313 CE, Augustine 397 CE)
+- Side-by-side revision comparison
+- Reflection prompts after each chapter
+- Creative writing exercise at end
+- .txt file download
+- Warm cream/brown color scheme
+
+**Current (November 12-13)**:
+- Single focused experience (Eusebius 303 CE)
+- 4-stage scaffolded composition process
+- Explicit structural rationalization
+- JSON export with full data
+- Dark elegant design with vibrant accents
+- Emphasis on *construction* rather than *revision*
+
+### Why the Change?
+
+The stage-based approach offers:
+- **Deeper engagement** with a single compositional process
+- **More scaffolding** for students who struggle with open-ended writing
+- **Explicit metacognition** (must explain structural choices)
+- **Better assessment data** (structured JSON vs. free-text reflections)
+- **Clearer learning progression** (abstract → concrete → written)
+
+---
+
+## File Statistics
+
+### Code
+- `index.html`: 31 lines (minimal)
+- `styles.css`: 1,165 lines (comprehensive responsive design)
+- `game.js`: 1,336 lines (all logic and content)
+- **Total**: ~2,500 lines
+
+### Documentation
+- README.md: ~100 lines
+- PROJECT-SUMMARY.md: ~310 lines (this file)
+- FINAL-SUMMARY.md: ~500 lines
+- STUDENT-INSTRUCTIONS.md: ~360 lines
+- INSTRUCTOR-GUIDE.md: ~474 lines
+- TESTING-GUIDE.md: ~363 lines
+- **Total**: ~2,100+ lines of documentation
+
+---
+
+## Development Timeline
+
+### Phase 1: Original Design (November 11)
+- Two-chapter game (Eusebius + Augustine)
+- Full documentation suite created
+- Initial implementation completed
+
+### Phase 2: Redesign (November 12)
+- Shift to stage-based composition model
+- Dark elegant design transformation
+- Wider layout (900px)
+- Vibrant color palette (pink/purple/teal accents)
+
+### Phase 3: Export & Polish (November 12-13)
+- Stage 4 export functionality
+- JSON download format
+- Word limit adjustments (200 word max)
+- Download confirmation toast
+- Auto-clear narrative on fresh Stage 3 entry
+
+### Phase 4: Documentation Update (November 13)
+- Comprehensive documentation refresh
+- Alignment of all docs with current implementation
+
+---
+
+## Future Possibilities
+
+### Potential Enhancements
+
+**Content Expansion**:
+- Add 313 CE revision stage (after Constantine's victory)
+- Include Augustine chapter as separate module
+- More historical periods and authors
+
+**Features**:
+- Instructor dashboard to view aggregate student choices
+- "Compare to actual Eusebius text" mode
+- Peer comparison (anonymized)
+- Email integration for direct submission
+
+**Pedagogy**:
+- Guided reflection prompts between stages
+- Example narratives showing different approaches
+- Historical context pop-ups/tooltips
+
+---
+
+## Success Metrics (To Track)
+
+### Quantitative
+- Completion rate (target >85%)
+- Average time per stage
+- Word count distribution
+- Choice distribution (which authorial profiles emerge?)
+
+### Qualitative
+- Student feedback on scaffolding helpfulness
+- Instructor assessment of narrative quality
+- Improvement in source criticism skills
+- Student awareness of compositional choices
 
 ---
 
 ## Questions for Review
 
-Before proceeding to Phase 2, please review and confirm:
+Before wider deployment:
 
-1. **Content approval**:
-   - Are the Eusebius passages accurate and appropriate?
-   - Are the Augustine scenarios correctly framed?
-   - Is the language simple enough for non-native speakers?
+1. **Pedagogical Effectiveness**:
+   - Does the 4-stage process successfully teach compositional awareness?
+   - Is the scaffolding too much or too little?
+   - Do students transfer these insights to other coursework?
 
-2. **Design direction**:
-   - Is the "minimalist with subtle antiquity" approach correct?
-   - Do the color choices work for you?
-   - Any specific visual elements you want included/excluded?
+2. **Technical Performance**:
+   - How does it perform on mobile devices?
+   - Are there browser compatibility issues?
+   - Is the JSON export format suitable for grading?
 
-3. **Pedagogical approach**:
-   - Does the "no right answers" philosophy align with your goals?
-   - Are the reflection prompts asking the right questions?
-   - Is the 10-minute timeframe appropriate?
+3. **Content Accuracy**:
+   - Is the historical framing appropriate?
+   - Are the component options historically grounded?
+   - Should we include more historical context?
 
-4. **Technical decisions**:
-   - Is GitHub Pages the right hosting choice?
-   - Are there any specific browsers/devices to prioritize?
-   - Any data collection needs (analytics)?
+4. **Assessment Integration**:
+   - Do instructors need different export formats?
+   - Should we add rubrics directly in the tool?
+   - How can we make JSON data easier to review?
 
 ---
 
 ## Contact & Collaboration
 
-**Current status**: Documentation complete, ready for review
+**Current Status**: Complete and deployed, ready for classroom use
 
-**To proceed**: Please review the documentation and provide feedback on:
-- Content accuracy
-- Design direction
-- Any changes needed before coding begins
+**For Technical Issues**: https://github.com/Chlodomer/shaping_history/issues
 
-**Time estimate for Phase 2**: 2-3 days of development once approved
+**For Pedagogical Questions**: Contact course instructor
+
+**For Feature Requests**: Open GitHub issue with tag "enhancement"
 
 ---
 
 ## Summary Statistics
 
-- **Total documentation**: ~210 pages
-- **Number of screens**: 20+ unique screens
-- **Choice points**: 9 total (5 Eusebius, 4 Augustine)
-- **Reflection prompts**: 3 (chapter 1, chapter 2, final)
-- **Development time**: 2-3 weeks estimated
-- **Target playtime**: 10-12 minutes
-- **Target audience**: University students (non-native English speakers)
+- **Total stages**: 4
+- **Stage 1 choices**: 4 decisions
+- **Stage 2 components**: 16 available, 6-8 selected
+- **Stage 3 word count**: 100-200 words
+- **Completion time**: 15-20 minutes
+- **File size**: ~52KB total
+- **Browser support**: All modern browsers
+- **Export format**: JSON with full metadata
 
 ---
 
-**Documentation Phase**: ✅ COMPLETE
-**Ready for**: Content review and development approval
-**Created by**: Claude Code
-**Date**: November 11, 2025
+**Documentation Phase**: ✅ UPDATED
+**Current Version**: 2.0 (Stage-Based Composition Tool)
+**Date**: November 13, 2025

@@ -1,8 +1,8 @@
-# Shaping History: Ancient Authors and Their Agendas
+# Shaping History: Stage-Based Composition Tool
 
-An educational interactive game teaching students about historiographical bias and authorial perspective through hands-on experience as ancient authors.
+An educational interactive tool teaching students about historiographical construction and authorial decision-making through a structured composition process.
 
-**🎮 Play the game**: https://chlodomer.github.io/shaping_history/
+**🎮 Use the tool**: https://chlodomer.github.io/shaping_history/
 
 **📁 GitHub repository**: https://github.com/Chlodomer/shaping_history
 
@@ -10,31 +10,37 @@ An educational interactive game teaching students about historiographical bias a
 
 ## Overview
 
-Students become two ancient authors—Eusebius of Caesarea and Augustine of Hippo—making editorial decisions about how to present historical events. Through the game, students learn that all historical writing involves selection, emphasis, and framing based on the author's circumstances and goals.
+Students become Eusebius of Caesarea in 303 CE, composing an account of Christian persecution through a 4-stage process: making compositional choices, selecting narrative components, structuring their account, and writing their narrative. Through this scaffolded experience, students learn that all historical writing involves deliberate selection, emphasis, and framing.
 
 ## Educational Context
 
-This game supplements lectures on:
+This tool supplements lectures on:
 - **Lecture 2**: Eusebius and persecution narratives
-- **Lecture 3**: Augustine's *Confessions* and the garden conversion
+- Early Christian historiography and source criticism
 
 **Learning outcomes**:
-- Recognize how authorial perspective shapes historical narratives
-- Understand that revision is a historical process
-- Develop source criticism skills
+- Recognize how compositional choices shape historical narratives
+- Understand narrative construction as a deliberate process
+- Develop source criticism skills through hands-on practice
 - Distinguish between "lying" and "selective truth-telling"
+- Experience the constraints and decisions ancient authors faced
 
 ## Project Structure
 
 ```
 shaping_history/
 ├── index.html        # Entry point (deploys from root)
-├── styles.css        # Styling (minimalist + subtle antiquity)
-├── game.js           # Game logic (vanilla JS)
+├── styles.css        # Dark elegant design with vibrant accents
+├── game.js           # 4-stage composition logic (vanilla JS)
 ├── docs/             # Documentation
 │   ├── PRD.md        # Product Requirements Document
 │   ├── technical-spec.md
-│   └── content-guide.md
+│   ├── content-guide.md
+│   ├── wireframes.md
+│   └── project-tracker.md
+├── STUDENT-INSTRUCTIONS.md
+├── INSTRUCTOR-GUIDE.md
+├── TESTING-GUIDE.md
 └── README.md         # This file
 ```
 
@@ -77,12 +83,17 @@ shaping_history/
 
 ## Key Features
 
-- **Two chapters**: Eusebius (persecution revisions) + Augustine (conversion construction)
-- **Contextual handholding**: Clear explanations before every decision
-- **Reflection prompts**: Encourage students to articulate their thinking
-- **No right answers**: Focus on thoughtful engagement
-- **10-minute playtime**: Fits easily into class or homework
-- **Minimalist design**: Clean, readable, with subtle hints of antiquity
+- **4-stage composition process**:
+  - **Stage 1**: Make high-level compositional choices (emphasis, protagonist, violence detail, endpoint)
+  - **Stage 2**: Select and sequence 6-8 narrative components
+  - **Stage 3**: Write 100-200 word narrative following your structure
+  - **Stage 4**: Review and export your work as JSON
+- **Scaffolded learning**: Each stage builds on the previous one
+- **Structural awareness**: Students explicitly rationalize their compositional choices
+- **Auto-save functionality**: Progress saved automatically in browser
+- **JSON export**: Complete work downloadable for instructor review
+- **15-20 minute completion time**: Fits into class or homework
+- **Modern, elegant design**: Dark theme with vibrant pink/purple accents
 
 ## Contact
 
@@ -95,5 +106,5 @@ For questions or feedback, contact the course instructor.
 ---
 
 **Status**: ✅ Complete and deployed
-**Version**: 1.1 (Enhanced with creative writing + onboarding)
-**Last updated**: November 11, 2025
+**Version**: 2.0 (Stage-based composition tool)
+**Last updated**: November 13, 2025
