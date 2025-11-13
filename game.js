@@ -2,7 +2,10 @@
 // Stage 1: Multiple Choice Decisions
 
 // ===== GAME STATE =====
+const GAME_VERSION = '2.1'; // Increment when making breaking changes
+
 const gameState = {
+  version: GAME_VERSION,
   currentStage: 'title', // title, onboarding, bio, intro, stage1, stage2, stage3, stage4
   currentScreen: 0,
   onboardingStep: 0,
@@ -1587,12 +1590,23 @@ function saveGameState() {
 function loadGameState() {
   const saved = localStorage.getItem('shapingHistory_gameState');
   if (saved) {
-    Object.assign(gameState, JSON.parse(saved));
+    const savedState = JSON.parse(saved);
+
+    // Check version compatibility
+    if (savedState.version !== GAME_VERSION) {
+      console.log(`Version mismatch: saved=${savedState.version}, current=${GAME_VERSION}. Starting fresh.`);
+      // Don't load old state - let user start from title page
+      localStorage.removeItem('shapingHistory_gameState');
+      return;
+    }
+
+    Object.assign(gameState, savedState);
   }
 }
 
 function resetGameState() {
   localStorage.removeItem('shapingHistory_gameState');
+  gameState.version = GAME_VERSION;
   gameState.currentStage = 'title';
   gameState.currentScreen = 0;
   gameState.onboardingStep = 0;
@@ -1608,35 +1622,68 @@ function resetGameState() {
 // ===== INITIALIZATION =====
 
 window.addEventListener('DOMContentLoaded', () => {
-  loadGameState();
+  console.log('=== Shaping History v2.1 Initializing ===');
 
-  // Route to appropriate screen based on game state
-  switch (gameState.currentStage) {
-    case 'title':
-      renderTitlePage();
-      break;
-    case 'onboarding':
-      renderOnboarding();
-      break;
-    case 'bio':
-      renderEusebiusBio();
-      break;
-    case 'intro':
-      renderIntro();
-      break;
-    case 'stage1':
-      renderChoice(gameState.currentScreen);
-      break;
-    case 'stage2':
-      renderStage2Intro();
-      break;
-    case 'stage3':
-      renderStage3Intro();
-      break;
-    case 'stage4':
-      renderStage4Export();
-      break;
-    default:
-      renderTitlePage();
+  try {
+    loadGameState();
+    console.log('Game state loaded:', gameState.currentStage);
+
+    // Route to appropriate screen based on game state
+    switch (gameState.currentStage) {
+      case 'title':
+        console.log('Rendering title page');
+        renderTitlePage();
+        break;
+      case 'onboarding':
+        console.log('Rendering onboarding');
+        renderOnboarding();
+        break;
+      case 'bio':
+        console.log('Rendering bio');
+        renderEusebiusBio();
+        break;
+      case 'intro':
+        console.log('Rendering intro');
+        renderIntro();
+        break;
+      case 'stage1':
+        console.log('Rendering stage 1');
+        renderChoice(gameState.currentScreen);
+        break;
+      case 'stage2':
+        console.log('Rendering stage 2');
+        renderStage2Intro();
+        break;
+      case 'stage3':
+        console.log('Rendering stage 3');
+        renderStage3Intro();
+        break;
+      case 'stage4':
+        console.log('Rendering stage 4');
+        renderStage4Export();
+        break;
+      default:
+        console.log('Rendering title page (default)');
+        renderTitlePage();
+    }
+
+    console.log('=== Initialization complete ===');
+  } catch (error) {
+    console.error('Initialization error:', error);
+    // Fallback: show error message
+    document.getElementById('game-container').innerHTML = `
+      <div class="screen">
+        <h1>Error Loading Game</h1>
+        <p>Something went wrong. Please try:</p>
+        <ol>
+          <li>Refresh the page</li>
+          <li>Clear your browser cache</li>
+          <li>Check the console for errors (F12)</li>
+        </ol>
+        <button class="primary-button" onclick="localStorage.clear(); location.reload();">
+          Clear Data and Restart
+        </button>
+      </div>
+    `;
   }
 });
