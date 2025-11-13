@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Stage-based composition tool for learning historical writing">
+    <title>Shaping History: Stage-Based Composition (TEST VERSION)</title>
+    <style>
+/* ===== SHAPING HISTORY: STAGE-BASED COMPOSITION TOOL ===== */
+/* Elegant, minimalist design */
+
+/* ===== RESET & BASE ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 50%, #2d2d2d 100%);
+  color: #e8e8e8;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== LAYOUT ===== */
+#game-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  flex: 1;
+}
+
+/* ===== STAGE INDICATOR ===== */
+.stage-indicator {
+  background: linear-gradient(135deg, #5a5a5a 0%, #4a4a4a 100%);
+  color: #c9c9c9;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 1px solid #666;
+}
+
+/* ===== SCREENS ===== */
+.screen {
+  background: linear-gradient(135deg, #1e1e1e 0%, #252525 100%);
+  border: 1px solid #444;
+  border-radius: 12px;
+  padding: 48px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.screen h1 {
+  font-size: 2.2rem;
+  color: #e8e8e8;
+  margin-bottom: 24px;
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.screen h2 {
+  font-size: 1.8rem;
+  color: #e8e8e8;
+  margin-bottom: 20px;
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+.screen h3 {
+  font-size: 1.3rem;
+  color: #b8b8b8;
+  margin-bottom: 12px;
+  margin-top: 24px;
+  font-weight: 600;
+}
+
+.screen p {
+  font-size: 1.05rem;
+  margin-bottom: 16px;
+  color: #a8a8a8;
+}
+
+/* ===== BUTTONS ===== */
+.primary-button {
+  background: linear-gradient(135deg, #5a524a 0%, #4a4238 100%);
+  color: #e8e8e8;
+  border: 1px solid #6b5d4f;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-block;
+  margin-top: 8px;
+}
+
+.primary-button:hover {
+  background: linear-gradient(135deg, #6a625a 0%, #5a5248 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(107, 93, 79, 0.4);
+}
+
+.secondary-button {
+  background: linear-gradient(135deg, #3a3a3a 0%, #323232 100%);
+  color: #b8b8b8;
+  border: 1.5px solid #4a4a4a;
+  padding: 10px 24px;
+  font-size: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.secondary-button:hover {
+  background: linear-gradient(135deg, #4a4a4a 0%, #424242 100%);
+  border-color: #5a5a5a;
+  color: #d8d8d8;
+  transform: translateY(-1px);
+}
+
+/* ===== TITLE PAGE ===== */
+.title-screen {
+  text-align: center;
+  padding: 60px 40px;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.title-illustration {
+  margin: 0 auto 40px;
+  max-width: 400px;
+}
+
+.illustration-placeholder {
+  background: linear-gradient(135deg, #3a3a3a 0%, #2d2d2d 100%);
+  border: 2px dashed #666;
+  border-radius: 12px;
+  padding: 80px 40px;
+  color: #888;
+  font-style: italic;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-title {
+  font-size: 4rem;
+  font-weight: 700;
+  margin: 20px 0;
+  background: linear-gradient(135deg, #E85D75 0%, #5C6BC0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -2px;
+}
+
+.subtitle {
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: #b8b8b8;
+  margin-bottom: 12px;
+}
+
+.tagline {
+  font-size: 1.1rem;
+  color: #888;
+  margin-bottom: 40px;
+  font-style: italic;
+}
+
+.title-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  margin: 40px 0;
+}
+
+.large-button {
+  padding: 18px 48px !important;
+  font-size: 1.2rem !important;
+}
+
+.title-footer {
+  margin-top: 60px;
+  padding-top: 30px;
+  border-top: 1px solid #444;
+  color: #777;
+  font-size: 0.9rem;
+}
+
+/* ===== ONBOARDING ===== */
+.onboarding-screen {
+  padding: 40px;
+}
+
+.onboarding-progress {
+  text-align: center;
+  margin-bottom: 32px;
+  color: #888;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.onboarding-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.onboarding-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.visual-mockup {
+  width: 100%;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.onboarding-text h2 {
+  font-size: 2rem;
+  margin-bottom: 24px;
+  color: #E85D75;
+}
+
+.onboarding-text p {
+  margin-bottom: 16px;
+  line-height: 1.8;
+}
+
+.onboarding-text p strong {
+  color: #5C6BC0;
+}
+
+.onboarding-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 30px;
+  border-top: 1px solid #444;
+}
+
+/* Visual Mockups */
+.mockup-card {
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 24px;
+  width: 100%;
+}
+
+.mockup-title {
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #E85D75;
+  font-size: 1.1rem;
+}
+
+.mockup-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mockup-text-line {
+  height: 12px;
+  background: #444;
+  border-radius: 4px;
+}
+
+.mockup-text-line.short {
+  width: 60%;
+}
+
+.mockup-button {
+  height: 40px;
+  background: linear-gradient(135deg, #E85D75 0%, #D44361 100%);
+  border-radius: 6px;
+  margin-top: 12px;
+}
+
+.mockup-text-block {
+  height: 60px;
+  background: #333;
+  border-radius: 4px;
+}
+
+.mockup-download-btn {
+  background: linear-gradient(135deg, #E85D75 0%, #D44361 100%);
+  color: white;
+  padding: 12px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 600;
+  margin-top: 16px;
+}
+
+.mockup-stages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.mockup-stage {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #5C6BC0 0%, #4A5AA8 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.mockup-arrow {
+  font-size: 1.5rem;
+  color: #666;
+}
+
+.mockup-authors {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+}
+
+.mockup-author-card {
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  width: 140px;
+}
+
+.mockup-portrait {
+  width: 80px;
+  height: 80px;
+  background: #444;
+  border-radius: 50%;
+  margin: 0 auto 16px;
+}
+
+.mockup-name {
+  font-weight: 600;
+  color: #E85D75;
+  margin-bottom: 8px;
+}
+
+.mockup-date {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.mockup-placeholder {
+  color: #666;
+  font-style: italic;
+}
+
+/* ===== BIOGRAPHY SCREEN ===== */
+.bio-screen {
+  padding: 48px;
+}
+
+.bio-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 2px solid #444;
+}
+
+.bio-portrait {
+  flex-shrink: 0;
+}
+
+.portrait-placeholder {
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(135deg, #3a3a3a 0%, #2d2d2d 100%);
+  border: 2px dashed #666;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+  font-size: 0.85rem;
+}
+
+.bio-title h1 {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+  color: #E85D75;
+}
+
+.bio-dates {
+  font-size: 1.2rem;
+  color: #888;
+  font-style: italic;
+}
+
+.bio-content {
+  margin-bottom: 40px;
+  line-height: 1.8;
+}
+
+.bio-content p {
+  margin-bottom: 20px;
+  font-size: 1.05rem;
+}
+
+.bio-content em {
+  color: #5C6BC0;
+  font-style: italic;
+}
+
+.bio-context {
+  background: linear-gradient(135deg, #2a2a2a 0%, #252525 100%);
+  border-left: 4px solid #E85D75;
+  padding: 24px;
+  border-radius: 8px;
+  margin-top: 32px;
+}
+
+.bio-context h3 {
+  color: #E85D75;
+  margin-bottom: 12px;
+  font-size: 1.3rem;
+}
+
+.bio-actions {
+  text-align: center;
+  padding-top: 32px;
+  border-top: 1px solid #444;
+}
+
+/* ===== ANIMATIONS ===== */
+.fade-in {
+  animation: fadeIn 0.4s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== FOOTER ===== */
+.site-footer {
+  background-color: #1a1f36;
+  color: #94a3b8;
+  padding: 24px;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 40px;
+}
+
+.footer-links {
+  margin-bottom: 8px;
+}
+
+.footer-link {
+  color: #a5b4fc;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: #c7d2fe;
+  text-decoration: underline;
+}
+
+.footer-note {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 2.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.3rem;
+  }
+
+  .onboarding-content {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .bio-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .mockup-stages {
+    flex-direction: column;
+  }
+
+  .mockup-arrow {
+    transform: rotate(90deg);
+  }
+}
+    </style>
+</head>
+<body>
+    <!-- Main Game Container -->
+    <main id="game-container">
+        <!-- Screens will be dynamically rendered here -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-links">
+            <a class="footer-link" href="https://github.com/Chlodomer/shaping_history" target="_blank" rel="noopener">GitHub</a>
+            <span>•</span>
+            <a class="footer-link" href="https://github.com/Chlodomer/shaping_history/issues" target="_blank" rel="noopener">Report Issue</a>
+        </div>
+        <div class="footer-note">
+            Created for Introduction to Early Medieval Europe • Bar-Ilan University
+        </div>
+    </footer>
+
+    <script>
+// ===== SHAPING HISTORY: STAGE-BASED COMPOSITION TOOL =====
+// STANDALONE TEST VERSION - All code embedded inline
+
+const GAME_VERSION = '2.1';
+
+const gameState = {
+  version: GAME_VERSION,
+  currentStage: 'title',
+  currentScreen: 0,
+  onboardingStep: 0,
+  hasSeenOnboarding: false,
+  choices: {},
+  narrativeProfile: null,
+  selectedComponents: [],
+  componentSequence: [],
+  rationalization: '',
+  studentNarrative: ''
+};
+
+const titleContent = {
+  title: "Shaping History",
+  subtitle: "Ancient Authors and Their Agendas",
+  tagline: "An interactive exploration of historiographical construction",
+  illustration: "[Illustration placeholder - will be replaced with actual art]"
+};
+
+const onboardingContent = {
+  steps: [
+    {
+      title: "Welcome to Shaping History",
+      content: [
+        "In this tool, you'll become ancient Christian historians writing about events they witnessed.",
+        "You'll make the same kinds of choices these authors faced: what to emphasize, what to omit, and how to frame events for your audience.",
+        "Through this hands-on experience, you'll discover how all historical narratives are shaped by authorial decisions."
+      ],
+      visual: "preview-welcome"
+    },
+    {
+      title: "What You'll Do",
+      content: [
+        "You'll work through 4 stages for each author:",
+        "• <strong>Stage 1:</strong> Make high-level compositional choices",
+        "• <strong>Stage 2:</strong> Select and arrange narrative components",
+        "• <strong>Stage 3:</strong> Write your own historical narrative",
+        "• <strong>Stage 4:</strong> Review and export your work"
+      ],
+      visual: "preview-stages"
+    },
+    {
+      title: "The Authors",
+      content: [
+        "You'll write as two different historians:",
+        "• <strong>Eusebius of Caesarea (303 CE):</strong> Writing during active persecution",
+        "• <strong>Augustine of Hippo (397 CE):</strong> Reflecting on a life-changing moment",
+        "Each author faces different challenges and audiences."
+      ],
+      visual: "preview-authors"
+    },
+    {
+      title: "There Are No Wrong Answers",
+      content: [
+        "This tool is about <em>experiencing</em> the compositional process, not getting it \"right.\"",
+        "Every choice you make is valid—just like every ancient historian made different choices.",
+        "Focus on understanding <em>why</em> you make certain choices and what effects they have.",
+        "Time to complete: 25-30 minutes"
+      ],
+      visual: "preview-export"
+    }
+  ]
+};
+
+const eusebiusBio = {
+  name: "Eusebius of Caesarea",
+  dates: "c. 260-339 CE",
+  image: "[Portrait placeholder]",
+  paragraphs: [
+    "Eusebius was a Christian scholar and bishop who lived through one of the most turbulent periods in early Christian history. Born around 260 CE, he witnessed the Great Persecution launched by Emperor Diocletian in 303 CE.",
+    "As bishop of Caesarea in Palestine, Eusebius saw firsthand the destruction of churches, burning of scriptures, and martyrdom of Christians. He documented these events in his <em>Ecclesiastical History</em>, becoming one of the most important early Christian historians.",
+    "In this exercise, you'll write as Eusebius in 303 CE, during the height of persecution. You're creating an account of what you've witnessed in Caesarea, knowing that your words will shape how future Christians understand this dark period."
+  ],
+  context: "You are writing in 303 CE, during active persecution. Your audience is other Christians who need to understand what is happening to their community."
+};
+
+// Title Page
+function renderTitlePage() {
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="screen title-screen fade-in">
+      <div class="title-illustration">
+        <div class="illustration-placeholder">
+          ${titleContent.illustration}
+        </div>
+      </div>
+
+      <h1 class="main-title">${titleContent.title}</h1>
+      <h2 class="subtitle">${titleContent.subtitle}</h2>
+      <p class="tagline">${titleContent.tagline}</p>
+
+      <div class="title-actions">
+        <button class="primary-button large-button" onclick="startOnboarding()">
+          Begin Experience →
+        </button>
+        ${gameState.hasSeenOnboarding ?
+          '<button class="secondary-button" onclick="skipToEusebius()">Skip to Eusebius →</button>' :
+          ''}
+      </div>
+
+      <div class="title-footer">
+        <p>Bar-Ilan University • Introduction to Early Medieval Europe</p>
+        <p style="color: #E85D75; margin-top: 10px; font-weight: 600;">STANDALONE TEST VERSION</p>
+      </div>
+    </div>
+  `;
+}
+
+function startOnboarding() {
+  gameState.currentStage = 'onboarding';
+  gameState.onboardingStep = 0;
+  saveGameState();
+  renderOnboarding();
+}
+
+function renderOnboarding() {
+  const step = onboardingContent.steps[gameState.onboardingStep];
+  const totalSteps = onboardingContent.steps.length;
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="screen onboarding-screen fade-in">
+      <div class="onboarding-progress">
+        <span>Step ${gameState.onboardingStep + 1} of ${totalSteps}</span>
+      </div>
+
+      <div class="onboarding-content">
+        <div class="onboarding-visual">
+          <div class="visual-mockup ${step.visual}">
+            ${getVisualMockup(step.visual)}
+          </div>
+        </div>
+
+        <div class="onboarding-text">
+          <h2>${step.title}</h2>
+          ${step.content.map(p => `<p>${p}</p>`).join('')}
+        </div>
+      </div>
+
+      <div class="onboarding-actions">
+        ${gameState.onboardingStep > 0 ?
+          '<button class="secondary-button" onclick="previousOnboardingStep()">← Back</button>' :
+          '<button class="secondary-button" onclick="skipOnboarding()">Skip Tutorial</button>'}
+        <button class="primary-button" onclick="nextOnboardingStep()">
+          ${gameState.onboardingStep < totalSteps - 1 ? 'Next →' : 'Start with Eusebius →'}
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function getVisualMockup(visualType) {
+  const mockups = {
+    'preview-welcome': `
+      <div class="mockup-card">
+        <div class="mockup-title">Welcome Screen</div>
+        <div class="mockup-body">
+          <div class="mockup-text-line"></div>
+          <div class="mockup-text-line short"></div>
+          <div class="mockup-button"></div>
+        </div>
+      </div>
+    `,
+    'preview-stages': `
+      <div class="mockup-stages">
+        <div class="mockup-stage">1<br/>Choose</div>
+        <div class="mockup-arrow">→</div>
+        <div class="mockup-stage">2<br/>Structure</div>
+        <div class="mockup-arrow">→</div>
+        <div class="mockup-stage">3<br/>Write</div>
+        <div class="mockup-arrow">→</div>
+        <div class="mockup-stage">4<br/>Export</div>
+      </div>
+    `,
+    'preview-authors': `
+      <div class="mockup-authors">
+        <div class="mockup-author-card">
+          <div class="mockup-portrait"></div>
+          <div class="mockup-name">Eusebius</div>
+          <div class="mockup-date">303 CE</div>
+        </div>
+        <div class="mockup-author-card">
+          <div class="mockup-portrait"></div>
+          <div class="mockup-name">Augustine</div>
+          <div class="mockup-date">397 CE</div>
+        </div>
+      </div>
+    `,
+    'preview-export': `
+      <div class="mockup-card">
+        <div class="mockup-title">Your Work</div>
+        <div class="mockup-body">
+          <div class="mockup-text-block"></div>
+          <div class="mockup-text-block"></div>
+          <div class="mockup-download-btn">↓ Download JSON</div>
+        </div>
+      </div>
+    `
+  };
+
+  return mockups[visualType] || '<div class="mockup-placeholder">Preview</div>';
+}
+
+function nextOnboardingStep() {
+  const totalSteps = onboardingContent.steps.length;
+
+  if (gameState.onboardingStep < totalSteps - 1) {
+    gameState.onboardingStep++;
+    saveGameState();
+    renderOnboarding();
+  } else {
+    gameState.hasSeenOnboarding = true;
+    showEusebiusBio();
+  }
+}
+
+function previousOnboardingStep() {
+  if (gameState.onboardingStep > 0) {
+    gameState.onboardingStep--;
+    saveGameState();
+    renderOnboarding();
+  }
+}
+
+function skipOnboarding() {
+  gameState.hasSeenOnboarding = true;
+  saveGameState();
+  showEusebiusBio();
+}
+
+function skipToEusebius() {
+  showEusebiusBio();
+}
+
+function showEusebiusBio() {
+  gameState.currentStage = 'bio';
+  saveGameState();
+  renderEusebiusBio();
+}
+
+function renderEusebiusBio() {
+  const bio = eusebiusBio;
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="screen bio-screen fade-in">
+      <div class="bio-header">
+        <div class="bio-portrait">
+          <div class="portrait-placeholder">
+            ${bio.image}
+          </div>
+        </div>
+        <div class="bio-title">
+          <h1>${bio.name}</h1>
+          <p class="bio-dates">${bio.dates}</p>
+        </div>
+      </div>
+
+      <div class="bio-content">
+        ${bio.paragraphs.map(p => `<p>${p}</p>`).join('')}
+
+        <div class="bio-context">
+          <h3>Your Task</h3>
+          <p>${bio.context}</p>
+        </div>
+      </div>
+
+      <div class="bio-actions">
+        <button class="primary-button large-button" onclick="alert('Stage 1 would start here. This standalone test file only shows Title → Onboarding → Bio screens.')">
+          Begin Writing as Eusebius →
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function saveGameState() {
+  localStorage.setItem('shapingHistory_gameState_TEST', JSON.stringify(gameState));
+}
+
+function loadGameState() {
+  const saved = localStorage.getItem('shapingHistory_gameState_TEST');
+  if (saved) {
+    const savedState = JSON.parse(saved);
+    if (savedState.version !== GAME_VERSION) {
+      console.log(`Version mismatch: saved=${savedState.version}, current=${GAME_VERSION}. Starting fresh.`);
+      localStorage.removeItem('shapingHistory_gameState_TEST');
+      return;
+    }
+    Object.assign(gameState, savedState);
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  console.log('=== Shaping History v2.1 STANDALONE TEST Initializing ===');
+
+  try {
+    loadGameState();
+    console.log('Game state loaded:', gameState.currentStage);
+
+    switch (gameState.currentStage) {
+      case 'title':
+        console.log('Rendering title page');
+        renderTitlePage();
+        break;
+      case 'onboarding':
+        console.log('Rendering onboarding');
+        renderOnboarding();
+        break;
+      case 'bio':
+        console.log('Rendering bio');
+        renderEusebiusBio();
+        break;
+      default:
+        console.log('Rendering title page (default)');
+        renderTitlePage();
+    }
+
+    console.log('=== Initialization complete ===');
+  } catch (error) {
+    console.error('Initialization error:', error);
+    document.getElementById('game-container').innerHTML = `
+      <div class="screen">
+        <h1>Error Loading Game</h1>
+        <p>Something went wrong: ${error.message}</p>
+        <button class="primary-button" onclick="localStorage.clear(); location.reload();">
+          Clear Data and Restart
+        </button>
+      </div>
+    `;
+  }
+});
+    </script>
+</body>
+</html>
