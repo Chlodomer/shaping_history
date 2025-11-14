@@ -541,7 +541,7 @@ function renderTitlePage() {
 
       <div class="title-actions">
         <button class="primary-button large-button" onclick="startOnboarding()">
-          Begin Experience →
+          ${gameState.hasSeenOnboarding ? '↻ Replay Tutorial' : 'Begin Experience →'}
         </button>
         ${gameState.hasSeenOnboarding ?
           '<button class="secondary-button" onclick="skipToEusebius()">Skip to Eusebius →</button>' :
