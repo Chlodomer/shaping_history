@@ -1451,6 +1451,13 @@ body {
   font-size: 0.85rem;
 }
 
+/* Remove placeholder styling when image is present */
+.portrait-placeholder:has(img) {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
 .bio-portrait-img {
   width: 150px;
   height: 150px;
