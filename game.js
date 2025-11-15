@@ -625,12 +625,12 @@ function getVisualMockup(visualType) {
     'preview-authors': `
       <div class="mockup-authors">
         <div class="mockup-author-card">
-          <div class="mockup-portrait"></div>
+          <img src="Images/eusebius.png" alt="Eusebius of Caesarea" class="mockup-portrait-img">
           <div class="mockup-name">Eusebius</div>
           <div class="mockup-date">303 CE</div>
         </div>
         <div class="mockup-author-card">
-          <div class="mockup-portrait"></div>
+          <img src="Images/augustine.png" alt="Augustine of Hippo" class="mockup-portrait-img">
           <div class="mockup-name">Augustine</div>
           <div class="mockup-date">397 CE</div>
         </div>

@@ -1401,6 +1401,17 @@ body {
   margin: 0 auto 16px;
 }
 
+.mockup-portrait-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 16px;
+  display: block;
+  border: 2px solid #FF1B8D;
+  box-shadow: 0 4px 12px rgba(255, 27, 141, 0.2);
+}
+
 .mockup-name {
   font-weight: 600;
   color: #E85D75;
