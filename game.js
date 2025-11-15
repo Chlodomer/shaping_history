@@ -24,7 +24,7 @@ const titleContent = {
   title: "Shaping History",
   subtitle: "Ancient Authors and Their Agendas",
   tagline: "An interactive exploration of historiographical construction",
-  illustration: "[Illustration placeholder - will be replaced with actual art]"
+  illustration: '<img src="Images/writing-history.png" alt="Writing History" class="title-illustration-img">'
 };
 
 const onboardingContent = {
