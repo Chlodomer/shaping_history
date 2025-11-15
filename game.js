@@ -75,7 +75,7 @@ const onboardingContent = {
 const eusebiusBio = {
   name: "Eusebius of Caesarea",
   dates: "c. 260-339 CE",
-  image: "[Portrait placeholder]",
+  image: '<img src="Images/eusebius.png" alt="Eusebius of Caesarea" class="bio-portrait-img">',
   paragraphs: [
     "Eusebius was a Christian scholar and bishop who lived through one of the most turbulent periods in early Christian history. Born around 260 CE, he witnessed the Great Persecution launched by Emperor Diocletian in 303 CE.",
     "As bishop of Caesarea in Palestine, Eusebius saw firsthand the destruction of churches, burning of scriptures, and martyrdom of Christians. He documented these events in his <em>Ecclesiastical History</em>, becoming one of the most important early Christian historians.",

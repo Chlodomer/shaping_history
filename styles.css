@@ -1451,6 +1451,15 @@ body {
   font-size: 0.85rem;
 }
 
+.bio-portrait-img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #FF1B8D;
+  box-shadow: 0 4px 12px rgba(255, 27, 141, 0.3);
+}
+
 .bio-title h1 {
   font-size: 2.5rem;
   margin-bottom: 8px;
