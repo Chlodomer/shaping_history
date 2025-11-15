@@ -602,13 +602,8 @@ function renderOnboarding() {
 function getVisualMockup(visualType) {
   const mockups = {
     'preview-welcome': `
-      <div class="mockup-card">
-        <div class="mockup-title">Welcome Screen</div>
-        <div class="mockup-body">
-          <div class="mockup-text-line"></div>
-          <div class="mockup-text-line short"></div>
-          <div class="mockup-button"></div>
-        </div>
+      <div class="mockup-welcome-visual">
+        <img src="Images/chilperic_roman_basilica_burning_comics_style_icon_--ar_32_--_1356017b-cc03-4d5a-a69f-e2af5e552ac3_1.png" alt="Burning Basilica" class="welcome-basilica-img">
       </div>
     `,
     'preview-stages': `
