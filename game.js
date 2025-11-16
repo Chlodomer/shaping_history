@@ -6,10 +6,11 @@ const GAME_VERSION = '2.1'; // Increment when making breaking changes
 
 const gameState = {
   version: GAME_VERSION,
-  currentStage: 'title', // title, onboarding, bio, intro, stage1, stage2, stage3, stage4
+  currentStage: 'title', // title, onboarding, authorChoice, bio, intro, stage1, stage2, stage3, stage4
   currentScreen: 0,
   onboardingStep: 0,
   hasSeenOnboarding: false,
+  selectedAuthor: null, // 'eusebius' or 'augustine'
   choices: {},
   narrativeProfile: null,
   selectedComponents: [],
@@ -32,7 +33,7 @@ const onboardingContent = {
     {
       title: "Welcome to Shaping History",
       content: [
-        "In this tool, you'll become ancient Christian historians writing about events they witnessed.",
+        "In this tool, you'll become an ancient Christian historian writing about events they witnessed.",
         "You'll make the same kinds of choices these authors faced: what to emphasize, what to omit, and how to frame events for your audience.",
         "Through this hands-on experience, you'll discover how all historical narratives are shaped by authorial decisions."
       ],
@@ -41,7 +42,7 @@ const onboardingContent = {
     {
       title: "What You'll Do",
       content: [
-        "You'll work through 4 stages for each author:",
+        "You'll work through 4 stages:",
         "• <strong>Stage 1:</strong> Make high-level compositional choices",
         "• <strong>Stage 2:</strong> Select and arrange narrative components",
         "• <strong>Stage 3:</strong> Write your own historical narrative",
@@ -50,9 +51,9 @@ const onboardingContent = {
       visual: "preview-stages"
     },
     {
-      title: "The Authors",
+      title: "Choose Your Historian",
       content: [
-        "You'll write as two different historians:",
+        "You'll choose one of two historians to write as:",
         "• <strong>Eusebius of Caesarea (303 CE):</strong> Writing during active persecution",
         "• <strong>Augustine of Hippo (397 CE):</strong> Reflecting on a life-changing moment",
         "Each author faces different challenges and audiences."
@@ -65,7 +66,7 @@ const onboardingContent = {
         "This tool is about <em>experiencing</em> the compositional process, not getting it \"right.\"",
         "Every choice you make is valid—just like every ancient historian made different choices.",
         "Focus on understanding <em>why</em> you make certain choices and what effects they have.",
-        "Time to complete: 25-30 minutes"
+        "Time to complete: 15-20 minutes"
       ],
       visual: "preview-export"
     }
@@ -82,6 +83,43 @@ const eusebiusBio = {
     "In this exercise, you'll write as Eusebius in 303 CE, during the height of persecution. You're creating an account of what you've witnessed in Caesarea, knowing that your words will shape how future Christians understand this dark period."
   ],
   context: "You are writing in 303 CE, during active persecution. Your audience is other Christians who need to understand what is happening to their community."
+};
+
+const augustineBio = {
+  name: "Augustine of Hippo",
+  dates: "354-430 CE",
+  image: '<img src="Images/augustine.png" alt="Augustine of Hippo" class="bio-portrait-img">',
+  paragraphs: [
+    "Augustine was one of the most influential Christian thinkers in history. Born in North Africa in 354 CE, he spent years searching for truth through different philosophical and religious movements, including Manichaeism.",
+    "In 386 CE, Augustine experienced a dramatic conversion to Christianity in a garden in Milan. Eleven years later, as Bishop of Hippo, he wrote about this experience in his <em>Confessions</em>, one of the most famous spiritual autobiographies ever written.",
+    "In this exercise, you'll write as Augustine in 397 CE, looking back on your conversion. You must decide how to tell this story—what to emphasize, what it means, and what you want readers to learn from your experience."
+  ],
+  context: "You are writing in 397 CE, as a bishop and teacher. Your conversion happened 11 years ago. How you tell this story will shape how Christians understand conversion, grace, and God's work in human lives."
+};
+
+// ===== AUTHOR CHOICE CONTENT =====
+const authorChoiceContent = {
+  title: "Choose Your Author",
+  subtitle: "You'll experience the compositional process as one of these ancient historians.",
+  instruction: "Select the author whose perspective you want to explore:",
+  authors: [
+    {
+      id: "eusebius",
+      name: "Eusebius of Caesarea",
+      dates: "303 CE",
+      image: '<img src="Images/eusebius.png" alt="Eusebius of Caesarea" class="author-choice-img">',
+      description: "Write during active persecution. Witness violence and martyrdom. Decide what to emphasize and what to omit as you document events for future Christians.",
+      context: "Writing in the midst of crisis"
+    },
+    {
+      id: "augustine",
+      name: "Augustine of Hippo",
+      dates: "397 CE",
+      image: '<img src="Images/augustine.png" alt="Augustine of Hippo" class="author-choice-img">',
+      description: "Reflect on your conversion 11 years later. Decide how to tell your story as your purposes and contexts have changed. Shape memory into meaning.",
+      context: "Writing from retrospective reflection"
+    }
+  ]
 };
 
 // ===== STAGE 1 CONTENT =====
@@ -261,6 +299,367 @@ const stage1Content = {
   }
 };
 
+// ===== AUGUSTINE STAGE 1 CONTENT =====
+const augustineStage1Content = {
+  intro: {
+    title: "Augustine, 397 CE: Writing Your Confessions",
+    paragraphs: [
+      "You are Augustine of Hippo, Bishop and teacher.",
+      "The year is 397 CE. You are writing about your conversion to Christianity.",
+      "That conversion happened eleven years ago, in 386 CE, in a garden in Milan.",
+      "HOW you tell this story depends on WHY you are writing and WHAT you want it to accomplish."
+    ],
+    buttonText: "Begin Stage 1: Make Your Choices"
+  },
+
+  // Part 1: Setup - Your Current Situation
+  situationScreen: {
+    title: "Your Situation in 397 CE",
+    paragraphs: [
+      "You are now a bishop—a powerful religious leader.",
+      "You teach and write about Christian theology.",
+      "Many people will read what you write.",
+      "",
+      "Several situations shape your life right now:"
+    ],
+    contexts: {
+      personal: {
+        title: "Personal Context:",
+        items: [
+          "Your mother Monica died in 387, right after your conversion",
+          "You are an important teacher in the Church",
+          "Many people look to you for guidance"
+        ]
+      },
+      historical: {
+        title: "Historical & Political Context:",
+        items: [
+          "Christianity is now the official religion of Rome",
+          "Before converting, you followed Manichaeism (a different religion)",
+          "Some Manichaeans criticize you for leaving",
+          "Church debates: Can humans choose to convert? Or does only God's grace convert them?"
+        ]
+      }
+    },
+    closing: "These situations might affect how you tell your story.",
+    buttonText: "Continue"
+  },
+
+  // Part 2: The Event
+  eventScreen: {
+    title: "The Garden in Milan - 386 CE",
+    intro: "This is what you remember:",
+    events: [
+      "You were in a garden in Milan",
+      "You were crying under a fig tree",
+      "You heard someone say \"Take and read\" (tolle lege)",
+      "You picked up Paul's letters",
+      "You read Romans 13:13-14",
+      "The words spoke to your struggle",
+      "You felt sudden peace and certainty",
+      "Your friend Alypius was there",
+      "You told your mother Monica"
+    ],
+    closing: [
+      "This is the event.",
+      "Now you must write about it.",
+      "",
+      "<strong>HOW you write it depends on WHAT YOU WANT IT TO SHOW.</strong>"
+    ],
+    buttonText: "Continue"
+  },
+
+  // Part 3: Main Purpose Choice (BRANCHING POINT)
+  mainPurposeChoice: {
+    id: "mainPurpose",
+    title: "Your Purpose in Writing",
+    question: "You are writing about your conversion. Why? What do you want this story to accomplish?",
+    context: "Choose your main purpose:",
+    options: [
+      {
+        id: "personal",
+        text: "Personal testimony",
+        description: "I want to understand what happened to me. This is my personal story of transformation."
+      },
+      {
+        id: "antiManichaean",
+        text: "Breaking from Manichaeism",
+        description: "I want to explain why I left Manichaeism for Christianity. This story shows why Christianity is true."
+      },
+      {
+        id: "teaching",
+        text: "Teaching about conversion",
+        description: "I want to teach other Christians how conversion works. This story is a model for others."
+      }
+    ]
+  },
+
+  // Branching follow-up questions based on main purpose
+  branchedQuestions: {
+    // Path A: Personal Testimony
+    personal: [
+      {
+        id: "tears_meaning",
+        title: "Your Personal Experience - Choice 1",
+        question: "When you cried under the fig tree, what were you crying about?",
+        context: "You want to tell your personal story honestly.",
+        options: [
+          {
+            id: "emotional",
+            text: "My emotional pain and confusion",
+            description: "Focus on feelings: I was sad, lost, desperate"
+          },
+          {
+            id: "moral",
+            text: "My moral struggle with sin",
+            description: "Focus on morality: I wanted to be good but couldn't"
+          },
+          {
+            id: "intellectual",
+            text: "My intellectual search for truth",
+            description: "Focus on ideas: I couldn't figure out what was true"
+          }
+        ]
+      },
+      {
+        id: "voice_source",
+        title: "Your Personal Experience - Choice 2",
+        question: "The voice said \"Take and read.\" How do you describe it?",
+        context: "You heard this voice in the garden. Where did it come from?",
+        options: [
+          {
+            id: "natural",
+            text: "I heard a child playing nearby",
+            description: "Keep it simple and natural"
+          },
+          {
+            id: "mysterious",
+            text: "I heard a voice - I don't know where from",
+            description: "Keep it mysterious, leave it open"
+          },
+          {
+            id: "divine",
+            text: "I believe God spoke through that voice",
+            description: "Make it clearly divine, even if you're not certain"
+          }
+        ]
+      }
+    ],
+
+    // Path B: Anti-Manichaeism
+    antiManichaean: [
+      {
+        id: "manichaeism_failure",
+        title: "Breaking from Manichaeism - Choice 1",
+        question: "What does your conversion story need to show about Manichaeism?",
+        context: "Manichaeism taught that humans are trapped between good and evil forces. It focused on knowledge (gnosis) as the path to salvation. You followed this religion for nine years before converting.",
+        options: [
+          {
+            id: "intellectual",
+            text: "Manichaeism couldn't answer my questions",
+            description: "Focus on intellectual reasons for leaving"
+          },
+          {
+            id: "spiritual",
+            text: "Manichaeism couldn't change my heart",
+            description: "Focus on moral/spiritual reasons for leaving"
+          },
+          {
+            id: "both",
+            text: "Both - it failed intellectually and spiritually",
+            description: "Show both problems with Manichaeism"
+          }
+        ]
+      },
+      {
+        id: "romans_passage",
+        title: "Breaking from Manichaeism - Choice 2",
+        question: "The Romans passage you read spoke directly to your struggle. How do you present this?",
+        context: "This was a remarkable coincidence. The text was perfect for your situation.",
+        options: [
+          {
+            id: "providence",
+            text: "This was divine providence, not chance",
+            description: "Show God actively guiding you - unlike Manichaean fate"
+          },
+          {
+            id: "contrast_texts",
+            text: "The text gave me what Manichaean writings never could",
+            description: "Emphasize contrast: Christian scripture works, Manichaean texts don't"
+          },
+          {
+            id: "grace_vs_gnosis",
+            text: "I understood truth through grace, not knowledge",
+            description: "Emphasize grace vs. gnosis - the key theological difference"
+          }
+        ]
+      }
+    ],
+
+    // Path C: Teaching About Conversion
+    teaching: [
+      {
+        id: "conversion_timing",
+        title: "Teaching About Conversion - Choice 1",
+        question: "What should other Christians learn from your conversion?",
+        context: "You want this story to help other Christians understand how conversion happens.",
+        options: [
+          {
+            id: "sudden",
+            text: "That conversion can happen suddenly",
+            description: "Emphasize the dramatic moment of change"
+          },
+          {
+            id: "preparation",
+            text: "That conversion requires long preparation",
+            description: "Emphasize all the years of seeking before the garden"
+          },
+          {
+            id: "mysterious",
+            text: "That God's timing is mysterious",
+            description: "Show both the preparation and the sudden moment"
+          }
+        ]
+      },
+      {
+        id: "community_impact",
+        title: "Teaching About Conversion - Choice 2",
+        question: "Your friend Alypius was in the garden. He converted too. What does this teach?",
+        context: "After you converted, you told Alypius. He read the next verse and believed.",
+        options: [
+          {
+            id: "individual",
+            text: "Conversion is deeply personal and individual",
+            description: "Focus on your private experience"
+          },
+          {
+            id: "communal",
+            text: "Conversion spreads within communities",
+            description: "Show how your conversion affected Alypius"
+          },
+          {
+            id: "both",
+            text: "Both - it's personal but also social",
+            description: "Show both individual and communal aspects"
+          }
+        ]
+      }
+    ]
+  },
+
+  // Part 4: New Context Emerges
+  newContextScreen: {
+    title: "A New Situation Emerges (397 CE)",
+    paragraphs: [
+      "You have been writing about your conversion.",
+      "",
+      "But now a new debate has emerged in the Church.",
+      "",
+      "A teacher named Pelagius is preaching:",
+      "<em>\"Humans can choose to be good. We have free will. We can convert ourselves through our own effort.\"</em>",
+      "",
+      "You DISAGREE strongly.",
+      "",
+      "You believe:",
+      "<em>\"Humans cannot convert themselves. Only God's grace can transform us. We cannot choose salvation - God must give it.\"</em>",
+      "",
+      "<strong>YOUR CONVERSION STORY COULD PROVE YOUR POINT.</strong>"
+    ],
+    tooltips: {
+      pelagius: "A Christian teacher who emphasized human free will",
+      grace: "God's power that works in humans, beyond human ability",
+      freeWill: "The ability to choose and control your own actions"
+    },
+    buttonText: "Continue"
+  },
+
+  // Part 5: The Question of Will
+  willQuestionChoice: {
+    id: "role_of_will",
+    title: "The Debate About Your Conversion",
+    context: [
+      "Think about your conversion in the garden.",
+      "",
+      "Pelagius would say:",
+      "<em>\"Augustine chose to convert. He heard the voice and chose to pick up the book. He chose to believe. Human will caused his conversion.\"</em>",
+      "",
+      "You want to say:",
+      "<em>\"No. God's grace caused my conversion. I could not have chosen it. God transformed my will so I could believe.\"</em>"
+    ],
+    question: "Looking back at your conversion, what role did YOUR WILL play?",
+    options: [
+      {
+        id: "irresistible",
+        text: "I could not have resisted - grace was irresistible",
+        description: "God's grace overwhelmed me. I had no choice but to believe."
+      },
+      {
+        id: "cooperation",
+        text: "I cooperated with grace - God enabled my choice",
+        description: "God helped me, but I still had to choose to respond."
+      },
+      {
+        id: "mystery",
+        text: "I don't know - the mystery is too deep",
+        description: "Avoid taking a clear position on this theological question."
+      }
+    ]
+  },
+
+  // Part 6: Revision Decision
+  revisionChoice: {
+    id: "revision_decision",
+    title: "Revising Your Account",
+    getContext: (originalPurpose) => {
+      const purposes = {
+        personal: "tell your personal story of transformation",
+        antiManichaean: "explain why you left Manichaeism",
+        teaching: "teach others about conversion"
+      };
+      return [
+        "You have new purposes now:",
+        "• Prove that grace, not will, converts humans",
+        "• Counter Pelagius's teaching",
+        "• Establish yourself as a theological authority",
+        "",
+        `You also have your original purpose: ${purposes[originalPurpose] || 'understand your conversion'}.`
+      ];
+    },
+    question: "Do you revise your account to emphasize these new theological points?",
+    options: [
+      {
+        id: "emphasize_grace",
+        text: "Yes - emphasize God's grace throughout",
+        description: "Change the story to make grace more central. This serves your theological purpose."
+      },
+      {
+        id: "add_interpretation",
+        text: "Keep my original emphasis but add grace language",
+        description: "Keep the basic story but add theological interpretation."
+      },
+      {
+        id: "keep_original",
+        text: "Keep it as I first wrote it",
+        description: "Stick with your original purpose. Don't change for political reasons."
+      }
+    ]
+  },
+
+  // Final summary structure
+  finalSummary: {
+    title: "Stage 1 Complete: Your Authorial Decisions",
+    getContent: (choices) => {
+      return {
+        choicesSummary: generateAugustineChoicesSummary(choices),
+        mainPurpose: getMainPurposeText(choices.mainPurpose),
+        willPosition: getWillPositionText(choices.role_of_will),
+        revisionDecision: getRevisionDecisionText(choices.revision_decision)
+      };
+    },
+    buttonText: "Proceed to Stage 2: Structure Your Composition"
+  }
+};
+
 // ===== STAGE 2 CONTENT =====
 const stage2Content = {
   intro: {
@@ -401,6 +800,184 @@ const stage2Content = {
   }
 };
 
+// ===== AUGUSTINE STAGE 2 CONTENT =====
+const augustineStage2Content = {
+  intro: {
+    title: "Stage 2: Structure Your Confessions",
+    paragraphs: [
+      "You've decided on your purpose and theological position.",
+      "Now it's time to turn those decisions into a concrete narrative structure.",
+      "In this stage, you will:",
+      "• Select specific narrative components for your conversion story",
+      "• Arrange them in a deliberate sequence",
+      "• Explain your compositional reasoning"
+    ],
+    buttonText: "Begin Component Selection"
+  },
+
+  // Components derived from Augustine Stage 1 choices
+  componentsByChoice: {
+    // Main Purpose branches
+    mainPurpose: {
+      personal: [
+        { id: "inner_turmoil", text: "Describe your inner emotional turmoil", category: "personal" },
+        { id: "crying_scene", text: "Depict the crying scene under the fig tree in detail", category: "personal" },
+        { id: "personal_backstory", text: "Include personal backstory and struggles", category: "personal" },
+        { id: "intimate_confession", text: "Write in intimate, confessional tone", category: "personal" }
+      ],
+      antiManichaean: [
+        { id: "manichaean_critique", text: "Critique Manichaean theology explicitly", category: "antiManichaean" },
+        { id: "contrast_religions", text: "Contrast Manichaeism with Christianity", category: "antiManichaean" },
+        { id: "intellectual_journey", text: "Trace your intellectual journey away from Manichaeism", category: "antiManichaean" },
+        { id: "failed_answers", text: "Show how Manichaeism failed to answer your questions", category: "antiManichaean" }
+      ],
+      teaching: [
+        { id: "universal_lessons", text: "Draw universal lessons from your experience", category: "teaching" },
+        { id: "theological_explanation", text: "Explain the theology of conversion", category: "teaching" },
+        { id: "model_narrative", text: "Present your story as a model for others", category: "teaching" },
+        { id: "pedagogical_framing", text: "Frame the story for teaching purposes", category: "teaching" }
+      ]
+    },
+
+    // Personal path sub-choices
+    tears_meaning: {
+      emotional: [
+        { id: "describe_despair", text: "Describe your emotional despair and confusion", category: "tears" },
+        { id: "feelings_focus", text: "Focus on feelings of being lost and desperate", category: "tears" }
+      ],
+      moral: [
+        { id: "sin_struggle", text: "Emphasize your moral struggle with sin", category: "tears" },
+        { id: "inability_goodness", text: "Describe your inability to be good on your own", category: "tears" }
+      ],
+      intellectual: [
+        { id: "truth_seeking", text: "Highlight your intellectual search for truth", category: "tears" },
+        { id: "philosophical_confusion", text: "Describe your philosophical confusion", category: "tears" }
+      ]
+    },
+
+    voice_source: {
+      natural: [
+        { id: "child_playing", text: "Mention the child playing nearby naturally", category: "voice" },
+        { id: "simple_description", text: "Keep the voice description simple and factual", category: "voice" }
+      ],
+      mysterious: [
+        { id: "unexplained_voice", text: "Leave the voice source mysterious and unexplained", category: "voice" },
+        { id: "ambiguous_origin", text: "Emphasize the ambiguous origin of the voice", category: "voice" }
+      ],
+      divine: [
+        { id: "gods_voice", text: "Present the voice as divine intervention", category: "voice" },
+        { id: "miracle_framing", text: "Frame the voice as a miraculous moment", category: "voice" }
+      ]
+    },
+
+    // Anti-Manichaean path sub-choices
+    manichaeism_failure: {
+      intellectual: [
+        { id: "unanswered_questions", text: "List questions Manichaeism couldn't answer", category: "manichaeism" },
+        { id: "intellectual_inadequacy", text: "Show Manichaeism's intellectual inadequacy", category: "manichaeism" }
+      ],
+      spiritual: [
+        { id: "spiritual_emptiness", text: "Describe spiritual emptiness under Manichaeism", category: "manichaeism" },
+        { id: "moral_failure", text: "Show how Manichaeism couldn't change your heart", category: "manichaeism" }
+      ],
+      both: [
+        { id: "dual_failure", text: "Show both intellectual and spiritual failure of Manichaeism", category: "manichaeism" },
+        { id: "comprehensive_critique", text: "Provide comprehensive critique of Manichaeism", category: "manichaeism" }
+      ]
+    },
+
+    romans_passage: {
+      providence: [
+        { id: "divine_guidance", text: "Emphasize divine providence in the text selection", category: "romans" },
+        { id: "god_orchestrated", text: "Show God orchestrating the perfect passage", category: "romans" }
+      ],
+      contrast_texts: [
+        { id: "scripture_power", text: "Contrast Christian scripture's power with Manichaean texts", category: "romans" },
+        { id: "text_comparison", text: "Compare effectiveness of different sacred texts", category: "romans" }
+      ],
+      grace_vs_gnosis: [
+        { id: "grace_emphasis", text: "Emphasize grace over knowledge (gnosis)", category: "romans" },
+        { id: "theological_contrast", text: "Highlight theological difference: grace vs. gnosis", category: "romans" }
+      ]
+    },
+
+    // Teaching path sub-choices
+    conversion_timing: {
+      sudden: [
+        { id: "dramatic_moment", text: "Emphasize the sudden, dramatic moment of conversion", category: "timing" },
+        { id: "instant_transformation", text: "Highlight the instantaneous transformation", category: "timing" }
+      ],
+      preparation: [
+        { id: "long_journey", text: "Trace the long preparation before the garden", category: "timing" },
+        { id: "years_seeking", text: "Show the years of seeking that led to this moment", category: "timing" }
+      ],
+      mysterious: [
+        { id: "gods_timing", text: "Reflect on the mystery of God's timing", category: "timing" },
+        { id: "preparation_and_moment", text: "Show both preparation and sudden moment", category: "timing" }
+      ]
+    },
+
+    community_impact: {
+      individual: [
+        { id: "private_experience", text: "Focus on your private, individual experience", category: "community" },
+        { id: "personal_transformation", text: "Emphasize personal transformation", category: "community" }
+      ],
+      communal: [
+        { id: "alypius_conversion", text: "Include Alypius's conversion in detail", category: "community" },
+        { id: "spreading_faith", text: "Show how conversion spreads through community", category: "community" }
+      ],
+      both: [
+        { id: "personal_and_social", text: "Show both personal and communal dimensions", category: "community" },
+        { id: "individual_in_community", text: "Present individual conversion within community context", category: "community" }
+      ]
+    },
+
+    // Role of will (applies to all paths)
+    role_of_will: {
+      irresistible: [
+        { id: "grace_overwhelming", text: "Show grace as irresistible and overwhelming", category: "will" },
+        { id: "no_choice", text: "Emphasize you had no choice but to believe", category: "will" },
+        { id: "gods_sovereignty", text: "Highlight God's absolute sovereignty in conversion", category: "will" }
+      ],
+      cooperation: [
+        { id: "grace_and_choice", text: "Show cooperation between grace and your choice", category: "will" },
+        { id: "enabled_will", text: "Describe how God enabled your will to choose", category: "will" },
+        { id: "synergy", text: "Present the synergy between divine and human action", category: "will" }
+      ],
+      mystery: [
+        { id: "unexplainable", text: "Leave the will/grace relationship mysterious", category: "will" },
+        { id: "paradox", text: "Embrace the paradox of choice and grace", category: "will" },
+        { id: "humble_uncertainty", text: "Express humble uncertainty about the mechanics", category: "will" }
+      ]
+    },
+
+    // Universal components (appear regardless of choices)
+    universal: [
+      { id: "garden_setting", text: "Describe the garden setting in Milan", category: "setting" },
+      { id: "fig_tree", text: "Detail the fig tree and its significance", category: "setting" },
+      { id: "tolle_lege", text: "Include the 'tolle lege' (take and read) moment", category: "voice" },
+      { id: "romans_text", text: "Quote or reference the Romans passage", category: "scripture" },
+      { id: "moment_peace", text: "Describe the moment of peace and certainty", category: "experience" },
+      { id: "alypius_present", text: "Mention Alypius's presence", category: "community" },
+      { id: "monica_reaction", text: "Include telling Monica about your conversion", category: "family" },
+      { id: "reflective_distance", text: "Acknowledge the 11-year gap between event and writing", category: "meta" }
+    ]
+  },
+
+  budget: {
+    min: 6,
+    max: 8,
+    message: "Select 6-8 components that will shape your Confessions narrative."
+  },
+
+  rationalizationPrompt: {
+    title: "Explain Your Narrative Structure",
+    question: "Why did you arrange these components in this particular order?",
+    guidance: "Consider: Does your structure build emotional intensity? Move from external events to internal meaning? Follow a chronological pattern? Serve your theological argument?",
+    placeholder: "Explain your compositional reasoning in 2-4 sentences..."
+  }
+};
+
 // ===== STAGE 3 CONTENT =====
 const stage3Content = {
   intro: {
@@ -521,6 +1098,57 @@ function generateNarrativeProfile(choices) {
   }
 }
 
+// Augustine helper functions
+function getMainPurposeText(purposeId) {
+  const purposes = {
+    personal: "Personal testimony",
+    antiManichaean: "Breaking from Manichaeism",
+    teaching: "Teaching about conversion"
+  };
+  return purposes[purposeId] || '';
+}
+
+function getWillPositionText(willId) {
+  const positions = {
+    irresistible: "Grace was irresistible - I could not have resisted",
+    cooperation: "I cooperated with grace - God enabled my choice",
+    mystery: "The mystery is too deep to say"
+  };
+  return positions[willId] || '';
+}
+
+function getRevisionDecisionText(revisionId) {
+  const decisions = {
+    emphasize_grace: "Emphasized God's grace throughout",
+    add_interpretation: "Added grace language to original",
+    keep_original: "Kept original emphasis unchanged"
+  };
+  return decisions[revisionId] || '';
+}
+
+function generateAugustineChoicesSummary(choices) {
+  const summary = [];
+
+  summary.push(`Main purpose: ${getMainPurposeText(choices.mainPurpose)}`);
+
+  // Add branched choices based on main purpose
+  if (choices.mainPurpose === 'personal') {
+    if (choices.tears_meaning) summary.push(`Tears about: ${choices.tears_meaning}`);
+    if (choices.voice_source) summary.push(`Voice: ${choices.voice_source}`);
+  } else if (choices.mainPurpose === 'antiManichaean') {
+    if (choices.manichaeism_failure) summary.push(`Manichaeism failed: ${choices.manichaeism_failure}`);
+    if (choices.romans_passage) summary.push(`Romans passage: ${choices.romans_passage}`);
+  } else if (choices.mainPurpose === 'teaching') {
+    if (choices.conversion_timing) summary.push(`Conversion timing: ${choices.conversion_timing}`);
+    if (choices.community_impact) summary.push(`Community impact: ${choices.community_impact}`);
+  }
+
+  summary.push(`Role of will: ${getWillPositionText(choices.role_of_will)}`);
+  summary.push(`Revision: ${getRevisionDecisionText(choices.revision_decision)}`);
+
+  return summary;
+}
+
 // ===== UI RENDERING FUNCTIONS =====
 
 // Title Page
@@ -544,7 +1172,7 @@ function renderTitlePage() {
           Begin Experience →
         </button>
         ${gameState.hasSeenOnboarding ?
-          '<button class="secondary-button" onclick="skipToEusebius()">Skip to Eusebius →</button>' :
+          '<button class="secondary-button" onclick="skipToEusebius()">Skip Tutorial →</button>' :
           ''}
       </div>
 
@@ -592,7 +1220,7 @@ function renderOnboarding() {
           '<button class="secondary-button" onclick="previousOnboardingStep()">← Back</button>' :
           '<button class="secondary-button" onclick="skipOnboarding()">Skip Tutorial</button>'}
         <button class="primary-button" onclick="nextOnboardingStep()">
-          ${gameState.onboardingStep < totalSteps - 1 ? 'Next →' : 'Start with Eusebius →'}
+          ${gameState.onboardingStep < totalSteps - 1 ? 'Next →' : 'Choose Your Author →'}
         </button>
       </div>
     </div>
@@ -654,9 +1282,9 @@ function nextOnboardingStep() {
     saveGameState();
     renderOnboarding();
   } else {
-    // Finished onboarding, go to Eusebius bio
+    // Finished onboarding, go to author choice
     gameState.hasSeenOnboarding = true;
-    showEusebiusBio();
+    showAuthorChoice();
   }
 }
 
@@ -671,11 +1299,60 @@ function previousOnboardingStep() {
 function skipOnboarding() {
   gameState.hasSeenOnboarding = true;
   saveGameState();
-  showEusebiusBio();
+  showAuthorChoice();
 }
 
 function skipToEusebius() {
-  showEusebiusBio();
+  showAuthorChoice();
+}
+
+// Author Choice
+function showAuthorChoice() {
+  gameState.currentStage = 'authorChoice';
+  saveGameState();
+  renderAuthorChoice();
+}
+
+function renderAuthorChoice() {
+  console.log('=== renderAuthorChoice called ===');
+  const content = authorChoiceContent;
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="screen author-choice-screen fade-in">
+      <h1>${content.title}</h1>
+      <p class="subtitle">${content.subtitle}</p>
+      <p class="instruction">${content.instruction}</p>
+
+      <div class="author-cards">
+        ${content.authors.map(author => `
+          <div class="author-card" onclick="selectAuthor('${author.id}')">
+            <div class="author-portrait">
+              ${author.image}
+            </div>
+            <div class="author-info">
+              <h2 class="author-name">${author.name}</h2>
+              <p class="author-dates">${author.dates}</p>
+              <p class="author-context"><em>${author.context}</em></p>
+              <p class="author-description">${author.description}</p>
+            </div>
+            <button class="select-author-btn">Select ${author.name.split(' ')[0]} →</button>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function selectAuthor(authorId) {
+  gameState.selectedAuthor = authorId;
+  saveGameState();
+
+  if (authorId === 'eusebius') {
+    showEusebiusBio();
+  } else if (authorId === 'augustine') {
+    showAugustineBio();
+  }
 }
 
 // Author Biography
@@ -727,6 +1404,748 @@ function startEusebiusStage1() {
   renderIntro();
 }
 
+function showAugustineBio() {
+  gameState.currentStage = 'bio';
+  saveGameState();
+  renderAugustineBio();
+}
+
+function renderAugustineBio() {
+  const bio = augustineBio;
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="screen bio-screen fade-in">
+      <div class="bio-header">
+        <div class="bio-portrait">
+          <div class="portrait-placeholder">
+            ${bio.image}
+          </div>
+        </div>
+        <div class="bio-title">
+          <h1>${bio.name}</h1>
+          <p class="bio-dates">${bio.dates}</p>
+        </div>
+      </div>
+
+      <div class="bio-content">
+        ${bio.paragraphs.map(p => `<p>${p}</p>`).join('')}
+
+        <div class="bio-context">
+          <h3>Your Task</h3>
+          <p>${bio.context}</p>
+        </div>
+      </div>
+
+      <div class="bio-actions">
+        <button class="primary-button large-button" onclick="startAugustineStage1()">
+          Begin Writing as Augustine →
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function startAugustineStage1() {
+  gameState.currentStage = 'augustine_intro';
+  saveGameState();
+  renderAugustineIntro();
+}
+
+// ===== AUGUSTINE STAGE 1 RENDERING =====
+
+function renderAugustineIntro() {
+  const content = augustineStage1Content.intro;
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="augustine-stage">
+      <div class="screen intro-screen fade-in">
+        <div class="stage-indicator">Stage 1: Authorial Choices</div>
+        <h1>${content.title}</h1>
+        ${content.paragraphs.map(p => `<p>${p}</p>`).join('')}
+
+        <div class="intro-visual">
+          <img src="Images/garden.png" alt="Garden in Milan" class="intro-illustration-img">
+        </div>
+
+        <button class="primary-button" onclick="showAugustineSituation()">${content.buttonText}</button>
+      </div>
+    </div>
+  `;
+}
+
+function showAugustineSituation() {
+  gameState.currentStage = 'augustine_situation';
+  saveGameState();
+  renderAugustineSituation();
+}
+
+function renderAugustineSituation() {
+  const content = augustineStage1Content.situationScreen;
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="augustine-stage">
+      <div class="screen fade-in">
+        <div class="stage-indicator">Stage 1: Context</div>
+        <h2>${content.title}</h2>
+        ${content.paragraphs.map(p => `<p>${p}</p>`).join('')}
+
+        <div class="feedback-box" style="margin-top: 24px;">
+          <h3>${content.contexts.personal.title}</h3>
+          <ul>
+            ${content.contexts.personal.items.map(item => `<li>${item}</li>`).join('')}
+          </ul>
+        </div>
+
+        <div class="feedback-box">
+          <h3>${content.contexts.historical.title}</h3>
+          <ul>
+            ${content.contexts.historical.items.map(item => `<li>${item}</li>`).join('')}
+          </ul>
+        </div>
+
+        <p style="margin-top: 24px; font-style: italic;">${content.closing}</p>
+
+        <button class="primary-button" onclick="showAugustineEvent()" style="margin-top: 24px;">${content.buttonText}</button>
+      </div>
+    </div>
+  `;
+}
+
+function showAugustineEvent() {
+  gameState.currentStage = 'augustine_event';
+  saveGameState();
+  renderAugustineEvent();
+}
+
+function renderAugustineEvent() {
+  const content = augustineStage1Content.eventScreen;
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="augustine-stage">
+    <div class="screen fade-in">
+      <div class="stage-indicator">Stage 1: The Event</div>
+      <h2>${content.title}</h2>
+      <p>${content.intro}</p>
+
+      <div class="feedback-box" style="margin-top: 24px;">
+        <ul>
+          ${content.events.map(event => `<li>${event}</li>`).join('')}
+        </ul>
+      </div>
+
+      ${content.closing.map(p => `<p style="margin-top: 16px;">${p}</p>`).join('')}
+
+      <button class="primary-button" onclick="showAugustineMainPurpose()" style="margin-top: 24px;">${content.buttonText}</button>
+    </div>
+    </div>
+  `;
+}
+
+function showAugustineMainPurpose() {
+  gameState.currentStage = 'augustine_mainpurpose';
+  saveGameState();
+  renderAugustineMainPurpose();
+}
+
+function renderAugustineMainPurpose() {
+  const choice = augustineStage1Content.mainPurposeChoice;
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="augustine-stage">
+    <div class="screen choice-screen fade-in">
+      <div class="stage-indicator">Stage 1: Choose Your Purpose</div>
+      <h2>${choice.title}</h2>
+
+      <div class="choice-context">
+        <p class="context-text">${choice.context}</p>
+      </div>
+
+      <h3 class="choice-question">${choice.question}</h3>
+
+      <div class="options-container">
+        ${choice.options.map(option => `
+          <div class="option-card" onclick="selectAugustineMainPurpose('${option.id}')">
+            <div class="option-main">${option.text}</div>
+            <div class="option-description">${option.description}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    </div>
+  `;
+}
+
+function selectAugustineMainPurpose(purposeId) {
+  gameState.choices.mainPurpose = purposeId;
+  saveGameState();
+
+  // Show first branched question for this purpose
+  gameState.augustineBranchedIndex = 0;
+  renderAugustineBranchedQuestion(purposeId, 0);
+}
+
+function renderAugustineBranchedQuestion(purposeId, questionIndex) {
+  const questions = augustineStage1Content.branchedQuestions[purposeId];
+  if (!questions || questionIndex >= questions.length) {
+    // Finished branched questions, move to new context
+    showAugustineNewContext();
+    return;
+  }
+
+  const question = questions[questionIndex];
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="augustine-stage">
+    <div class="screen choice-screen fade-in">
+      <div class="stage-indicator">Stage 1: ${question.title}</div>
+
+      <div class="choice-context">
+        <p class="context-text">${question.context}</p>
+      </div>
+
+      <h3 class="choice-question">${question.question}</h3>
+
+      <div class="options-container">
+        ${question.options.map(option => `
+          <div class="option-card" onclick="selectAugustineBranchedOption('${question.id}', '${option.id}', '${purposeId}', ${questionIndex})">
+            <div class="option-main">${option.text}</div>
+            <div class="option-description">${option.description}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    </div>
+  `;
+}
+
+function selectAugustineBranchedOption(questionId, optionId, purposeId, questionIndex) {
+  gameState.choices[questionId] = optionId;
+  saveGameState();
+
+  // Move to next question in this branch
+  renderAugustineBranchedQuestion(purposeId, questionIndex + 1);
+}
+
+function showAugustineNewContext() {
+  gameState.currentStage = 'augustine_newcontext';
+  saveGameState();
+  renderAugustineNewContext();
+}
+
+function renderAugustineNewContext() {
+  const content = augustineStage1Content.newContextScreen;
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="augustine-stage">
+    <div class="screen fade-in">
+      <div class="stage-indicator">Stage 1: New Context</div>
+      <h2>${content.title}</h2>
+      ${content.paragraphs.map(p => `<p>${p}</p>`).join('')}
+
+      <div class="intro-visual">
+        <img src="Images/pelagius.png" alt="Pelagius Debate" class="intro-illustration-img">
+      </div>
+
+      <button class="primary-button" onclick="showAugustineWillQuestion()" style="margin-top: 24px;">${content.buttonText}</button>
+    </div>
+    </div>
+  `;
+}
+
+function showAugustineWillQuestion() {
+  gameState.currentStage = 'augustine_will';
+  saveGameState();
+  renderAugustineWillQuestion();
+}
+
+function renderAugustineWillQuestion() {
+  const choice = augustineStage1Content.willQuestionChoice;
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="augustine-stage">
+    <div class="screen choice-screen fade-in">
+      <div class="stage-indicator">Stage 1: ${choice.title}</div>
+
+      <div class="choice-context">
+        ${choice.context.map(p => `<p class="context-text">${p}</p>`).join('')}
+      </div>
+
+      <h3 class="choice-question">${choice.question}</h3>
+
+      <div class="options-container">
+        ${choice.options.map(option => `
+          <div class="option-card" onclick="selectAugustineWillOption('${option.id}')">
+            <div class="option-main">${option.text}</div>
+            <div class="option-description">${option.description}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    </div>
+  `;
+}
+
+function selectAugustineWillOption(optionId) {
+  gameState.choices.role_of_will = optionId;
+  saveGameState();
+  showAugustineRevisionChoice();
+}
+
+function showAugustineRevisionChoice() {
+  gameState.currentStage = 'augustine_revision';
+  saveGameState();
+  renderAugustineRevisionChoice();
+}
+
+function renderAugustineRevisionChoice() {
+  const choice = augustineStage1Content.revisionChoice;
+  const contextParagraphs = choice.getContext(gameState.choices.mainPurpose);
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="augustine-stage">
+    <div class="screen choice-screen fade-in">
+      <div class="stage-indicator">Stage 1: ${choice.title}</div>
+
+      <div class="choice-context">
+        ${contextParagraphs.map(p => `<p class="context-text">${p}</p>`).join('')}
+      </div>
+
+      <h3 class="choice-question">${choice.question}</h3>
+
+      <div class="options-container">
+        ${choice.options.map(option => `
+          <div class="option-card" onclick="selectAugustineRevisionOption('${option.id}')">
+            <div class="option-main">${option.text}</div>
+            <div class="option-description">${option.description}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    </div>
+  `;
+}
+
+function selectAugustineRevisionOption(optionId) {
+  gameState.choices.revision_decision = optionId;
+  saveGameState();
+  renderAugustineFinalSummary();
+}
+
+function renderAugustineFinalSummary() {
+  const summary = augustineStage1Content.finalSummary;
+  const content = summary.getContent(gameState.choices);
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="augustine-stage">
+    <div class="screen summary-screen fade-in">
+      <div class="stage-indicator">Stage 1 Complete</div>
+      <h2>${summary.title}</h2>
+
+      <div class="feedback-box">
+        <h3>Your Authorial Decisions</h3>
+        ${content.choicesSummary.map(line => `<p class="summary-line">✓ ${line}</p>`).join('')}
+      </div>
+
+      <div class="feedback-box reflection-box">
+        <h3>What This Means</h3>
+        <p>You've shaped your conversion story based on your purposes and contexts.</p>
+        <p class="prompt-line">→ Your original purpose: ${content.mainPurpose}</p>
+        <p class="prompt-line">→ Your theological position: ${content.willPosition}</p>
+        <p class="prompt-line">→ Your revision decision: ${content.revisionDecision}</p>
+        <p class="closing-prompt"><strong>Think about:</strong> How did changing circumstances and purposes shape how you told the same story?</p>
+      </div>
+
+      <button class="primary-button" onclick="proceedToAugustineStage2()">${summary.buttonText}</button>
+    </div>
+    </div>
+  `;
+}
+
+function proceedToAugustineStage2() {
+  gameState.currentStage = 'augustine_stage2';
+  // Reset Stage 2 state when entering fresh
+  gameState.selectedComponents = [];
+  gameState.componentSequence = [];
+  gameState.rationalization = '';
+  saveGameState();
+  renderAugustineStage2Intro();
+}
+
+// ===== AUGUSTINE STAGE 2 RENDERING =====
+
+function renderAugustineStage2Intro() {
+  const content = augustineStage2Content.intro;
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="augustine-stage">
+    <div class="screen intro-screen fade-in">
+      <div class="stage-indicator">Stage 2 of 5: Structure Your Composition</div>
+      <h1>${content.title}</h1>
+      ${content.paragraphs.map(p => `<p>${p}</p>`).join('')}
+
+      <div class="intro-visual">
+        <img src="Images/confessions.png" alt="Augustine's Confessions" class="intro-illustration-img">
+      </div>
+
+      <button class="primary-button" onclick="renderAugustineComponentSelection()">${content.buttonText}</button>
+    </div>
+    </div>
+  `;
+}
+
+function getAugustineAvailableComponents() {
+  const components = [];
+  const choices = gameState.choices;
+
+  // Get components for each choice made in Augustine Stage 1
+  Object.keys(choices).forEach(choiceKey => {
+    const choiceValue = choices[choiceKey];
+    if (augustineStage2Content.componentsByChoice[choiceKey] &&
+        augustineStage2Content.componentsByChoice[choiceKey][choiceValue]) {
+      components.push(...augustineStage2Content.componentsByChoice[choiceKey][choiceValue]);
+    }
+  });
+
+  // Always add universal components
+  components.push(...augustineStage2Content.componentsByChoice.universal);
+
+  return components;
+}
+
+function renderAugustineComponentSelection() {
+  const components = getAugustineAvailableComponents();
+  const budget = augustineStage2Content.budget;
+  const container = document.getElementById('game-container');
+
+  // Clean up selectedComponents - remove duplicates and invalid IDs
+  const validComponentIds = new Set(components.map(c => c.id));
+  gameState.selectedComponents = [...new Set(gameState.selectedComponents)].filter(id => validComponentIds.has(id));
+  saveGameState();
+
+  container.innerHTML = `
+    <div class="augustine-stage">
+    <div class="screen component-selection-screen fade-in">
+      <div class="stage-indicator">Stage 2 of 5: Component Selection</div>
+      <h2>Select Your Narrative Components</h2>
+
+      <div class="budget-indicator">
+        <p><strong>${budget.message}</strong></p>
+        <p class="selection-count">Selected: <span id="selected-count">0</span> / ${budget.max}</p>
+      </div>
+
+      <div class="components-grid">
+        ${components.map(comp => `
+          <div class="component-item" data-component-id="${comp.id}">
+            <label class="component-label">
+              <input type="checkbox"
+                     class="component-checkbox"
+                     value="${comp.id}"
+                     onchange="toggleAugustineComponent('${comp.id}', this.checked)">
+              <span class="component-text">${comp.text}</span>
+            </label>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="component-actions">
+        <button class="primary-button" id="continue-to-sequencing" onclick="proceedToAugustineSequencing()" disabled>
+          Continue to Sequencing →
+        </button>
+        <p class="help-text" id="selection-help">Please select at least ${budget.min} components.</p>
+      </div>
+    </div>
+    </div>
+  `;
+
+  // Restore previous selections if any
+  if (gameState.selectedComponents.length > 0) {
+    gameState.selectedComponents.forEach(compId => {
+      const checkbox = container.querySelector(`input[value="${compId}"]`);
+      if (checkbox) checkbox.checked = true;
+    });
+  }
+
+  // Update count after restoring
+  updateAugustineComponentCount();
+}
+
+function toggleAugustineComponent(componentId, isChecked) {
+  const budget = augustineStage2Content.budget;
+
+  if (isChecked) {
+    if (gameState.selectedComponents.length < budget.max) {
+      gameState.selectedComponents.push(componentId);
+    } else {
+      // Uncheck if over budget
+      const checkbox = document.querySelector(`input[value="${componentId}"]`);
+      if (checkbox) checkbox.checked = false;
+      return;
+    }
+  } else {
+    gameState.selectedComponents = gameState.selectedComponents.filter(id => id !== componentId);
+  }
+
+  updateAugustineComponentCount();
+  saveGameState();
+}
+
+function updateAugustineComponentCount() {
+  const budget = augustineStage2Content.budget;
+  const count = gameState.selectedComponents.length;
+  const countDisplay = document.getElementById('selected-count');
+  const continueBtn = document.getElementById('continue-to-sequencing');
+  const helpText = document.getElementById('selection-help');
+
+  if (countDisplay) countDisplay.textContent = count;
+
+  if (count >= budget.min && count <= budget.max) {
+    if (continueBtn) continueBtn.disabled = false;
+    if (helpText) helpText.textContent = `Good! You've selected ${count} components.`;
+  } else if (count < budget.min) {
+    if (continueBtn) continueBtn.disabled = true;
+    if (helpText) helpText.textContent = `Please select at least ${budget.min} components (${budget.min - count} more needed).`;
+  } else {
+    if (continueBtn) continueBtn.disabled = true;
+    if (helpText) helpText.textContent = `Maximum ${budget.max} components. Please deselect ${count - budget.max}.`;
+  }
+}
+
+function proceedToAugustineSequencing() {
+  if (gameState.selectedComponents.length < augustineStage2Content.budget.min) {
+    return;
+  }
+
+  // Initialize sequence if not already set
+  if (gameState.componentSequence.length === 0) {
+    gameState.componentSequence = [...gameState.selectedComponents];
+  }
+
+  saveGameState();
+  renderAugustineSequencing();
+}
+
+function renderAugustineSequencing() {
+  const components = getAugustineAvailableComponents();
+  const selectedComponentObjects = gameState.componentSequence
+    .map(id => components.find(c => c.id === id))
+    .filter(c => c !== undefined);
+
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="augustine-stage">
+    <div class="screen sequencing-screen fade-in">
+      <div class="stage-indicator">Stage 2 of 5: Sequence Components</div>
+      <h2>Arrange Your Narrative Structure</h2>
+
+      <p class="instruction">Drag and drop to arrange your components in the order you want them to appear in your narrative.</p>
+
+      <div id="sequence-list" class="sequence-list">
+        ${selectedComponentObjects.map((comp, index) => `
+          <div class="sequence-item" draggable="true" data-component-id="${comp.id}" data-index="${index}">
+            <span class="sequence-number">${index + 1}</span>
+            <span class="sequence-text">${comp.text}</span>
+            <span class="drag-handle">⋮⋮</span>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="sequencing-actions">
+        <button class="secondary-button" onclick="renderAugustineComponentSelection()">← Back to Selection</button>
+        <button class="primary-button" onclick="proceedToAugustineRationalization()">Continue to Explanation →</button>
+      </div>
+    </div>
+    </div>
+  `;
+
+  // Add drag-and-drop functionality
+  initializeAugustineDragAndDrop();
+}
+
+function initializeAugustineDragAndDrop() {
+  const sequenceList = document.getElementById('sequence-list');
+  let draggedElement = null;
+
+  sequenceList.addEventListener('dragstart', (e) => {
+    if (e.target.classList.contains('sequence-item')) {
+      draggedElement = e.target;
+      e.target.classList.add('dragging');
+    }
+  });
+
+  sequenceList.addEventListener('dragend', (e) => {
+    if (e.target.classList.contains('sequence-item')) {
+      e.target.classList.remove('dragging');
+    }
+  });
+
+  sequenceList.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    const afterElement = getDragAfterElement(sequenceList, e.clientY);
+    if (afterElement == null) {
+      sequenceList.appendChild(draggedElement);
+    } else {
+      sequenceList.insertBefore(draggedElement, afterElement);
+    }
+  });
+
+  sequenceList.addEventListener('drop', (e) => {
+    e.preventDefault();
+    updateAugustineSequenceFromDOM();
+  });
+}
+
+function getDragAfterElement(container, y) {
+  const draggableElements = [...container.querySelectorAll('.sequence-item:not(.dragging)')];
+
+  return draggableElements.reduce((closest, child) => {
+    const box = child.getBoundingClientRect();
+    const offset = y - box.top - box.height / 2;
+
+    if (offset < 0 && offset > closest.offset) {
+      return { offset: offset, element: child };
+    } else {
+      return closest;
+    }
+  }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
+
+function updateAugustineSequenceFromDOM() {
+  const sequenceItems = document.querySelectorAll('.sequence-item');
+  gameState.componentSequence = Array.from(sequenceItems).map(item => item.dataset.componentId);
+
+  // Update sequence numbers
+  sequenceItems.forEach((item, index) => {
+    const numberSpan = item.querySelector('.sequence-number');
+    if (numberSpan) numberSpan.textContent = index + 1;
+  });
+
+  saveGameState();
+}
+
+function proceedToAugustineRationalization() {
+  renderAugustineRationalization();
+}
+
+function renderAugustineRationalization() {
+  const prompt = augustineStage2Content.rationalizationPrompt;
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="augustine-stage">
+    <div class="screen rationalization-screen fade-in">
+      <div class="stage-indicator">Stage 2 of 5: Explain Your Structure</div>
+      <h2>${prompt.title}</h2>
+
+      <div class="rationalization-prompt">
+        <h3>${prompt.question}</h3>
+        <p class="guidance">${prompt.guidance}</p>
+      </div>
+
+      <textarea
+        id="rationalization-input"
+        class="rationalization-textarea"
+        placeholder="${prompt.placeholder}"
+        maxlength="500"
+      >${gameState.rationalization || ''}</textarea>
+
+      <p class="char-count"><span id="char-count">0</span> / 500 characters</p>
+
+      <div class="rationalization-actions">
+        <button class="secondary-button" onclick="renderAugustineSequencing()">← Back to Sequencing</button>
+        <button class="primary-button" id="continue-to-summary" onclick="renderAugustineStage2Summary()" disabled>
+          Continue →
+        </button>
+      </div>
+    </div>
+    </div>
+  `;
+
+  // Add event listener for textarea
+  const textarea = document.getElementById('rationalization-input');
+  const charCount = document.getElementById('char-count');
+  const continueBtn = document.getElementById('continue-to-summary');
+
+  textarea.addEventListener('input', () => {
+    const length = textarea.value.length;
+    charCount.textContent = length;
+    gameState.rationalization = textarea.value;
+    saveGameState();
+
+    // Enable continue button if there's some text (at least 50 chars)
+    if (continueBtn) {
+      continueBtn.disabled = length < 50;
+    }
+  });
+
+  // Trigger initial count update
+  if (gameState.rationalization) {
+    charCount.textContent = gameState.rationalization.length;
+    if (continueBtn) {
+      continueBtn.disabled = gameState.rationalization.length < 50;
+    }
+  }
+}
+
+function renderAugustineStage2Summary() {
+  const components = getAugustineAvailableComponents();
+  const selectedComponentObjects = gameState.componentSequence
+    .map(id => components.find(c => c.id === id))
+    .filter(c => c !== undefined);
+
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="augustine-stage">
+    <div class="screen summary-screen fade-in">
+      <div class="stage-indicator">Stage 2 Complete</div>
+      <h2>Your Narrative Structure</h2>
+
+      <div class="feedback-box">
+        <h3>Your Selected Components (in order)</h3>
+        <ol class="summary-sequence">
+          ${selectedComponentObjects.map(comp => `<li>${comp.text}</li>`).join('')}
+        </ol>
+      </div>
+
+      <div class="feedback-box">
+        <h3>Your Structural Reasoning</h3>
+        <p class="rationalization-display">"${gameState.rationalization}"</p>
+      </div>
+
+      <div class="feedback-box reflection-box">
+        <h3>What This Means</h3>
+        <p>You've created a deliberate compositional structure for your Confessions.</p>
+        <p class="prompt-line">→ The order of elements shapes how readers experience the story</p>
+        <p class="prompt-line">→ Your choices reflect your purposes from Stage 1</p>
+        <p class="prompt-line">→ Different sequences would create different theological and emotional effects</p>
+        <p class="closing-prompt"><strong>Think about:</strong> How does your structure serve the argument you want to make?</p>
+      </div>
+
+      <button class="primary-button" onclick="proceedToAugustineStage3()">Proceed to Stage 3: Write Your Confessions →</button>
+    </div>
+    </div>
+  `;
+}
+
+function proceedToAugustineStage3() {
+  // TODO: Implement Augustine Stage 3
+  alert('Augustine Stage 3 is under construction. This completes Stage 2!');
+}
+
+// ===== EUSEBIUS STAGE 1 RENDERING =====
+
 function renderIntro() {
   const content = stage1Content.intro;
   const container = document.getElementById('game-container');
@@ -736,6 +2155,11 @@ function renderIntro() {
       <div class="stage-indicator">Stage 1 of 5: Multiple Choice</div>
       <h1>${content.title}</h1>
       ${content.paragraphs.map(p => `<p>${p}</p>`).join('')}
+
+      <div class="intro-visual">
+        <img src="Images/persecution.png" alt="Persecution Scene" class="intro-illustration-img">
+      </div>
+
       <button class="primary-button" onclick="startStage1()">${content.buttonText}</button>
     </div>
   `;
@@ -752,6 +2176,7 @@ function renderChoice(choiceIndex) {
   const container = document.getElementById('game-container');
 
   container.innerHTML = `
+    
     <div class="screen choice-screen fade-in">
       <div class="stage-indicator">Stage 1 of 5: Multiple Choice</div>
       <div class="choice-header">
@@ -772,7 +2197,6 @@ function renderChoice(choiceIndex) {
           </div>
         `).join('')}
       </div>
-    </div>
   `;
 }
 
@@ -800,6 +2224,7 @@ function renderMidFeedback() {
   const container = document.getElementById('game-container');
 
   container.innerHTML = `
+    
     <div class="screen feedback-screen fade-in">
       <div class="stage-indicator">Stage 1 of 5: Multiple Choice</div>
       <h2>${feedback.title}</h2>
@@ -818,7 +2243,6 @@ function renderMidFeedback() {
       </div>
 
       <button class="primary-button" onclick="renderChoice(2)">${feedback.buttonText}</button>
-    </div>
   `;
 }
 
@@ -828,6 +2252,7 @@ function renderFinalSummary() {
   const container = document.getElementById('game-container');
 
   container.innerHTML = `
+    
     <div class="screen summary-screen fade-in">
       <div class="stage-indicator">Stage 1 Complete</div>
       <h2>${summary.title}</h2>
@@ -853,7 +2278,6 @@ function renderFinalSummary() {
       </div>
 
       <button class="primary-button" onclick="proceedToStage2()">${summary.buttonText}</button>
-    </div>
   `;
 }
 
@@ -874,12 +2298,12 @@ function renderStage2Intro() {
   const container = document.getElementById('game-container');
 
   container.innerHTML = `
+    
     <div class="screen intro-screen fade-in">
       <div class="stage-indicator">Stage 2 of 5: Structure Your Composition</div>
       <h1>${content.title}</h1>
       ${content.paragraphs.map(p => `<p>${p}</p>`).join('')}
       <button class="primary-button" onclick="renderComponentSelection()">${content.buttonText}</button>
-    </div>
   `;
 }
 
@@ -909,6 +2333,7 @@ function renderComponentSelection() {
   saveGameState();
 
   container.innerHTML = `
+    
     <div class="screen component-selection-screen fade-in">
       <div class="stage-indicator">Stage 2 of 5: Component Selection</div>
       <h2>Select Your Narrative Components</h2>
@@ -938,7 +2363,6 @@ function renderComponentSelection() {
         </button>
         <p class="help-text" id="selection-help">Please select at least ${budget.min} components.</p>
       </div>
-    </div>
   `;
 
   // Restore previous selections if any
@@ -1016,6 +2440,7 @@ function renderSequencing() {
   ).filter(c => c !== undefined);
 
   container.innerHTML = `
+    
     <div class="screen sequencing-screen fade-in">
       <div class="stage-indicator">Stage 2 of 5: Sequence Components</div>
       <h2>Arrange Your Components in Order</h2>
@@ -1039,7 +2464,6 @@ function renderSequencing() {
         <button class="secondary-button" onclick="renderComponentSelection()">← Back to Selection</button>
         <button class="primary-button" onclick="proceedToRationalization()">Continue to Explanation →</button>
       </div>
-    </div>
   `;
 
   // Initialize drag and drop
@@ -1129,6 +2553,7 @@ function renderRationalization() {
   ).filter(c => c !== undefined);
 
   container.innerHTML = `
+    
     <div class="screen rationalization-screen fade-in">
       <div class="stage-indicator">Stage 2 of 5: Explain Your Structure</div>
       <h2>${prompt.title}</h2>
@@ -1162,7 +2587,6 @@ function renderRationalization() {
         </button>
       </div>
       <p class="help-text" id="rationalization-help">${gameState.rationalization.trim() ? 'Looking good!' : 'Please explain your reasoning before continuing.'}</p>
-    </div>
   `;
 }
 
@@ -1192,6 +2616,7 @@ function renderStage2Summary() {
   const suggestions = generateStructureSuggestions(sequencedComponents);
 
   container.innerHTML = `
+    
     <div class="screen summary-screen fade-in">
       <div class="stage-indicator">Stage 2 Complete</div>
       <h2>Your Compositional Structure</h2>
@@ -1219,7 +2644,6 @@ function renderStage2Summary() {
         <button class="secondary-button" onclick="renderRationalization()">← Revise Structure</button>
         <button class="primary-button" onclick="proceedToStage3()">Proceed to Stage 3: Write Your Narrative →</button>
       </div>
-    </div>
   `;
 }
 
@@ -1276,6 +2700,7 @@ function renderStage3Intro() {
   const container = document.getElementById('game-container');
 
   container.innerHTML = `
+    
     <div class="screen intro-screen fade-in">
       <div class="stage-indicator">Stage 3 of 5: Write Your Narrative</div>
       <h2>${content.title}</h2>
@@ -1290,7 +2715,6 @@ function renderStage3Intro() {
       </div>
 
       <button class="primary-button" onclick="renderWritingInterface()">${content.buttonText}</button>
-    </div>
   `;
 }
 
@@ -1305,6 +2729,7 @@ function renderWritingInterface() {
   ).filter(c => c !== undefined);
 
   container.innerHTML = `
+    
     <div class="screen writing-screen fade-in">
       <div class="stage-indicator">Stage 3 of 5: Write Your Narrative</div>
       <h2>${content.title}</h2>
@@ -1345,7 +2770,6 @@ function renderWritingInterface() {
           </div>
         </div>
       </div>
-    </div>
   `;
 
   // Initialize word count
@@ -1432,6 +2856,7 @@ function renderStage4Export() {
   }).join('');
 
   container.innerHTML = `
+    
     <div class="screen export-screen fade-in">
       <div class="stage-indicator">Stage 4 of 5: Export Your Work</div>
       <h2>Your Complete Work Summary</h2>
@@ -1482,7 +2907,6 @@ function renderStage4Export() {
       <div class="stage-actions" style="margin-top: 2rem;">
         <button class="secondary-button" onclick="resetAndRestart()">Start Over</button>
       </div>
-    </div>
   `;
 }
 
@@ -1606,6 +3030,7 @@ function resetGameState() {
   gameState.currentScreen = 0;
   gameState.onboardingStep = 0;
   gameState.hasSeenOnboarding = false;
+  gameState.selectedAuthor = null;
   gameState.choices = {};
   gameState.narrativeProfile = null;
   gameState.selectedComponents = [];
@@ -1633,9 +3058,17 @@ window.addEventListener('DOMContentLoaded', () => {
         console.log('Rendering onboarding');
         renderOnboarding();
         break;
+      case 'authorChoice':
+        console.log('Rendering author choice');
+        renderAuthorChoice();
+        break;
       case 'bio':
         console.log('Rendering bio');
-        renderEusebiusBio();
+        if (gameState.selectedAuthor === 'augustine') {
+          renderAugustineBio();
+        } else {
+          renderEusebiusBio();
+        }
         break;
       case 'intro':
         console.log('Rendering intro');
