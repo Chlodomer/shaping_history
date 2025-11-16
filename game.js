@@ -978,7 +978,34 @@ const augustineStage2Content = {
   }
 };
 
-// ===== STAGE 3 CONTENT =====
+// ===== AUGUSTINE STAGE 3 CONTENT =====
+const augustineStage3Content = {
+  intro: {
+    title: "Stage 3: Write Your Confessions",
+    paragraphs: [
+      "Now you will compose your actual account of your conversion in Milan.",
+      "Use the structure you created in Stage 2 as your guide. Your selected components and their sequence should shape how you tell the story.",
+      "Write as Augustine would have written in 397 CE—looking back eleven years to a life-changing moment, shaping memory into meaning for your readers."
+    ],
+    guidelines: [
+      "Write up to 200 words (1-2 paragraphs)",
+      "Follow the sequence of components you arranged",
+      "Use first-person perspective ('I was in the garden...', 'I heard...')",
+      "Your work auto-saves as you type"
+    ],
+    buttonText: "Begin Writing"
+  },
+  writingPrompt: {
+    title: "Write Your Confessions",
+    prompt: "Using your structure as a guide, compose your account of the conversion in the garden.",
+    placeholder: "In the year 386, I was in Milan, torn between my old life and the truth I glimpsed in Christianity...",
+    minWords: 100,
+    targetWords: 200,
+    maxWords: 200
+  }
+};
+
+// ===== EUSEBIUS STAGE 3 CONTENT =====
 const stage3Content = {
   intro: {
     title: "Stage 3: Write Your Narrative",
@@ -2140,8 +2167,330 @@ function renderAugustineStage2Summary() {
 }
 
 function proceedToAugustineStage3() {
-  // TODO: Implement Augustine Stage 3
-  alert('Augustine Stage 3 is under construction. This completes Stage 2!');
+  gameState.currentStage = 'augustine_stage3';
+  // Clear narrative when entering Stage 3 fresh from Stage 2
+  gameState.studentNarrative = '';
+  saveGameState();
+  renderAugustineStage3Intro();
+}
+
+function renderAugustineStage3Intro() {
+  const content = augustineStage3Content.intro;
+  const container = document.getElementById('game-container');
+
+  container.innerHTML = `
+    <div class="augustine-stage">
+    <div class="screen intro-screen fade-in">
+      <div class="stage-indicator">Stage 3 of 5: Write Your Narrative</div>
+      <h2>${content.title}</h2>
+
+      ${content.paragraphs.map(p => `<p>${p}</p>`).join('')}
+
+      <div class="info-box">
+        <h3>Guidelines</h3>
+        <ul>
+          ${content.guidelines.map(g => `<li>${g}</li>`).join('')}
+        </ul>
+      </div>
+
+      <button class="primary-button" onclick="renderAugustineWritingInterface()">${content.buttonText}</button>
+    </div>
+    </div>
+  `;
+}
+
+function renderAugustineWritingInterface() {
+  const content = augustineStage3Content.writingPrompt;
+  const container = document.getElementById('game-container');
+
+  // Get the components and sequence from Stage 2
+  const allComponents = getAugustineAvailableComponents();
+  const sequencedComponents = gameState.componentSequence.map(id =>
+    allComponents.find(c => c.id === id)
+  ).filter(c => c !== undefined);
+
+  container.innerHTML = `
+    <div class="augustine-stage">
+    <div class="screen writing-screen fade-in">
+      <div class="stage-indicator">Stage 3 of 5: Write Your Confessions</div>
+      <h2>${content.title}</h2>
+      <p class="prompt-text">${content.prompt}</p>
+
+      <div class="writing-layout">
+        <div class="writing-main">
+          <div class="word-count-indicator">
+            <span id="word-count">0</span> words
+            <span class="target-indicator">(target: ${content.targetWords} words)</span>
+          </div>
+
+          <textarea
+            id="narrative-textarea"
+            class="narrative-textarea"
+            placeholder="${content.placeholder}"
+            oninput="handleAugustineNarrativeInput()"
+          >${gameState.studentNarrative}</textarea>
+
+          <div class="writing-actions">
+            <button class="secondary-button" onclick="renderAugustineStage2Summary()">← Back to Structure</button>
+            <button class="primary-button" id="continue-btn" onclick="validateAugustineAndContinue()" disabled>Continue to Export →</button>
+          </div>
+        </div>
+
+        <div class="writing-sidebar">
+          <div class="reference-box">
+            <h3>Your Structure Reference</h3>
+            <p class="helper-text">Follow this sequence as you write:</p>
+            <ol class="structure-reference-list">
+              ${sequencedComponents.map((comp, idx) => `
+                <li>
+                  <div class="reference-number">${idx + 1}</div>
+                  <div class="reference-text">${comp.text}</div>
+                </li>
+              `).join('')}
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  `;
+
+  // Initialize word count
+  updateAugustineWordCount();
+
+  // Focus on textarea
+  setTimeout(() => {
+    document.getElementById('narrative-textarea').focus();
+  }, 100);
+}
+
+function handleAugustineNarrativeInput() {
+  const textarea = document.getElementById('narrative-textarea');
+  gameState.studentNarrative = textarea.value;
+  saveGameState();
+  updateAugustineWordCount();
+}
+
+function updateAugustineWordCount() {
+  const text = gameState.studentNarrative.trim();
+  const wordCount = text === '' ? 0 : text.split(/\s+/).length;
+  const wordCountEl = document.getElementById('word-count');
+  const continueBtn = document.getElementById('continue-btn');
+
+  if (wordCountEl) {
+    wordCountEl.textContent = wordCount;
+
+    // Update color based on target
+    const minWords = augustineStage3Content.writingPrompt.minWords;
+    const targetWords = augustineStage3Content.writingPrompt.targetWords;
+    const maxWords = augustineStage3Content.writingPrompt.maxWords;
+
+    if (wordCount < minWords) {
+      wordCountEl.style.color = '#dc2626'; // red
+    } else if (wordCount >= minWords && wordCount <= maxWords) {
+      wordCountEl.style.color = '#059669'; // green
+    } else {
+      wordCountEl.style.color = '#d97706'; // orange
+    }
+  }
+
+  // Enable/disable continue button
+  if (continueBtn) {
+    continueBtn.disabled = wordCount < augustineStage3Content.writingPrompt.minWords;
+  }
+}
+
+function validateAugustineAndContinue() {
+  const text = gameState.studentNarrative.trim();
+  const wordCount = text === '' ? 0 : text.split(/\s+/).length;
+  const minWords = augustineStage3Content.writingPrompt.minWords;
+
+  if (wordCount < minWords) {
+    alert(`Please write at least ${minWords} words before continuing.`);
+    return;
+  }
+
+  proceedToAugustineStage4();
+}
+
+function proceedToAugustineStage4() {
+  gameState.currentStage = 'augustine_stage4';
+  saveGameState();
+  renderAugustineStage4Export();
+}
+
+function renderAugustineStage4Export() {
+  const container = document.getElementById('game-container');
+
+  // Get all components for display
+  const allComponents = getAugustineAvailableComponents();
+  const sequencedComponents = gameState.componentSequence.map(id =>
+    allComponents.find(c => c.id === id)
+  ).filter(c => c !== undefined);
+
+  // Calculate word count
+  const text = gameState.studentNarrative.trim();
+  const wordCount = text === '' ? 0 : text.split(/\s+/).length;
+
+  // Get Stage 1 choices summary
+  const choicesSummary = [
+    { label: "Main Purpose", value: gameState.choices.mainPurpose },
+    { label: "Role of Will", value: gameState.choices.role_of_will },
+    { label: "Revision Decision", value: gameState.choices.revision_decision }
+  ];
+
+  // Add branched choices based on main purpose
+  const mainPurpose = gameState.choices.mainPurpose;
+  if (mainPurpose === 'personal') {
+    choicesSummary.push(
+      { label: "Tears Meaning", value: gameState.choices.tears_meaning },
+      { label: "Voice Source", value: gameState.choices.voice_source }
+    );
+  } else if (mainPurpose === 'antiManichaean') {
+    choicesSummary.push(
+      { label: "Manichaeism Failure", value: gameState.choices.manichaeism_failure },
+      { label: "Romans Passage", value: gameState.choices.romans_passage }
+    );
+  } else if (mainPurpose === 'teaching') {
+    choicesSummary.push(
+      { label: "Conversion Timing", value: gameState.choices.conversion_timing },
+      { label: "Community Impact", value: gameState.choices.community_impact }
+    );
+  }
+
+  const stage1Summary = choicesSummary.map(choice =>
+    `<p class="summary-line"><strong>${choice.label}:</strong> ${choice.value}</p>`
+  ).join('');
+
+  container.innerHTML = `
+    <div class="augustine-stage">
+    <div class="screen export-screen fade-in">
+      <div class="stage-indicator">Stage 4 of 5: Export Your Work</div>
+      <h2>Your Complete Confessions Summary</h2>
+
+      <div class="export-intro">
+        <p>You've completed the composition process as Augustine. Review your work below and download it for submission.</p>
+      </div>
+
+      <div class="feedback-box">
+        <h3>Stage 1: Your Compositional Decisions</h3>
+        ${stage1Summary}
+      </div>
+
+      <div class="feedback-box">
+        <h3>Stage 2: Your Narrative Structure</h3>
+        <p><strong>Selected Components (${sequencedComponents.length}):</strong></p>
+        <ol class="structure-list compact-list">
+          ${sequencedComponents.map(comp => `
+            <li><strong>${comp.text}</strong> <span class="category-tag">(${comp.category})</span></li>
+          `).join('')}
+        </ol>
+        <div class="rationalization-summary">
+          <p><strong>Your Structural Reasoning:</strong></p>
+          <p class="quoted-text">"${gameState.rationalization}"</p>
+        </div>
+      </div>
+
+      <div class="feedback-box">
+        <h3>Stage 3: Your Confessions Narrative (${wordCount} words)</h3>
+        <div class="narrative-display">
+          ${gameState.studentNarrative.split('\n').map(para => `<p>${para}</p>`).join('')}
+        </div>
+      </div>
+
+      <div class="export-actions">
+        <button class="secondary-button" onclick="renderAugustineWritingInterface()">← Edit Narrative</button>
+        <button class="primary-button" onclick="downloadAugustineWork()">Download Complete Work</button>
+      </div>
+
+      <div class="reflection-box final-reflection">
+        <h3>Reflection on Your Compositional Process</h3>
+        <p>You've just experienced what Augustine did in 397 CE: shaping a memory into a narrative.</p>
+        <p class="prompt-line">→ Your choices about purpose shaped what components you selected</p>
+        <p class="prompt-line">→ Your component sequence shaped how the story unfolds</p>
+        <p class="prompt-line">→ Your theological position shaped how you explained the conversion</p>
+        <p class="closing-prompt"><strong>Think about:</strong> If you wrote this story again with different purposes or in different contexts, how would it change? This is what ancient authors experienced constantly.</p>
+      </div>
+
+      <button class="primary-button" onclick="showAuthorChoice()" style="margin-top: 24px;">← Return to Author Choice</button>
+    </div>
+    </div>
+  `;
+}
+
+function downloadAugustineWork() {
+  const timestamp = new Date().toISOString().split('T')[0];
+  const filename = `Augustine_Confessions_${timestamp}.txt`;
+
+  // Get components
+  const allComponents = getAugustineAvailableComponents();
+  const sequencedComponents = gameState.componentSequence.map(id =>
+    allComponents.find(c => c.id === id)
+  ).filter(c => c !== undefined);
+
+  // Calculate word count
+  const text = gameState.studentNarrative.trim();
+  const wordCount = text === '' ? 0 : text.split(/\s+/).length;
+
+  // Build download content
+  let content = `SHAPING HISTORY: AUGUSTINE'S CONFESSIONS
+Generated on ${new Date().toLocaleDateString()}
+
+================================================
+STAGE 1: COMPOSITIONAL DECISIONS
+================================================
+
+Main Purpose: ${gameState.choices.mainPurpose}
+Role of Will: ${gameState.choices.role_of_will}
+Revision Decision: ${gameState.choices.revision_decision}
+
+`;
+
+  // Add branched choices
+  const mainPurpose = gameState.choices.mainPurpose;
+  if (mainPurpose === 'personal') {
+    content += `Tears Meaning: ${gameState.choices.tears_meaning}\n`;
+    content += `Voice Source: ${gameState.choices.voice_source}\n`;
+  } else if (mainPurpose === 'antiManichaean') {
+    content += `Manichaeism Failure: ${gameState.choices.manichaeism_failure}\n`;
+    content += `Romans Passage: ${gameState.choices.romans_passage}\n`;
+  } else if (mainPurpose === 'teaching') {
+    content += `Conversion Timing: ${gameState.choices.conversion_timing}\n`;
+    content += `Community Impact: ${gameState.choices.community_impact}\n`;
+  }
+
+  content += `
+================================================
+STAGE 2: NARRATIVE STRUCTURE
+================================================
+
+Selected Components (${sequencedComponents.length}):
+${sequencedComponents.map((comp, idx) => `${idx + 1}. ${comp.text} (${comp.category})`).join('\n')}
+
+Structural Reasoning:
+"${gameState.rationalization}"
+
+================================================
+STAGE 3: YOUR CONFESSIONS NARRATIVE
+================================================
+
+Word Count: ${wordCount}
+
+${gameState.studentNarrative}
+
+================================================
+END OF SUBMISSION
+================================================
+`;
+
+  // Create and download file
+  const blob = new Blob([content], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
 }
 
 // ===== EUSEBIUS STAGE 1 RENDERING =====
@@ -2700,12 +3049,16 @@ function renderStage3Intro() {
   const container = document.getElementById('game-container');
 
   container.innerHTML = `
-    
+
     <div class="screen intro-screen fade-in">
       <div class="stage-indicator">Stage 3 of 5: Write Your Narrative</div>
       <h2>${content.title}</h2>
 
       ${content.paragraphs.map(p => `<p>${p}</p>`).join('')}
+
+      <div class="intro-visual">
+        <img src="Images/eusebius_writing.png" alt="Eusebius Writing" class="intro-illustration-img">
+      </div>
 
       <div class="info-box">
         <h3>Guidelines</h3>
