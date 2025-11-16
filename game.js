@@ -2419,78 +2419,77 @@ function renderAugustineStage4Export() {
 }
 
 function downloadAugustineWork() {
-  const timestamp = new Date().toISOString().split('T')[0];
-  const filename = `Augustine_Confessions_${timestamp}.txt`;
-
-  // Get components
-  const allComponents = getAugustineAvailableComponents();
-  const sequencedComponents = gameState.componentSequence.map(id =>
-    allComponents.find(c => c.id === id)
-  ).filter(c => c !== undefined);
-
   // Calculate word count
   const text = gameState.studentNarrative.trim();
   const wordCount = text === '' ? 0 : text.split(/\s+/).length;
 
-  // Build download content
-  let content = `SHAPING HISTORY: AUGUSTINE'S CONFESSIONS
-Generated on ${new Date().toLocaleDateString()}
+  // Get all components for export
+  const allComponents = getAugustineAvailableComponents();
+  const sequencedComponents = gameState.componentSequence.map(id => {
+    const comp = allComponents.find(c => c.id === id);
+    return comp ? { id: comp.id, text: comp.text, category: comp.category } : null;
+  }).filter(c => c !== null);
 
-================================================
-STAGE 1: COMPOSITIONAL DECISIONS
-================================================
+  // Get readable choice labels (Augustine-specific)
+  const stage1ChoicesReadable = {
+    mainPurpose: gameState.choices.mainPurpose,
+    role_of_will: gameState.choices.role_of_will,
+    revision_decision: gameState.choices.revision_decision
+  };
 
-Main Purpose: ${gameState.choices.mainPurpose}
-Role of Will: ${gameState.choices.role_of_will}
-Revision Decision: ${gameState.choices.revision_decision}
-
-`;
-
-  // Add branched choices
+  // Add branched choices based on main purpose
   const mainPurpose = gameState.choices.mainPurpose;
   if (mainPurpose === 'personal') {
-    content += `Tears Meaning: ${gameState.choices.tears_meaning}\n`;
-    content += `Voice Source: ${gameState.choices.voice_source}\n`;
+    stage1ChoicesReadable.tears_meaning = gameState.choices.tears_meaning;
+    stage1ChoicesReadable.voice_source = gameState.choices.voice_source;
   } else if (mainPurpose === 'antiManichaean') {
-    content += `Manichaeism Failure: ${gameState.choices.manichaeism_failure}\n`;
-    content += `Romans Passage: ${gameState.choices.romans_passage}\n`;
+    stage1ChoicesReadable.manichaeism_failure = gameState.choices.manichaeism_failure;
+    stage1ChoicesReadable.romans_passage = gameState.choices.romans_passage;
   } else if (mainPurpose === 'teaching') {
-    content += `Conversion Timing: ${gameState.choices.conversion_timing}\n`;
-    content += `Community Impact: ${gameState.choices.community_impact}\n`;
+    stage1ChoicesReadable.conversion_timing = gameState.choices.conversion_timing;
+    stage1ChoicesReadable.community_impact = gameState.choices.community_impact;
   }
 
-  content += `
-================================================
-STAGE 2: NARRATIVE STRUCTURE
-================================================
+  // Create JSON structure
+  const exportData = {
+    metadata: {
+      author: "Augustine of Hippo",
+      timestamp: new Date().toISOString(),
+      dateCompleted: new Date().toLocaleString(),
+      wordCount: wordCount,
+      version: "1.0"
+    },
+    stage1: {
+      choices: gameState.choices,
+      choicesReadable: stage1ChoicesReadable
+    },
+    stage2: {
+      selectedComponentIds: gameState.selectedComponents,
+      componentSequence: sequencedComponents,
+      rationalization: gameState.rationalization
+    },
+    stage3: {
+      narrative: gameState.studentNarrative,
+      wordCount: wordCount
+    }
+  };
 
-Selected Components (${sequencedComponents.length}):
-${sequencedComponents.map((comp, idx) => `${idx + 1}. ${comp.text} (${comp.category})`).join('\n')}
+  // Convert to JSON string with nice formatting
+  const jsonString = JSON.stringify(exportData, null, 2);
 
-Structural Reasoning:
-"${gameState.rationalization}"
-
-================================================
-STAGE 3: YOUR CONFESSIONS NARRATIVE
-================================================
-
-Word Count: ${wordCount}
-
-${gameState.studentNarrative}
-
-================================================
-END OF SUBMISSION
-================================================
-`;
-
-  // Create and download file
-  const blob = new Blob([content], { type: 'text/plain' });
+  // Create blob and download
+  const blob = new Blob([jsonString], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
-  link.click();
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `shaping-history-augustine-${Date.now()}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
   URL.revokeObjectURL(url);
+
+  // Show confirmation
+  showDownloadConfirmation();
 }
 
 // ===== EUSEBIUS STAGE 1 RENDERING =====
