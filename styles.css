@@ -1868,3 +1868,153 @@ body {
     height: 150px;
   }
 }
+
+/* ===== V3.0: CONSOLIDATED SCREEN STYLES ===== */
+
+/* Welcome Screen */
+.welcome-screen {
+  text-align: center;
+  padding: 48px;
+}
+
+.welcome-header {
+  margin-bottom: 32px;
+}
+
+.welcome-instruction {
+  font-size: 1.1rem;
+  color: #b8b8b8;
+  margin-bottom: 32px;
+}
+
+/* Selected Option Card */
+.option-card.selected {
+  background: linear-gradient(135deg, #3a3530 0%, #4a4238 100%);
+  border-color: #8a7555;
+  box-shadow: 0 0 0 2px rgba(138, 117, 85, 0.3);
+}
+
+.option-card.selected .option-main {
+  color: #f0e8d8;
+}
+
+.augustine-stage .option-card.selected {
+  background: linear-gradient(135deg, #2a3d30 0%, #354a3a 100%);
+  border-color: #5a8a6a;
+  box-shadow: 0 0 0 2px rgba(90, 138, 106, 0.3);
+}
+
+/* Choice Sections */
+.all-choices {
+  margin-top: 32px;
+}
+
+.choice-section {
+  margin-bottom: 36px;
+  padding-top: 24px;
+  border-top: 1px solid #3a3a3a;
+}
+
+.choice-section:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+/* Inline Feedback */
+.inline-feedback {
+  background: linear-gradient(135deg, #3a2f1f 0%, #4a3b28 100%);
+  border-left: 3px solid #8a7555;
+  padding: 16px 20px;
+  margin: 16px 0 24px;
+  border-radius: 8px;
+}
+
+.feedback-note {
+  font-size: 0.95rem;
+  color: #b8b0a8;
+  font-style: italic;
+  margin: 0;
+}
+
+/* Stage Complete Section */
+.stage-complete-section {
+  margin-top: 36px;
+  padding-top: 32px;
+  border-top: 2px solid #6b5d4f;
+}
+
+.augustine-stage .stage-complete-section {
+  border-top-color: #5a8a6a;
+}
+
+/* Context Info Panels (Augustine) */
+.context-info-panel {
+  background: linear-gradient(135deg, #252a25 0%, #2a302a 100%);
+  border: 1px solid #3a4a3f;
+  border-radius: 8px;
+  padding: 24px;
+  margin: 24px 0;
+}
+
+.context-info-panel h3 {
+  color: #b8d4b8;
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 1.2rem;
+}
+
+.context-info-panel h4 {
+  color: #a8c4a8;
+  margin-top: 16px;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.context-info-panel ul {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.context-info-panel li {
+  color: #98b898;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.context-info-panel p {
+  color: #a8c4a8;
+}
+
+/* Stage 2 Sections */
+.stage2-section {
+  margin-bottom: 36px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #3a3a3a;
+  transition: opacity 0.3s ease;
+}
+
+.stage2-section:last-of-type {
+  border-bottom: none;
+}
+
+.stage2-section h3 {
+  color: #d8d8d8;
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+}
+
+.section-disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* Responsive: Welcome */
+@media (max-width: 768px) {
+  .welcome-screen {
+    padding: 32px 24px;
+  }
+
+  .welcome-header .main-title {
+    font-size: 2.5rem;
+  }
+}
