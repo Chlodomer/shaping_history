@@ -1,15 +1,12 @@
-// ===== SHAPING HISTORY: STAGE-BASED COMPOSITION TOOL =====
-// Stage 1: Multiple Choice Decisions
+// ===== SHAPING HISTORY: SIMPLIFIED COMPOSITION TOOL =====
+// Version 3.0 - Consolidated 5-screen flow
 
 // ===== GAME STATE =====
-const GAME_VERSION = '2.1'; // Increment when making breaking changes
+const GAME_VERSION = '3.0';
 
 const gameState = {
   version: GAME_VERSION,
-  currentStage: 'title', // title, onboarding, authorChoice, bio, intro, stage1, stage2, stage3, stage4
-  currentScreen: 0,
-  onboardingStep: 0,
-  hasSeenOnboarding: false,
+  currentStage: 'welcome', // welcome, stage1, stage2, stage3, stage4
   selectedAuthor: null, // 'eusebius' or 'augustine'
   choices: {},
   narrativeProfile: null,
@@ -19,7 +16,7 @@ const gameState = {
   studentNarrative: ''
 };
 
-// ===== TITLE & ONBOARDING CONTENT =====
+// ===== TITLE CONTENT =====
 
 const titleContent = {
   title: "Shaping History",
@@ -28,50 +25,7 @@ const titleContent = {
   illustration: '<img src="Images/writing-history.png" alt="Writing History" class="title-illustration-img">'
 };
 
-const onboardingContent = {
-  steps: [
-    {
-      title: "Welcome to Shaping History",
-      content: [
-        "In this tool, you'll become an ancient Christian historian writing about events they witnessed.",
-        "You'll make the same kinds of choices these authors faced: what to emphasize, what to omit, and how to frame events for your audience.",
-        "Through this hands-on experience, you'll discover how all historical narratives are shaped by authorial decisions."
-      ],
-      visual: "preview-welcome"
-    },
-    {
-      title: "What You'll Do",
-      content: [
-        "You'll work through 4 stages:",
-        "• <strong>Stage 1:</strong> Make high-level compositional choices",
-        "• <strong>Stage 2:</strong> Select and arrange narrative components",
-        "• <strong>Stage 3:</strong> Write your own historical narrative",
-        "• <strong>Stage 4:</strong> Review and export your work"
-      ],
-      visual: "preview-stages"
-    },
-    {
-      title: "Choose Your Historian",
-      content: [
-        "You'll choose one of two historians to write as:",
-        "• <strong>Eusebius of Caesarea (303 CE):</strong> Writing during active persecution",
-        "• <strong>Augustine of Hippo (397 CE):</strong> Reflecting on a life-changing moment",
-        "Each author faces different challenges and audiences."
-      ],
-      visual: "preview-authors"
-    },
-    {
-      title: "There Are No Wrong Answers",
-      content: [
-        "This tool is about <em>experiencing</em> the compositional process, not getting it \"right.\"",
-        "Every choice you make is valid—just like every ancient historian made different choices.",
-        "Focus on understanding <em>why</em> you make certain choices and what effects they have.",
-        "Time to complete: 15-20 minutes"
-      ],
-      visual: "preview-export"
-    }
-  ]
-};
+// ===== AUTHOR BIOS =====
 
 const eusebiusBio = {
   name: "Eusebius of Caesarea",
@@ -312,7 +266,6 @@ const augustineStage1Content = {
     buttonText: "Begin Stage 1: Make Your Choices"
   },
 
-  // Part 1: Setup - Your Current Situation
   situationScreen: {
     title: "Your Situation in 397 CE",
     paragraphs: [
@@ -345,7 +298,6 @@ const augustineStage1Content = {
     buttonText: "Continue"
   },
 
-  // Part 2: The Event
   eventScreen: {
     title: "The Garden in Milan - 386 CE",
     intro: "This is what you remember:",
@@ -369,7 +321,6 @@ const augustineStage1Content = {
     buttonText: "Continue"
   },
 
-  // Part 3: Main Purpose Choice (BRANCHING POINT)
   mainPurposeChoice: {
     id: "mainPurpose",
     title: "Your Purpose in Writing",
@@ -394,9 +345,7 @@ const augustineStage1Content = {
     ]
   },
 
-  // Branching follow-up questions based on main purpose
   branchedQuestions: {
-    // Path A: Personal Testimony
     personal: [
       {
         id: "tears_meaning",
@@ -446,7 +395,6 @@ const augustineStage1Content = {
       }
     ],
 
-    // Path B: Anti-Manichaeism
     antiManichaean: [
       {
         id: "manichaeism_failure",
@@ -496,7 +444,6 @@ const augustineStage1Content = {
       }
     ],
 
-    // Path C: Teaching About Conversion
     teaching: [
       {
         id: "conversion_timing",
@@ -547,7 +494,6 @@ const augustineStage1Content = {
     ]
   },
 
-  // Part 4: New Context Emerges
   newContextScreen: {
     title: "A New Situation Emerges (397 CE)",
     paragraphs: [
@@ -573,7 +519,6 @@ const augustineStage1Content = {
     buttonText: "Continue"
   },
 
-  // Part 5: The Question of Will
   willQuestionChoice: {
     id: "role_of_will",
     title: "The Debate About Your Conversion",
@@ -606,7 +551,6 @@ const augustineStage1Content = {
     ]
   },
 
-  // Part 6: Revision Decision
   revisionChoice: {
     id: "revision_decision",
     title: "Revising Your Account",
@@ -645,7 +589,6 @@ const augustineStage1Content = {
     ]
   },
 
-  // Final summary structure
   finalSummary: {
     title: "Stage 1 Complete: Your Authorial Decisions",
     getContent: (choices) => {
@@ -675,7 +618,6 @@ const stage2Content = {
     buttonText: "Begin Component Selection"
   },
 
-  // Components derived from Stage 1 choices
   componentsByChoice: {
     emphasis: {
       suffering: [
@@ -815,9 +757,7 @@ const augustineStage2Content = {
     buttonText: "Begin Component Selection"
   },
 
-  // Components derived from Augustine Stage 1 choices
   componentsByChoice: {
-    // Main Purpose branches
     mainPurpose: {
       personal: [
         { id: "inner_turmoil", text: "Describe your inner emotional turmoil", category: "personal" },
@@ -839,7 +779,6 @@ const augustineStage2Content = {
       ]
     },
 
-    // Personal path sub-choices
     tears_meaning: {
       emotional: [
         { id: "describe_despair", text: "Describe your emotional despair and confusion", category: "tears" },
@@ -870,7 +809,6 @@ const augustineStage2Content = {
       ]
     },
 
-    // Anti-Manichaean path sub-choices
     manichaeism_failure: {
       intellectual: [
         { id: "unanswered_questions", text: "List questions Manichaeism couldn't answer", category: "manichaeism" },
@@ -901,7 +839,6 @@ const augustineStage2Content = {
       ]
     },
 
-    // Teaching path sub-choices
     conversion_timing: {
       sudden: [
         { id: "dramatic_moment", text: "Emphasize the sudden, dramatic moment of conversion", category: "timing" },
@@ -932,7 +869,6 @@ const augustineStage2Content = {
       ]
     },
 
-    // Role of will (applies to all paths)
     role_of_will: {
       irresistible: [
         { id: "grace_overwhelming", text: "Show grace as irresistible and overwhelming", category: "will" },
@@ -951,7 +887,6 @@ const augustineStage2Content = {
       ]
     },
 
-    // Universal components (appear regardless of choices)
     universal: [
       { id: "garden_setting", text: "Describe the garden setting in Milan", category: "setting" },
       { id: "fig_tree", text: "Detail the fig tree and its significance", category: "setting" },
@@ -978,23 +913,8 @@ const augustineStage2Content = {
   }
 };
 
-// ===== AUGUSTINE STAGE 3 CONTENT =====
+// ===== STAGE 3 CONTENT =====
 const augustineStage3Content = {
-  intro: {
-    title: "Stage 3: Write Your Confessions",
-    paragraphs: [
-      "Now you will compose your actual account of your conversion in Milan.",
-      "Use the structure you created in Stage 2 as your guide. Your selected components and their sequence should shape how you tell the story.",
-      "Write as Augustine would have written in 397 CE—looking back eleven years to a life-changing moment, shaping memory into meaning for your readers."
-    ],
-    guidelines: [
-      "Write up to 200 words (1-2 paragraphs)",
-      "Follow the sequence of components you arranged",
-      "Use first-person perspective ('I was in the garden...', 'I heard...')",
-      "Your work auto-saves as you type"
-    ],
-    buttonText: "Begin Writing"
-  },
   writingPrompt: {
     title: "Write Your Confessions",
     prompt: "Using your structure as a guide, compose your account of the conversion in the garden.",
@@ -1005,23 +925,7 @@ const augustineStage3Content = {
   }
 };
 
-// ===== EUSEBIUS STAGE 3 CONTENT =====
 const stage3Content = {
-  intro: {
-    title: "Stage 3: Write Your Narrative",
-    paragraphs: [
-      "Now you will compose your actual narrative of the persecution in Caesarea.",
-      "Use the structure you created in Stage 2 as your guide. Your selected components and their sequence should shape how you tell the story.",
-      "Write as Eusebius would have written in 303 CE—as a witness to recent events, shaping them for your Christian audience."
-    ],
-    guidelines: [
-      "Write up to 200 words (1-2 paragraphs)",
-      "Follow the sequence of components you arranged",
-      "Use first-person perspective ('I witnessed...') or third-person ('The persecution began...')",
-      "Your work auto-saves as you type"
-    ],
-    buttonText: "Begin Writing"
-  },
   writingPrompt: {
     title: "Write Your Account",
     prompt: "Using your structure as a guide, compose your narrative of the persecution in Caesarea.",
@@ -1046,13 +950,10 @@ function generateMidReflection(choices) {
     'divine-community': "You're showing how divine purpose works through collective faith, not individual actions.",
     'divine-martyrs': "You're telling a story of chosen individuals within God's plan.",
     'divine-leaders': "You're presenting church leadership as instruments of divine will.",
-
     'suffering-martyrs': "You're creating an emotionally powerful story centered on personal sacrifice.",
     'suffering-community': "You're showing the shared pain of persecution, emphasizing collective trauma.",
-
     'courage-martyrs': "You're building a heroic narrative around specific acts of bravery.",
     'courage-community': "You're presenting steadfast faith as a community achievement.",
-
     'cruelty-martyrs': "You're creating a story of injustice done to innocent individuals.",
     'cruelty-community': "You're framing persecution as an attack on the Christian people."
   };
@@ -1062,7 +963,6 @@ function generateMidReflection(choices) {
 }
 
 function generateNarrativeProfile(choices) {
-  // Define profiles based on choice combinations
   const profiles = {
     'theological_comforter': {
       name: "Theological Comforter",
@@ -1111,7 +1011,6 @@ function generateNarrativeProfile(choices) {
     }
   };
 
-  // Simple algorithm to determine profile
   if (choices.emphasis === 'divine' && choices.violence === 'omit') {
     return profiles.theological_comforter;
   } else if (choices.emphasis === 'suffering' && choices.protagonist === 'martyrs') {
@@ -1125,7 +1024,6 @@ function generateNarrativeProfile(choices) {
   }
 }
 
-// Augustine helper functions
 function getMainPurposeText(purposeId) {
   const purposes = {
     personal: "Personal testimony",
@@ -1153,203 +1051,139 @@ function getRevisionDecisionText(revisionId) {
   return decisions[revisionId] || '';
 }
 
+function getAugustineBranchedText(questionId, optionId) {
+  const allBranched = augustineStage1Content.branchedQuestions;
+  for (const purpose of Object.keys(allBranched)) {
+    for (const q of allBranched[purpose]) {
+      if (q.id === questionId) {
+        const opt = q.options.find(o => o.id === optionId);
+        return opt ? opt.text : optionId;
+      }
+    }
+  }
+  return optionId;
+}
+
 function generateAugustineChoicesSummary(choices) {
   const summary = [];
-
   summary.push(`Main purpose: ${getMainPurposeText(choices.mainPurpose)}`);
 
-  // Add branched choices based on main purpose
-  if (choices.mainPurpose === 'personal') {
-    if (choices.tears_meaning) summary.push(`Tears about: ${choices.tears_meaning}`);
-    if (choices.voice_source) summary.push(`Voice: ${choices.voice_source}`);
-  } else if (choices.mainPurpose === 'antiManichaean') {
-    if (choices.manichaeism_failure) summary.push(`Manichaeism failed: ${choices.manichaeism_failure}`);
-    if (choices.romans_passage) summary.push(`Romans passage: ${choices.romans_passage}`);
-  } else if (choices.mainPurpose === 'teaching') {
-    if (choices.conversion_timing) summary.push(`Conversion timing: ${choices.conversion_timing}`);
-    if (choices.community_impact) summary.push(`Community impact: ${choices.community_impact}`);
+  if (choices.mainPurpose && augustineStage1Content.branchedQuestions[choices.mainPurpose]) {
+    augustineStage1Content.branchedQuestions[choices.mainPurpose].forEach(q => {
+      if (choices[q.id]) {
+        summary.push(`${q.question.split(',')[0]}: ${getAugustineBranchedText(q.id, choices[q.id])}`);
+      }
+    });
   }
 
   summary.push(`Role of will: ${getWillPositionText(choices.role_of_will)}`);
   summary.push(`Revision: ${getRevisionDecisionText(choices.revision_decision)}`);
-
   return summary;
 }
 
-// ===== UI RENDERING FUNCTIONS =====
+function getAvailableComponents() {
+  const components = [];
+  const choices = gameState.choices;
 
-// Title Page
-function renderTitlePage() {
+  Object.keys(choices).forEach(choiceKey => {
+    const choiceValue = choices[choiceKey];
+    if (stage2Content.componentsByChoice[choiceKey] && stage2Content.componentsByChoice[choiceKey][choiceValue]) {
+      components.push(...stage2Content.componentsByChoice[choiceKey][choiceValue]);
+    }
+  });
+
+  return components;
+}
+
+function getAugustineAvailableComponents() {
+  const components = [];
+  const choices = gameState.choices;
+
+  Object.keys(choices).forEach(choiceKey => {
+    const choiceValue = choices[choiceKey];
+    if (augustineStage2Content.componentsByChoice[choiceKey] &&
+        augustineStage2Content.componentsByChoice[choiceKey][choiceValue]) {
+      components.push(...augustineStage2Content.componentsByChoice[choiceKey][choiceValue]);
+    }
+  });
+
+  components.push(...augustineStage2Content.componentsByChoice.universal);
+  return components;
+}
+
+function getAllComponents() {
+  return gameState.selectedAuthor === 'augustine'
+    ? getAugustineAvailableComponents()
+    : getAvailableComponents();
+}
+
+function getBudget() {
+  return gameState.selectedAuthor === 'augustine'
+    ? augustineStage2Content.budget
+    : stage2Content.budget;
+}
+
+function getRationalizationPrompt() {
+  return gameState.selectedAuthor === 'augustine'
+    ? augustineStage2Content.rationalizationPrompt
+    : stage2Content.rationalizationPrompt;
+}
+
+function getWritingContent() {
+  return gameState.selectedAuthor === 'augustine'
+    ? augustineStage3Content.writingPrompt
+    : stage3Content.writingPrompt;
+}
+
+function generateStructureSuggestions(components) {
+  const suggestions = [];
+  const categories = components.map(c => c.category);
+  const firstCategory = categories[0];
+  const lastCategory = categories[categories.length - 1];
+
+  if (firstCategory === 'emphasis') {
+    suggestions.push("→ You begin by establishing your thematic focus - this sets reader expectations early.");
+  } else if (firstCategory === 'protagonist') {
+    suggestions.push("→ You introduce your protagonist first - readers will understand events through this lens.");
+  } else if (firstCategory === 'violence') {
+    suggestions.push("→ You address the violence question immediately - a direct approach that shapes interpretation.");
+  }
+
+  if (lastCategory === 'endpoint') {
+    suggestions.push("→ You conclude with your chosen ending - this determines how readers remember the story.");
+  }
+
+  const emphasisCount = categories.filter(c => c === 'emphasis').length;
+  const protagonistCount = categories.filter(c => c === 'protagonist').length;
+
+  if (emphasisCount > protagonistCount) {
+    suggestions.push("→ Your structure prioritizes thematic emphasis over character development.");
+  } else if (protagonistCount > emphasisCount) {
+    suggestions.push("→ Your structure is character-driven, building through protagonist focus.");
+  }
+
+  suggestions.push("→ Ancient historians often moved from: event description → protagonist actions → theological meaning. Consider how your structure compares.");
+  return suggestions;
+}
+
+// ===== SCREEN 1: WELCOME + AUTHOR CHOICE =====
+
+function renderWelcome() {
   const container = document.getElementById('game-container');
+  const content = authorChoiceContent;
 
   container.innerHTML = `
-    <div class="screen title-screen fade-in">
-      <div class="title-illustration">
-        <div class="illustration-placeholder">
+    <div class="screen welcome-screen fade-in">
+      <div class="welcome-header">
+        <div class="title-illustration">
           ${titleContent.illustration}
         </div>
+        <h1 class="main-title">${titleContent.title}</h1>
+        <h2 class="subtitle">${titleContent.subtitle}</h2>
+        <p class="tagline">${titleContent.tagline}</p>
       </div>
 
-      <h1 class="main-title">${titleContent.title}</h1>
-      <h2 class="subtitle">${titleContent.subtitle}</h2>
-      <p class="tagline">${titleContent.tagline}</p>
-
-      <div class="title-actions">
-        <button class="primary-button large-button" onclick="startOnboarding()">
-          Begin Experience →
-        </button>
-        ${gameState.hasSeenOnboarding ?
-          '<button class="secondary-button" onclick="skipToEusebius()">Skip Tutorial →</button>' :
-          ''}
-      </div>
-
-      <div class="title-footer">
-        <p>Bar-Ilan University • Introduction to Early Medieval Europe</p>
-      </div>
-    </div>
-  `;
-}
-
-// Onboarding
-function startOnboarding() {
-  gameState.currentStage = 'onboarding';
-  gameState.onboardingStep = 0;
-  saveGameState();
-  renderOnboarding();
-}
-
-function renderOnboarding() {
-  const step = onboardingContent.steps[gameState.onboardingStep];
-  const totalSteps = onboardingContent.steps.length;
-  const container = document.getElementById('game-container');
-
-  container.innerHTML = `
-    <div class="screen onboarding-screen fade-in">
-      <div class="onboarding-progress">
-        <span>Step ${gameState.onboardingStep + 1} of ${totalSteps}</span>
-      </div>
-
-      <div class="onboarding-content">
-        <div class="onboarding-visual">
-          <div class="visual-mockup ${step.visual}">
-            ${getVisualMockup(step.visual)}
-          </div>
-        </div>
-
-        <div class="onboarding-text">
-          <h2>${step.title}</h2>
-          ${step.content.map(p => `<p>${p}</p>`).join('')}
-        </div>
-      </div>
-
-      <div class="onboarding-actions">
-        ${gameState.onboardingStep > 0 ?
-          '<button class="secondary-button" onclick="previousOnboardingStep()">← Back</button>' :
-          '<button class="secondary-button" onclick="skipOnboarding()">Skip Tutorial</button>'}
-        <button class="primary-button" onclick="nextOnboardingStep()">
-          ${gameState.onboardingStep < totalSteps - 1 ? 'Next →' : 'Choose Your Author →'}
-        </button>
-      </div>
-    </div>
-  `;
-}
-
-function getVisualMockup(visualType) {
-  const mockups = {
-    'preview-welcome': `
-      <div class="mockup-welcome-visual">
-        <img src="Images/burning-basilica.png" alt="Burning Basilica" class="welcome-basilica-img">
-      </div>
-    `,
-    'preview-stages': `
-      <div class="mockup-stages">
-        <div class="mockup-stage">1<br/>Choose</div>
-        <div class="mockup-arrow">→</div>
-        <div class="mockup-stage">2<br/>Structure</div>
-        <div class="mockup-arrow">→</div>
-        <div class="mockup-stage">3<br/>Write</div>
-        <div class="mockup-arrow">→</div>
-        <div class="mockup-stage">4<br/>Export</div>
-      </div>
-    `,
-    'preview-authors': `
-      <div class="mockup-authors">
-        <div class="mockup-author-card">
-          <img src="Images/eusebius.png" alt="Eusebius of Caesarea" class="mockup-portrait-img">
-          <div class="mockup-name">Eusebius</div>
-          <div class="mockup-date">303 CE</div>
-        </div>
-        <div class="mockup-author-card">
-          <img src="Images/augustine.png" alt="Augustine of Hippo" class="mockup-portrait-img">
-          <div class="mockup-name">Augustine</div>
-          <div class="mockup-date">397 CE</div>
-        </div>
-      </div>
-    `,
-    'preview-export': `
-      <div class="mockup-card">
-        <div class="mockup-title">Your Work</div>
-        <div class="mockup-body">
-          <div class="mockup-text-block"></div>
-          <div class="mockup-text-block"></div>
-          <div class="mockup-download-btn">↓ Download JSON</div>
-        </div>
-      </div>
-    `
-  };
-
-  return mockups[visualType] || '<div class="mockup-placeholder">Preview</div>';
-}
-
-function nextOnboardingStep() {
-  const totalSteps = onboardingContent.steps.length;
-
-  if (gameState.onboardingStep < totalSteps - 1) {
-    gameState.onboardingStep++;
-    saveGameState();
-    renderOnboarding();
-  } else {
-    // Finished onboarding, go to author choice
-    gameState.hasSeenOnboarding = true;
-    showAuthorChoice();
-  }
-}
-
-function previousOnboardingStep() {
-  if (gameState.onboardingStep > 0) {
-    gameState.onboardingStep--;
-    saveGameState();
-    renderOnboarding();
-  }
-}
-
-function skipOnboarding() {
-  gameState.hasSeenOnboarding = true;
-  saveGameState();
-  showAuthorChoice();
-}
-
-function skipToEusebius() {
-  showAuthorChoice();
-}
-
-// Author Choice
-function showAuthorChoice() {
-  gameState.currentStage = 'authorChoice';
-  saveGameState();
-  renderAuthorChoice();
-}
-
-function renderAuthorChoice() {
-  console.log('=== renderAuthorChoice called ===');
-  const content = authorChoiceContent;
-  const container = document.getElementById('game-container');
-
-  container.innerHTML = `
-    <div class="screen author-choice-screen fade-in">
-      <h1>${content.title}</h1>
-      <p class="subtitle">${content.subtitle}</p>
-      <p class="instruction">${content.instruction}</p>
+      <p class="welcome-instruction">${content.instruction}</p>
 
       <div class="author-cards">
         ${content.authors.map(author => `
@@ -1363,9 +1197,13 @@ function renderAuthorChoice() {
               <p class="author-context"><em>${author.context}</em></p>
               <p class="author-description">${author.description}</p>
             </div>
-            <button class="select-author-btn">Select ${author.name.split(' ')[0]} →</button>
+            <button class="select-author-btn">Begin as ${author.name.split(' ')[0]} →</button>
           </div>
         `).join('')}
+      </div>
+
+      <div class="title-footer">
+        <p>Bar-Ilan University • Introduction to Early Medieval Europe</p>
       </div>
     </div>
   `;
@@ -1373,1462 +1211,572 @@ function renderAuthorChoice() {
 
 function selectAuthor(authorId) {
   gameState.selectedAuthor = authorId;
+  gameState.currentStage = 'stage1';
+  gameState.choices = {};
   saveGameState();
 
   if (authorId === 'eusebius') {
-    showEusebiusBio();
-  } else if (authorId === 'augustine') {
-    showAugustineBio();
+    renderEusebiusStage1();
+  } else {
+    renderAugustineStage1();
   }
 }
 
-// Author Biography
-function showEusebiusBio() {
-  gameState.currentStage = 'bio';
-  saveGameState();
-  renderEusebiusBio();
-}
+// ===== SCREEN 2: EUSEBIUS STAGE 1 =====
 
-function renderEusebiusBio() {
-  const bio = eusebiusBio;
+function renderEusebiusStage1() {
   const container = document.getElementById('game-container');
+  const choices = gameState.choices;
+  const allChoicesMade = choices.emphasis && choices.protagonist && choices.violence && choices.endpoint;
+
+  // Build choice sections
+  const choiceSectionsHTML = stage1Content.choices.map((choice, idx) => {
+    const selectedOptionId = choices[choice.id];
+
+    // Insert mid-feedback after choice 2
+    let feedbackHTML = '';
+    if (idx === 1 && choices.emphasis && choices.protagonist) {
+      const feedback = stage1Content.midFeedback.getContent(choices);
+      feedbackHTML = `
+        <div class="inline-feedback fade-in">
+          <p class="feedback-note">${generateMidReflection(choices)}</p>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="choice-section" id="choice-section-${choice.id}">
+        <div class="choice-header">
+          <span class="choice-number">${choice.title}</span>
+        </div>
+        <div class="choice-context">
+          <p class="context-text">${choice.context}</p>
+        </div>
+        <h3 class="choice-question">${choice.question}</h3>
+        <div class="options-container">
+          ${choice.options.map(option => `
+            <div class="option-card ${selectedOptionId === option.id ? 'selected' : ''}"
+                 onclick="selectEusebiusChoice('${choice.id}', '${option.id}')">
+              <div class="option-main">${option.text}</div>
+              <div class="option-description">${option.description}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+      ${feedbackHTML}
+    `;
+  }).join('');
+
+  // Profile section (appears when all choices made)
+  let profileHTML = '';
+  if (allChoicesMade) {
+    const profile = generateNarrativeProfile(choices);
+    gameState.narrativeProfile = profile.name;
+    saveGameState();
+
+    profileHTML = `
+      <div class="stage-complete-section fade-in" id="profile-section">
+        <div class="feedback-box profile-box">
+          <h3>Your Authorial Profile: "${profile.name}"</h3>
+          <p>${profile.description}</p>
+        </div>
+        <div class="feedback-box reflection-box">
+          <h3>Reflection</h3>
+          ${profile.reflection.map(line => `<p class="prompt-line">${line}</p>`).join('')}
+        </div>
+        <button class="primary-button" onclick="proceedToStage2()">
+          Proceed to Stage 2: Structure Your Composition →
+        </button>
+      </div>
+    `;
+  }
 
   container.innerHTML = `
-    <div class="screen bio-screen fade-in">
-      <div class="bio-header">
-        <div class="bio-portrait">
-          <div class="portrait-placeholder">
-            ${bio.image}
-          </div>
-        </div>
-        <div class="bio-title">
-          <h1>${bio.name}</h1>
-          <p class="bio-dates">${bio.dates}</p>
-        </div>
+    <div class="screen fade-in">
+      <div class="stage-indicator">Stage 1 of 4: Compositional Choices</div>
+      <div class="intro-visual">
+        <img src="Images/persecution.png" alt="The Great Persecution" class="intro-illustration-img">
+      </div>
+      <h1>${stage1Content.intro.title}</h1>
+      ${stage1Content.intro.paragraphs.map(p => `<p>${p}</p>`).join('')}
+
+      <div class="all-choices">
+        ${choiceSectionsHTML}
       </div>
 
-      <div class="bio-content">
-        ${bio.paragraphs.map(p => `<p>${p}</p>`).join('')}
+      ${profileHTML}
 
-        <div class="bio-context">
-          <h3>Your Task</h3>
-          <p>${bio.context}</p>
-        </div>
-      </div>
-
-      <div class="bio-actions">
-        <button class="primary-button large-button" onclick="startEusebiusStage1()">
-          Begin Writing as Eusebius →
-        </button>
+      <div class="stage-actions" style="margin-top: 2rem;">
+        <button class="secondary-button" onclick="resetAndRestart()">Start Over</button>
       </div>
     </div>
   `;
 }
 
-function startEusebiusStage1() {
-  gameState.currentStage = 'intro';
+function selectEusebiusChoice(choiceId, optionId) {
+  gameState.choices[choiceId] = optionId;
   saveGameState();
-  renderIntro();
+  renderEusebiusStage1();
+
+  // Scroll to next unanswered choice or profile
+  setTimeout(() => {
+    const allChoicesMade = gameState.choices.emphasis && gameState.choices.protagonist &&
+                           gameState.choices.violence && gameState.choices.endpoint;
+    if (allChoicesMade) {
+      document.getElementById('profile-section')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      // Find next unanswered choice
+      const choiceIds = ['emphasis', 'protagonist', 'violence', 'endpoint'];
+      const nextUnanswered = choiceIds.find(id => !gameState.choices[id]);
+      if (nextUnanswered) {
+        document.getElementById(`choice-section-${nextUnanswered}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, 100);
 }
 
-function showAugustineBio() {
-  gameState.currentStage = 'bio';
-  saveGameState();
-  renderAugustineBio();
-}
+// ===== SCREEN 2: AUGUSTINE STAGE 1 =====
 
-function renderAugustineBio() {
-  const bio = augustineBio;
+function renderAugustineStage1() {
   const container = document.getElementById('game-container');
+  const choices = gameState.choices;
 
-  container.innerHTML = `
-    <div class="screen bio-screen fade-in">
-      <div class="bio-header">
-        <div class="bio-portrait">
-          <div class="portrait-placeholder">
-            ${bio.image}
-          </div>
-        </div>
-        <div class="bio-title">
-          <h1>${bio.name}</h1>
-          <p class="bio-dates">${bio.dates}</p>
-        </div>
-      </div>
+  // Determine progress
+  const hasPurpose = !!choices.mainPurpose;
+  const branchedQuestions = hasPurpose ? (augustineStage1Content.branchedQuestions[choices.mainPurpose] || []) : [];
+  const hasBranched1 = branchedQuestions.length > 0 && !!choices[branchedQuestions[0].id];
+  const hasBranched2 = branchedQuestions.length > 1 && !!choices[branchedQuestions[1].id];
+  const hasAllBranched = hasPurpose && hasBranched1 && hasBranched2;
+  const hasWill = !!choices.role_of_will;
+  const hasRevision = !!choices.revision_decision;
+  const allComplete = hasAllBranched && hasWill && hasRevision;
 
-      <div class="bio-content">
-        ${bio.paragraphs.map(p => `<p>${p}</p>`).join('')}
+  // Build context panels
+  const situationHTML = buildAugustineContextPanel(augustineStage1Content.situationScreen);
+  const eventHTML = buildAugustineEventPanel(augustineStage1Content.eventScreen);
 
-        <div class="bio-context">
-          <h3>Your Task</h3>
-          <p>${bio.context}</p>
-        </div>
-      </div>
+  // Main purpose choice
+  const purposeHTML = buildChoiceSection(
+    augustineStage1Content.mainPurposeChoice,
+    choices.mainPurpose,
+    'selectAugustineChoice'
+  );
 
-      <div class="bio-actions">
-        <button class="primary-button large-button" onclick="startAugustineStage1()">
-          Begin Writing as Augustine →
-        </button>
-      </div>
-    </div>
-  `;
-}
+  // Branched questions
+  let branchedHTML = '';
+  if (hasPurpose) {
+    branchedHTML = branchedQuestions.map(q => buildChoiceSection(
+      q, choices[q.id], 'selectAugustineChoice'
+    )).join('');
+  }
 
-function startAugustineStage1() {
-  gameState.currentStage = 'augustine_intro';
-  saveGameState();
-  renderAugustineIntro();
-}
-
-// ===== AUGUSTINE STAGE 1 RENDERING =====
-
-function renderAugustineIntro() {
-  const content = augustineStage1Content.intro;
-  const container = document.getElementById('game-container');
-
-  container.innerHTML = `
-    <div class="augustine-stage">
-      <div class="screen intro-screen fade-in">
-        <div class="stage-indicator">Stage 1: Authorial Choices</div>
-        <h1>${content.title}</h1>
-        ${content.paragraphs.map(p => `<p>${p}</p>`).join('')}
-
+  // New context + will + revision (progressive reveal)
+  let lateHTML = '';
+  if (hasAllBranched) {
+    // New context info
+    lateHTML += `
+      <div class="context-info-panel fade-in" id="pelagius-section">
+        <h3>${augustineStage1Content.newContextScreen.title}</h3>
         <div class="intro-visual">
-          <img src="Images/garden.png" alt="Garden in Milan" class="intro-illustration-img">
+          <img src="Images/pelagius.png" alt="Pelagius" class="intro-illustration-img" style="max-height:200px;">
         </div>
-
-        <button class="primary-button" onclick="showAugustineSituation()">${content.buttonText}</button>
+        ${augustineStage1Content.newContextScreen.paragraphs.map(p => `<p>${p}</p>`).join('')}
       </div>
-    </div>
-  `;
-}
+    `;
 
-function showAugustineSituation() {
-  gameState.currentStage = 'augustine_situation';
-  saveGameState();
-  renderAugustineSituation();
-}
+    // Will question
+    lateHTML += buildChoiceSection(
+      augustineStage1Content.willQuestionChoice,
+      choices.role_of_will,
+      'selectAugustineChoice',
+      augustineStage1Content.willQuestionChoice.context
+    );
+  }
 
-function renderAugustineSituation() {
-  const content = augustineStage1Content.situationScreen;
-  const container = document.getElementById('game-container');
+  if (hasWill) {
+    // Revision choice
+    const revisionContent = augustineStage1Content.revisionChoice;
+    const contextParagraphs = revisionContent.getContext(choices.mainPurpose);
+    lateHTML += buildChoiceSection(
+      revisionContent,
+      choices.revision_decision,
+      'selectAugustineChoice',
+      contextParagraphs
+    );
+  }
+
+  // Summary
+  let summaryHTML = '';
+  if (allComplete) {
+    const summaryContent = augustineStage1Content.finalSummary.getContent(choices);
+    summaryHTML = `
+      <div class="stage-complete-section fade-in" id="augustine-summary">
+        <div class="feedback-box">
+          <h3>Your Authorial Decisions</h3>
+          ${summaryContent.choicesSummary.map(line => `<p class="summary-line">✓ ${line}</p>`).join('')}
+        </div>
+        <button class="primary-button" onclick="proceedToStage2()">
+          Proceed to Stage 2: Structure Your Composition →
+        </button>
+      </div>
+    `;
+  }
 
   container.innerHTML = `
     <div class="augustine-stage">
       <div class="screen fade-in">
-        <div class="stage-indicator">Stage 1: Context</div>
-        <h2>${content.title}</h2>
-        ${content.paragraphs.map(p => `<p>${p}</p>`).join('')}
+        <div class="stage-indicator">Stage 1 of 4: Authorial Choices</div>
+        <h1>${augustineStage1Content.intro.title}</h1>
+        ${augustineStage1Content.intro.paragraphs.map(p => `<p>${p}</p>`).join('')}
 
-        <div class="feedback-box" style="margin-top: 24px;">
-          <h3>${content.contexts.personal.title}</h3>
-          <ul>
-            ${content.contexts.personal.items.map(item => `<li>${item}</li>`).join('')}
-          </ul>
+        ${situationHTML}
+        ${eventHTML}
+
+        <div class="all-choices">
+          ${purposeHTML}
+          ${branchedHTML}
+          ${lateHTML}
         </div>
 
-        <div class="feedback-box">
-          <h3>${content.contexts.historical.title}</h3>
-          <ul>
-            ${content.contexts.historical.items.map(item => `<li>${item}</li>`).join('')}
-          </ul>
+        ${summaryHTML}
+
+        <div class="stage-actions" style="margin-top: 2rem;">
+          <button class="secondary-button" onclick="resetAndRestart()">Start Over</button>
         </div>
-
-        <p style="margin-top: 24px; font-style: italic;">${content.closing}</p>
-
-        <button class="primary-button" onclick="showAugustineEvent()" style="margin-top: 24px;">${content.buttonText}</button>
       </div>
     </div>
   `;
 }
 
-function showAugustineEvent() {
-  gameState.currentStage = 'augustine_event';
-  saveGameState();
-  renderAugustineEvent();
-}
-
-function renderAugustineEvent() {
-  const content = augustineStage1Content.eventScreen;
-  const container = document.getElementById('game-container');
-
-  container.innerHTML = `
-    <div class="augustine-stage">
-    <div class="screen fade-in">
-      <div class="stage-indicator">Stage 1: The Event</div>
-      <h2>${content.title}</h2>
-      <p>${content.intro}</p>
-
-      <div class="feedback-box" style="margin-top: 24px;">
-        <ul>
-          ${content.events.map(event => `<li>${event}</li>`).join('')}
-        </ul>
+function buildAugustineContextPanel(screen) {
+  return `
+    <div class="context-info-panel">
+      <h3>${screen.title}</h3>
+      <div class="feedback-box">
+        <h4>${screen.contexts.personal.title}</h4>
+        <ul>${screen.contexts.personal.items.map(item => `<li>${item}</li>`).join('')}</ul>
       </div>
-
-      ${content.closing.map(p => `<p style="margin-top: 16px;">${p}</p>`).join('')}
-
-      <button class="primary-button" onclick="showAugustineMainPurpose()" style="margin-top: 24px;">${content.buttonText}</button>
-    </div>
+      <div class="feedback-box">
+        <h4>${screen.contexts.historical.title}</h4>
+        <ul>${screen.contexts.historical.items.map(item => `<li>${item}</li>`).join('')}</ul>
+      </div>
+      <p style="font-style: italic; margin-top: 12px;">${screen.closing}</p>
     </div>
   `;
 }
 
-function showAugustineMainPurpose() {
-  gameState.currentStage = 'augustine_mainpurpose';
-  saveGameState();
-  renderAugustineMainPurpose();
-}
-
-function renderAugustineMainPurpose() {
-  const choice = augustineStage1Content.mainPurposeChoice;
-  const container = document.getElementById('game-container');
-
-  container.innerHTML = `
-    <div class="augustine-stage">
-    <div class="screen choice-screen fade-in">
-      <div class="stage-indicator">Stage 1: Choose Your Purpose</div>
-      <h2>${choice.title}</h2>
-
-      <div class="choice-context">
-        <p class="context-text">${choice.context}</p>
-      </div>
-
-      <h3 class="choice-question">${choice.question}</h3>
-
-      <div class="options-container">
-        ${choice.options.map(option => `
-          <div class="option-card" onclick="selectAugustineMainPurpose('${option.id}')">
-            <div class="option-main">${option.text}</div>
-            <div class="option-description">${option.description}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-    </div>
-  `;
-}
-
-function selectAugustineMainPurpose(purposeId) {
-  gameState.choices.mainPurpose = purposeId;
-  saveGameState();
-
-  // Show first branched question for this purpose
-  gameState.augustineBranchedIndex = 0;
-  renderAugustineBranchedQuestion(purposeId, 0);
-}
-
-function renderAugustineBranchedQuestion(purposeId, questionIndex) {
-  const questions = augustineStage1Content.branchedQuestions[purposeId];
-  if (!questions || questionIndex >= questions.length) {
-    // Finished branched questions, move to new context
-    showAugustineNewContext();
-    return;
-  }
-
-  const question = questions[questionIndex];
-  const container = document.getElementById('game-container');
-
-  container.innerHTML = `
-    <div class="augustine-stage">
-    <div class="screen choice-screen fade-in">
-      <div class="stage-indicator">Stage 1: ${question.title}</div>
-
-      <div class="choice-context">
-        <p class="context-text">${question.context}</p>
-      </div>
-
-      <h3 class="choice-question">${question.question}</h3>
-
-      <div class="options-container">
-        ${question.options.map(option => `
-          <div class="option-card" onclick="selectAugustineBranchedOption('${question.id}', '${option.id}', '${purposeId}', ${questionIndex})">
-            <div class="option-main">${option.text}</div>
-            <div class="option-description">${option.description}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-    </div>
-  `;
-}
-
-function selectAugustineBranchedOption(questionId, optionId, purposeId, questionIndex) {
-  gameState.choices[questionId] = optionId;
-  saveGameState();
-
-  // Move to next question in this branch
-  renderAugustineBranchedQuestion(purposeId, questionIndex + 1);
-}
-
-function showAugustineNewContext() {
-  gameState.currentStage = 'augustine_newcontext';
-  saveGameState();
-  renderAugustineNewContext();
-}
-
-function renderAugustineNewContext() {
-  const content = augustineStage1Content.newContextScreen;
-  const container = document.getElementById('game-container');
-
-  container.innerHTML = `
-    <div class="augustine-stage">
-    <div class="screen fade-in">
-      <div class="stage-indicator">Stage 1: New Context</div>
-      <h2>${content.title}</h2>
-      ${content.paragraphs.map(p => `<p>${p}</p>`).join('')}
-
+function buildAugustineEventPanel(screen) {
+  return `
+    <div class="context-info-panel">
+      <h3>${screen.title}</h3>
       <div class="intro-visual">
-        <img src="Images/pelagius.png" alt="Pelagius Debate" class="intro-illustration-img">
+        <img src="Images/garden.png" alt="The Garden in Milan" class="intro-illustration-img" style="max-height:250px;">
       </div>
-
-      <button class="primary-button" onclick="showAugustineWillQuestion()" style="margin-top: 24px;">${content.buttonText}</button>
-    </div>
+      <p>${screen.intro}</p>
+      <div class="feedback-box">
+        <ul>${screen.events.map(event => `<li>${event}</li>`).join('')}</ul>
+      </div>
+      ${screen.closing.map(p => `<p>${p}</p>`).join('')}
     </div>
   `;
 }
 
-function showAugustineWillQuestion() {
-  gameState.currentStage = 'augustine_will';
-  saveGameState();
-  renderAugustineWillQuestion();
-}
+function buildChoiceSection(choiceData, selectedValue, handler, contextArray) {
+  const contextHTML = contextArray
+    ? `<div class="choice-context">${(Array.isArray(contextArray) ? contextArray : [contextArray]).map(p => `<p class="context-text">${p}</p>`).join('')}</div>`
+    : (choiceData.context && !Array.isArray(choiceData.context)
+        ? `<div class="choice-context"><p class="context-text">${choiceData.context}</p></div>`
+        : '');
 
-function renderAugustineWillQuestion() {
-  const choice = augustineStage1Content.willQuestionChoice;
-  const container = document.getElementById('game-container');
-
-  container.innerHTML = `
-    <div class="augustine-stage">
-    <div class="screen choice-screen fade-in">
-      <div class="stage-indicator">Stage 1: ${choice.title}</div>
-
-      <div class="choice-context">
-        ${choice.context.map(p => `<p class="context-text">${p}</p>`).join('')}
-      </div>
-
-      <h3 class="choice-question">${choice.question}</h3>
-
+  return `
+    <div class="choice-section" id="choice-section-${choiceData.id}">
+      <h3 class="choice-question">${choiceData.question}</h3>
+      ${contextHTML}
       <div class="options-container">
-        ${choice.options.map(option => `
-          <div class="option-card" onclick="selectAugustineWillOption('${option.id}')">
+        ${choiceData.options.map(option => `
+          <div class="option-card ${selectedValue === option.id ? 'selected' : ''}"
+               onclick="${handler}('${choiceData.id}', '${option.id}')">
             <div class="option-main">${option.text}</div>
             <div class="option-description">${option.description}</div>
           </div>
         `).join('')}
       </div>
     </div>
-    </div>
   `;
 }
 
-function selectAugustineWillOption(optionId) {
-  gameState.choices.role_of_will = optionId;
-  saveGameState();
-  showAugustineRevisionChoice();
-}
-
-function showAugustineRevisionChoice() {
-  gameState.currentStage = 'augustine_revision';
-  saveGameState();
-  renderAugustineRevisionChoice();
-}
-
-function renderAugustineRevisionChoice() {
-  const choice = augustineStage1Content.revisionChoice;
-  const contextParagraphs = choice.getContext(gameState.choices.mainPurpose);
-  const container = document.getElementById('game-container');
-
-  container.innerHTML = `
-    <div class="augustine-stage">
-    <div class="screen choice-screen fade-in">
-      <div class="stage-indicator">Stage 1: ${choice.title}</div>
-
-      <div class="choice-context">
-        ${contextParagraphs.map(p => `<p class="context-text">${p}</p>`).join('')}
-      </div>
-
-      <h3 class="choice-question">${choice.question}</h3>
-
-      <div class="options-container">
-        ${choice.options.map(option => `
-          <div class="option-card" onclick="selectAugustineRevisionOption('${option.id}')">
-            <div class="option-main">${option.text}</div>
-            <div class="option-description">${option.description}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-    </div>
-  `;
-}
-
-function selectAugustineRevisionOption(optionId) {
-  gameState.choices.revision_decision = optionId;
-  saveGameState();
-  renderAugustineFinalSummary();
-}
-
-function renderAugustineFinalSummary() {
-  const summary = augustineStage1Content.finalSummary;
-  const content = summary.getContent(gameState.choices);
-  const container = document.getElementById('game-container');
-
-  container.innerHTML = `
-    <div class="augustine-stage">
-    <div class="screen summary-screen fade-in">
-      <div class="stage-indicator">Stage 1 Complete</div>
-      <h2>${summary.title}</h2>
-
-      <div class="feedback-box">
-        <h3>Your Authorial Decisions</h3>
-        ${content.choicesSummary.map(line => `<p class="summary-line">✓ ${line}</p>`).join('')}
-      </div>
-
-      <div class="feedback-box reflection-box">
-        <h3>What This Means</h3>
-        <p>You've shaped your conversion story based on your purposes and contexts.</p>
-        <p class="prompt-line">→ Your original purpose: ${content.mainPurpose}</p>
-        <p class="prompt-line">→ Your theological position: ${content.willPosition}</p>
-        <p class="prompt-line">→ Your revision decision: ${content.revisionDecision}</p>
-        <p class="closing-prompt"><strong>Think about:</strong> How did changing circumstances and purposes shape how you told the same story?</p>
-      </div>
-
-      <button class="primary-button" onclick="proceedToAugustineStage2()">${summary.buttonText}</button>
-    </div>
-    </div>
-  `;
-}
-
-function proceedToAugustineStage2() {
-  gameState.currentStage = 'augustine_stage2';
-  // Reset Stage 2 state when entering fresh
-  gameState.selectedComponents = [];
-  gameState.componentSequence = [];
-  gameState.rationalization = '';
-  saveGameState();
-  renderAugustineStage2Intro();
-}
-
-// ===== AUGUSTINE STAGE 2 RENDERING =====
-
-function renderAugustineStage2Intro() {
-  const content = augustineStage2Content.intro;
-  const container = document.getElementById('game-container');
-
-  container.innerHTML = `
-    <div class="augustine-stage">
-    <div class="screen intro-screen fade-in">
-      <div class="stage-indicator">Stage 2 of 5: Structure Your Composition</div>
-      <h1>${content.title}</h1>
-      ${content.paragraphs.map(p => `<p>${p}</p>`).join('')}
-
-      <div class="intro-visual">
-        <img src="Images/confessions.png" alt="Augustine's Confessions" class="intro-illustration-img">
-      </div>
-
-      <button class="primary-button" onclick="renderAugustineComponentSelection()">${content.buttonText}</button>
-    </div>
-    </div>
-  `;
-}
-
-function getAugustineAvailableComponents() {
-  const components = [];
-  const choices = gameState.choices;
-
-  // Get components for each choice made in Augustine Stage 1
-  Object.keys(choices).forEach(choiceKey => {
-    const choiceValue = choices[choiceKey];
-    if (augustineStage2Content.componentsByChoice[choiceKey] &&
-        augustineStage2Content.componentsByChoice[choiceKey][choiceValue]) {
-      components.push(...augustineStage2Content.componentsByChoice[choiceKey][choiceValue]);
+function selectAugustineChoice(choiceId, optionId) {
+  // If changing main purpose, clear branched choices
+  if (choiceId === 'mainPurpose' && gameState.choices.mainPurpose !== optionId) {
+    const oldPurpose = gameState.choices.mainPurpose;
+    if (oldPurpose) {
+      const oldQuestions = augustineStage1Content.branchedQuestions[oldPurpose] || [];
+      oldQuestions.forEach(q => delete gameState.choices[q.id]);
     }
-  });
-
-  // Always add universal components
-  components.push(...augustineStage2Content.componentsByChoice.universal);
-
-  return components;
-}
-
-function renderAugustineComponentSelection() {
-  const components = getAugustineAvailableComponents();
-  const budget = augustineStage2Content.budget;
-  const container = document.getElementById('game-container');
-
-  // Clean up selectedComponents - remove duplicates and invalid IDs
-  const validComponentIds = new Set(components.map(c => c.id));
-  gameState.selectedComponents = [...new Set(gameState.selectedComponents)].filter(id => validComponentIds.has(id));
-  saveGameState();
-
-  container.innerHTML = `
-    <div class="augustine-stage">
-    <div class="screen component-selection-screen fade-in">
-      <div class="stage-indicator">Stage 2 of 5: Component Selection</div>
-      <h2>Select Your Narrative Components</h2>
-
-      <div class="budget-indicator">
-        <p><strong>${budget.message}</strong></p>
-        <p class="selection-count">Selected: <span id="selected-count">0</span> / ${budget.max}</p>
-      </div>
-
-      <div class="components-grid">
-        ${components.map(comp => `
-          <div class="component-item" data-component-id="${comp.id}">
-            <label class="component-label">
-              <input type="checkbox"
-                     class="component-checkbox"
-                     value="${comp.id}"
-                     onchange="toggleAugustineComponent('${comp.id}', this.checked)">
-              <span class="component-text">${comp.text}</span>
-            </label>
-          </div>
-        `).join('')}
-      </div>
-
-      <div class="component-actions">
-        <button class="primary-button" id="continue-to-sequencing" onclick="proceedToAugustineSequencing()" disabled>
-          Continue to Sequencing →
-        </button>
-        <p class="help-text" id="selection-help">Please select at least ${budget.min} components.</p>
-      </div>
-    </div>
-    </div>
-  `;
-
-  // Restore previous selections if any
-  if (gameState.selectedComponents.length > 0) {
-    gameState.selectedComponents.forEach(compId => {
-      const checkbox = container.querySelector(`input[value="${compId}"]`);
-      if (checkbox) checkbox.checked = true;
-    });
+    delete gameState.choices.role_of_will;
+    delete gameState.choices.revision_decision;
   }
 
-  // Update count after restoring
-  updateAugustineComponentCount();
-}
-
-function toggleAugustineComponent(componentId, isChecked) {
-  const budget = augustineStage2Content.budget;
-
-  if (isChecked) {
-    if (gameState.selectedComponents.length < budget.max) {
-      gameState.selectedComponents.push(componentId);
-    } else {
-      // Uncheck if over budget
-      const checkbox = document.querySelector(`input[value="${componentId}"]`);
-      if (checkbox) checkbox.checked = false;
-      return;
-    }
-  } else {
-    gameState.selectedComponents = gameState.selectedComponents.filter(id => id !== componentId);
-  }
-
-  updateAugustineComponentCount();
+  gameState.choices[choiceId] = optionId;
   saveGameState();
-}
+  renderAugustineStage1();
 
-function updateAugustineComponentCount() {
-  const budget = augustineStage2Content.budget;
-  const count = gameState.selectedComponents.length;
-  const countDisplay = document.getElementById('selected-count');
-  const continueBtn = document.getElementById('continue-to-sequencing');
-  const helpText = document.getElementById('selection-help');
-
-  if (countDisplay) countDisplay.textContent = count;
-
-  if (count >= budget.min && count <= budget.max) {
-    if (continueBtn) continueBtn.disabled = false;
-    if (helpText) helpText.textContent = `Good! You've selected ${count} components.`;
-  } else if (count < budget.min) {
-    if (continueBtn) continueBtn.disabled = true;
-    if (helpText) helpText.textContent = `Please select at least ${budget.min} components (${budget.min - count} more needed).`;
-  } else {
-    if (continueBtn) continueBtn.disabled = true;
-    if (helpText) helpText.textContent = `Maximum ${budget.max} components. Please deselect ${count - budget.max}.`;
-  }
-}
-
-function proceedToAugustineSequencing() {
-  if (gameState.selectedComponents.length < augustineStage2Content.budget.min) {
-    return;
-  }
-
-  // Initialize sequence if not already set
-  if (gameState.componentSequence.length === 0) {
-    gameState.componentSequence = [...gameState.selectedComponents];
-  }
-
-  saveGameState();
-  renderAugustineSequencing();
-}
-
-function renderAugustineSequencing() {
-  const components = getAugustineAvailableComponents();
-  const selectedComponentObjects = gameState.componentSequence
-    .map(id => components.find(c => c.id === id))
-    .filter(c => c !== undefined);
-
-  const container = document.getElementById('game-container');
-
-  container.innerHTML = `
-    <div class="augustine-stage">
-    <div class="screen sequencing-screen fade-in">
-      <div class="stage-indicator">Stage 2 of 5: Sequence Components</div>
-      <h2>Arrange Your Narrative Structure</h2>
-
-      <p class="instruction">Drag and drop to arrange your components in the order you want them to appear in your narrative.</p>
-
-      <div id="sequence-list" class="sequence-list">
-        ${selectedComponentObjects.map((comp, index) => `
-          <div class="sequence-item" draggable="true" data-component-id="${comp.id}" data-index="${index}">
-            <span class="sequence-number">${index + 1}</span>
-            <span class="sequence-text">${comp.text}</span>
-            <span class="drag-handle">⋮⋮</span>
-          </div>
-        `).join('')}
-      </div>
-
-      <div class="sequencing-actions">
-        <button class="secondary-button" onclick="renderAugustineComponentSelection()">← Back to Selection</button>
-        <button class="primary-button" onclick="proceedToAugustineRationalization()">Continue to Explanation →</button>
-      </div>
-    </div>
-    </div>
-  `;
-
-  // Add drag-and-drop functionality
-  initializeAugustineDragAndDrop();
-}
-
-function initializeAugustineDragAndDrop() {
-  const sequenceList = document.getElementById('sequence-list');
-  let draggedElement = null;
-
-  sequenceList.addEventListener('dragstart', (e) => {
-    if (e.target.classList.contains('sequence-item')) {
-      draggedElement = e.target;
-      e.target.classList.add('dragging');
-    }
-  });
-
-  sequenceList.addEventListener('dragend', (e) => {
-    if (e.target.classList.contains('sequence-item')) {
-      e.target.classList.remove('dragging');
-    }
-  });
-
-  sequenceList.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    const afterElement = getDragAfterElement(sequenceList, e.clientY);
-    if (afterElement == null) {
-      sequenceList.appendChild(draggedElement);
-    } else {
-      sequenceList.insertBefore(draggedElement, afterElement);
-    }
-  });
-
-  sequenceList.addEventListener('drop', (e) => {
-    e.preventDefault();
-    updateAugustineSequenceFromDOM();
-  });
-}
-
-function getDragAfterElement(container, y) {
-  const draggableElements = [...container.querySelectorAll('.sequence-item:not(.dragging)')];
-
-  return draggableElements.reduce((closest, child) => {
-    const box = child.getBoundingClientRect();
-    const offset = y - box.top - box.height / 2;
-
-    if (offset < 0 && offset > closest.offset) {
-      return { offset: offset, element: child };
-    } else {
-      return closest;
-    }
-  }, { offset: Number.NEGATIVE_INFINITY }).element;
-}
-
-function updateAugustineSequenceFromDOM() {
-  const sequenceItems = document.querySelectorAll('.sequence-item');
-  gameState.componentSequence = Array.from(sequenceItems).map(item => item.dataset.componentId);
-
-  // Update sequence numbers
-  sequenceItems.forEach((item, index) => {
-    const numberSpan = item.querySelector('.sequence-number');
-    if (numberSpan) numberSpan.textContent = index + 1;
-  });
-
-  saveGameState();
-}
-
-function proceedToAugustineRationalization() {
-  renderAugustineRationalization();
-}
-
-function renderAugustineRationalization() {
-  const prompt = augustineStage2Content.rationalizationPrompt;
-  const container = document.getElementById('game-container');
-
-  container.innerHTML = `
-    <div class="augustine-stage">
-    <div class="screen rationalization-screen fade-in">
-      <div class="stage-indicator">Stage 2 of 5: Explain Your Structure</div>
-      <h2>${prompt.title}</h2>
-
-      <div class="rationalization-prompt">
-        <h3>${prompt.question}</h3>
-        <p class="guidance">${prompt.guidance}</p>
-      </div>
-
-      <textarea
-        id="rationalization-input"
-        class="rationalization-textarea"
-        placeholder="${prompt.placeholder}"
-        maxlength="500"
-      >${gameState.rationalization || ''}</textarea>
-
-      <p class="char-count"><span id="char-count">0</span> / 500 characters</p>
-
-      <div class="rationalization-actions">
-        <button class="secondary-button" onclick="renderAugustineSequencing()">← Back to Sequencing</button>
-        <button class="primary-button" id="continue-to-summary" onclick="renderAugustineStage2Summary()" disabled>
-          Continue →
-        </button>
-      </div>
-    </div>
-    </div>
-  `;
-
-  // Add event listener for textarea
-  const textarea = document.getElementById('rationalization-input');
-  const charCount = document.getElementById('char-count');
-  const continueBtn = document.getElementById('continue-to-summary');
-
-  textarea.addEventListener('input', () => {
-    const length = textarea.value.length;
-    charCount.textContent = length;
-    gameState.rationalization = textarea.value;
-    saveGameState();
-
-    // Enable continue button if there's some text (at least 50 chars)
-    if (continueBtn) {
-      continueBtn.disabled = length < 50;
-    }
-  });
-
-  // Trigger initial count update
-  if (gameState.rationalization) {
-    charCount.textContent = gameState.rationalization.length;
-    if (continueBtn) {
-      continueBtn.disabled = gameState.rationalization.length < 50;
-    }
-  }
-}
-
-function renderAugustineStage2Summary() {
-  const components = getAugustineAvailableComponents();
-  const selectedComponentObjects = gameState.componentSequence
-    .map(id => components.find(c => c.id === id))
-    .filter(c => c !== undefined);
-
-  const container = document.getElementById('game-container');
-
-  container.innerHTML = `
-    <div class="augustine-stage">
-    <div class="screen summary-screen fade-in">
-      <div class="stage-indicator">Stage 2 Complete</div>
-      <h2>Your Narrative Structure</h2>
-
-      <div class="feedback-box">
-        <h3>Your Selected Components (in order)</h3>
-        <ol class="summary-sequence">
-          ${selectedComponentObjects.map(comp => `<li>${comp.text}</li>`).join('')}
-        </ol>
-      </div>
-
-      <div class="feedback-box">
-        <h3>Your Structural Reasoning</h3>
-        <p class="rationalization-display">"${gameState.rationalization}"</p>
-      </div>
-
-      <div class="feedback-box reflection-box">
-        <h3>What This Means</h3>
-        <p>You've created a deliberate compositional structure for your Confessions.</p>
-        <p class="prompt-line">→ The order of elements shapes how readers experience the story</p>
-        <p class="prompt-line">→ Your choices reflect your purposes from Stage 1</p>
-        <p class="prompt-line">→ Different sequences would create different theological and emotional effects</p>
-        <p class="closing-prompt"><strong>Think about:</strong> How does your structure serve the argument you want to make?</p>
-      </div>
-
-      <button class="primary-button" onclick="proceedToAugustineStage3()">Proceed to Stage 3: Write Your Confessions →</button>
-    </div>
-    </div>
-  `;
-}
-
-function proceedToAugustineStage3() {
-  gameState.currentStage = 'augustine_stage3';
-  // Clear narrative when entering Stage 3 fresh from Stage 2
-  gameState.studentNarrative = '';
-  saveGameState();
-  renderAugustineStage3Intro();
-}
-
-function renderAugustineStage3Intro() {
-  const content = augustineStage3Content.intro;
-  const container = document.getElementById('game-container');
-
-  container.innerHTML = `
-    <div class="augustine-stage">
-    <div class="screen intro-screen fade-in">
-      <div class="stage-indicator">Stage 3 of 5: Write Your Narrative</div>
-      <h2>${content.title}</h2>
-
-      ${content.paragraphs.map(p => `<p>${p}</p>`).join('')}
-
-      <div class="info-box">
-        <h3>Guidelines</h3>
-        <ul>
-          ${content.guidelines.map(g => `<li>${g}</li>`).join('')}
-        </ul>
-      </div>
-
-      <button class="primary-button" onclick="renderAugustineWritingInterface()">${content.buttonText}</button>
-    </div>
-    </div>
-  `;
-}
-
-function renderAugustineWritingInterface() {
-  const content = augustineStage3Content.writingPrompt;
-  const container = document.getElementById('game-container');
-
-  // Get the components and sequence from Stage 2
-  const allComponents = getAugustineAvailableComponents();
-  const sequencedComponents = gameState.componentSequence.map(id =>
-    allComponents.find(c => c.id === id)
-  ).filter(c => c !== undefined);
-
-  container.innerHTML = `
-    <div class="augustine-stage">
-    <div class="screen writing-screen fade-in">
-      <div class="stage-indicator">Stage 3 of 5: Write Your Confessions</div>
-      <h2>${content.title}</h2>
-      <p class="prompt-text">${content.prompt}</p>
-
-      <div class="writing-layout">
-        <div class="writing-main">
-          <div class="word-count-indicator">
-            <span id="word-count">0</span> words
-            <span class="target-indicator">(target: ${content.targetWords} words)</span>
-          </div>
-
-          <textarea
-            id="narrative-textarea"
-            class="narrative-textarea"
-            placeholder="${content.placeholder}"
-            oninput="handleAugustineNarrativeInput()"
-          >${gameState.studentNarrative}</textarea>
-
-          <div class="writing-actions">
-            <button class="secondary-button" onclick="renderAugustineStage2Summary()">← Back to Structure</button>
-            <button class="primary-button" id="continue-btn" onclick="validateAugustineAndContinue()" disabled>Continue to Export →</button>
-          </div>
-        </div>
-
-        <div class="writing-sidebar">
-          <div class="reference-box">
-            <h3>Your Structure Reference</h3>
-            <p class="helper-text">Follow this sequence as you write:</p>
-            <ol class="structure-reference-list">
-              ${sequencedComponents.map((comp, idx) => `
-                <li>
-                  <div class="reference-number">${idx + 1}</div>
-                  <div class="reference-text">${comp.text}</div>
-                </li>
-              `).join('')}
-            </ol>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
-  `;
-
-  // Initialize word count
-  updateAugustineWordCount();
-
-  // Focus on textarea
+  // Scroll to next section
   setTimeout(() => {
-    document.getElementById('narrative-textarea').focus();
+    const choices = gameState.choices;
+    const hasPurpose = !!choices.mainPurpose;
+    const branchedQuestions = hasPurpose ? (augustineStage1Content.branchedQuestions[choices.mainPurpose] || []) : [];
+    const hasBranched1 = branchedQuestions.length > 0 && !!choices[branchedQuestions[0].id];
+    const hasBranched2 = branchedQuestions.length > 1 && !!choices[branchedQuestions[1].id];
+    const hasAllBranched = hasPurpose && hasBranched1 && hasBranched2;
+    const hasWill = !!choices.role_of_will;
+    const hasRevision = !!choices.revision_decision;
+    const allComplete = hasAllBranched && hasWill && hasRevision;
+
+    if (allComplete) {
+      document.getElementById('augustine-summary')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else if (hasWill && !hasRevision) {
+      document.getElementById('choice-section-revision_decision')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (hasAllBranched && !hasWill) {
+      document.getElementById('pelagius-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (hasPurpose) {
+      // Find next unanswered branched question
+      const nextQ = branchedQuestions.find(q => !choices[q.id]);
+      if (nextQ) {
+        document.getElementById(`choice-section-${nextQ.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
   }, 100);
 }
 
-function handleAugustineNarrativeInput() {
-  const textarea = document.getElementById('narrative-textarea');
-  gameState.studentNarrative = textarea.value;
-  saveGameState();
-  updateAugustineWordCount();
-}
-
-function updateAugustineWordCount() {
-  const text = gameState.studentNarrative.trim();
-  const wordCount = text === '' ? 0 : text.split(/\s+/).length;
-  const wordCountEl = document.getElementById('word-count');
-  const continueBtn = document.getElementById('continue-btn');
-
-  if (wordCountEl) {
-    wordCountEl.textContent = wordCount;
-
-    // Update color based on target
-    const minWords = augustineStage3Content.writingPrompt.minWords;
-    const targetWords = augustineStage3Content.writingPrompt.targetWords;
-    const maxWords = augustineStage3Content.writingPrompt.maxWords;
-
-    if (wordCount < minWords) {
-      wordCountEl.style.color = '#dc2626'; // red
-    } else if (wordCount >= minWords && wordCount <= maxWords) {
-      wordCountEl.style.color = '#059669'; // green
-    } else {
-      wordCountEl.style.color = '#d97706'; // orange
-    }
-  }
-
-  // Enable/disable continue button
-  if (continueBtn) {
-    continueBtn.disabled = wordCount < augustineStage3Content.writingPrompt.minWords;
-  }
-}
-
-function validateAugustineAndContinue() {
-  const text = gameState.studentNarrative.trim();
-  const wordCount = text === '' ? 0 : text.split(/\s+/).length;
-  const minWords = augustineStage3Content.writingPrompt.minWords;
-
-  if (wordCount < minWords) {
-    alert(`Please write at least ${minWords} words before continuing.`);
-    return;
-  }
-
-  proceedToAugustineStage4();
-}
-
-function proceedToAugustineStage4() {
-  gameState.currentStage = 'augustine_stage4';
-  saveGameState();
-  renderAugustineStage4Export();
-}
-
-function renderAugustineStage4Export() {
-  const container = document.getElementById('game-container');
-
-  // Get all components for display
-  const allComponents = getAugustineAvailableComponents();
-  const sequencedComponents = gameState.componentSequence.map(id =>
-    allComponents.find(c => c.id === id)
-  ).filter(c => c !== undefined);
-
-  // Calculate word count
-  const text = gameState.studentNarrative.trim();
-  const wordCount = text === '' ? 0 : text.split(/\s+/).length;
-
-  // Get Stage 1 choices summary
-  const choicesSummary = [
-    { label: "Main Purpose", value: gameState.choices.mainPurpose },
-    { label: "Role of Will", value: gameState.choices.role_of_will },
-    { label: "Revision Decision", value: gameState.choices.revision_decision }
-  ];
-
-  // Add branched choices based on main purpose
-  const mainPurpose = gameState.choices.mainPurpose;
-  if (mainPurpose === 'personal') {
-    choicesSummary.push(
-      { label: "Tears Meaning", value: gameState.choices.tears_meaning },
-      { label: "Voice Source", value: gameState.choices.voice_source }
-    );
-  } else if (mainPurpose === 'antiManichaean') {
-    choicesSummary.push(
-      { label: "Manichaeism Failure", value: gameState.choices.manichaeism_failure },
-      { label: "Romans Passage", value: gameState.choices.romans_passage }
-    );
-  } else if (mainPurpose === 'teaching') {
-    choicesSummary.push(
-      { label: "Conversion Timing", value: gameState.choices.conversion_timing },
-      { label: "Community Impact", value: gameState.choices.community_impact }
-    );
-  }
-
-  const stage1Summary = choicesSummary.map(choice =>
-    `<p class="summary-line"><strong>${choice.label}:</strong> ${choice.value}</p>`
-  ).join('');
-
-  container.innerHTML = `
-    <div class="augustine-stage">
-    <div class="screen export-screen fade-in">
-      <div class="stage-indicator">Stage 4 of 5: Export Your Work</div>
-      <h2>Your Complete Confessions Summary</h2>
-
-      <div class="export-intro">
-        <p>You've completed the composition process as Augustine. Review your work below and download it for submission.</p>
-      </div>
-
-      <div class="feedback-box">
-        <h3>Stage 1: Your Compositional Decisions</h3>
-        ${stage1Summary}
-      </div>
-
-      <div class="feedback-box">
-        <h3>Stage 2: Your Narrative Structure</h3>
-        <p><strong>Selected Components (${sequencedComponents.length}):</strong></p>
-        <ol class="structure-list compact-list">
-          ${sequencedComponents.map(comp => `
-            <li><strong>${comp.text}</strong> <span class="category-tag">(${comp.category})</span></li>
-          `).join('')}
-        </ol>
-        <div class="rationalization-summary">
-          <p><strong>Your Structural Reasoning:</strong></p>
-          <p class="quoted-text">"${gameState.rationalization}"</p>
-        </div>
-      </div>
-
-      <div class="feedback-box">
-        <h3>Stage 3: Your Confessions Narrative (${wordCount} words)</h3>
-        <div class="narrative-display">
-          ${gameState.studentNarrative.split('\n').map(para => `<p>${para}</p>`).join('')}
-        </div>
-      </div>
-
-      <div class="export-actions">
-        <button class="secondary-button" onclick="renderAugustineWritingInterface()">← Edit Narrative</button>
-        <button class="primary-button" onclick="downloadAugustineWork()">Download Complete Work</button>
-      </div>
-
-      <div class="reflection-box final-reflection">
-        <h3>Reflection on Your Compositional Process</h3>
-        <p>You've just experienced what Augustine did in 397 CE: shaping a memory into a narrative.</p>
-        <p class="prompt-line">→ Your choices about purpose shaped what components you selected</p>
-        <p class="prompt-line">→ Your component sequence shaped how the story unfolds</p>
-        <p class="prompt-line">→ Your theological position shaped how you explained the conversion</p>
-        <p class="closing-prompt"><strong>Think about:</strong> If you wrote this story again with different purposes or in different contexts, how would it change? This is what ancient authors experienced constantly.</p>
-      </div>
-
-      <button class="primary-button" onclick="showAuthorChoice()" style="margin-top: 24px;">← Return to Author Choice</button>
-    </div>
-    </div>
-  `;
-}
-
-function downloadAugustineWork() {
-  // Calculate word count
-  const text = gameState.studentNarrative.trim();
-  const wordCount = text === '' ? 0 : text.split(/\s+/).length;
-
-  // Get all components for export
-  const allComponents = getAugustineAvailableComponents();
-  const sequencedComponents = gameState.componentSequence.map(id => {
-    const comp = allComponents.find(c => c.id === id);
-    return comp ? { id: comp.id, text: comp.text, category: comp.category } : null;
-  }).filter(c => c !== null);
-
-  // Get readable choice labels (Augustine-specific)
-  const stage1ChoicesReadable = {
-    mainPurpose: gameState.choices.mainPurpose,
-    role_of_will: gameState.choices.role_of_will,
-    revision_decision: gameState.choices.revision_decision
-  };
-
-  // Add branched choices based on main purpose
-  const mainPurpose = gameState.choices.mainPurpose;
-  if (mainPurpose === 'personal') {
-    stage1ChoicesReadable.tears_meaning = gameState.choices.tears_meaning;
-    stage1ChoicesReadable.voice_source = gameState.choices.voice_source;
-  } else if (mainPurpose === 'antiManichaean') {
-    stage1ChoicesReadable.manichaeism_failure = gameState.choices.manichaeism_failure;
-    stage1ChoicesReadable.romans_passage = gameState.choices.romans_passage;
-  } else if (mainPurpose === 'teaching') {
-    stage1ChoicesReadable.conversion_timing = gameState.choices.conversion_timing;
-    stage1ChoicesReadable.community_impact = gameState.choices.community_impact;
-  }
-
-  // Create JSON structure
-  const exportData = {
-    metadata: {
-      author: "Augustine of Hippo",
-      timestamp: new Date().toISOString(),
-      dateCompleted: new Date().toLocaleString(),
-      wordCount: wordCount,
-      version: "1.0"
-    },
-    stage1: {
-      choices: gameState.choices,
-      choicesReadable: stage1ChoicesReadable
-    },
-    stage2: {
-      selectedComponentIds: gameState.selectedComponents,
-      componentSequence: sequencedComponents,
-      rationalization: gameState.rationalization
-    },
-    stage3: {
-      narrative: gameState.studentNarrative,
-      wordCount: wordCount
-    }
-  };
-
-  // Convert to JSON string with nice formatting
-  const jsonString = JSON.stringify(exportData, null, 2);
-
-  // Create blob and download
-  const blob = new Blob([jsonString], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `shaping-history-augustine-${Date.now()}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-
-  // Show confirmation
-  showDownloadConfirmation();
-}
-
-// ===== EUSEBIUS STAGE 1 RENDERING =====
-
-function renderIntro() {
-  const content = stage1Content.intro;
-  const container = document.getElementById('game-container');
-
-  container.innerHTML = `
-    <div class="screen intro-screen fade-in">
-      <div class="stage-indicator">Stage 1 of 5: Multiple Choice</div>
-      <h1>${content.title}</h1>
-      ${content.paragraphs.map(p => `<p>${p}</p>`).join('')}
-
-      <div class="intro-visual">
-        <img src="Images/persecution.png" alt="Persecution Scene" class="intro-illustration-img">
-      </div>
-
-      <button class="primary-button" onclick="startStage1()">${content.buttonText}</button>
-    </div>
-  `;
-}
-
-function startStage1() {
-  gameState.currentStage = 'stage1';
-  gameState.currentScreen = 0;
-  renderChoice(0);
-}
-
-function renderChoice(choiceIndex) {
-  const choice = stage1Content.choices[choiceIndex];
-  const container = document.getElementById('game-container');
-
-  container.innerHTML = `
-    
-    <div class="screen choice-screen fade-in">
-      <div class="stage-indicator">Stage 1 of 5: Multiple Choice</div>
-      <div class="choice-header">
-        <span class="choice-number">${choice.title}</span>
-      </div>
-
-      <div class="choice-context">
-        <p class="context-text">${choice.context}</p>
-      </div>
-
-      <h2 class="choice-question">${choice.question}</h2>
-
-      <div class="options-container">
-        ${choice.options.map(option => `
-          <div class="option-card" onclick="selectOption('${choice.id}', '${option.id}', ${choiceIndex})">
-            <div class="option-main">${option.text}</div>
-            <div class="option-description">${option.description}</div>
-          </div>
-        `).join('')}
-      </div>
-  `;
-}
-
-function selectOption(choiceId, optionId, choiceIndex) {
-  // Save choice
-  gameState.choices[choiceId] = optionId;
-  saveGameState();
-
-  // Determine next screen
-  if (choiceIndex === 1) {
-    // After 2 choices, show mid-feedback
-    renderMidFeedback();
-  } else if (choiceIndex === 3) {
-    // After 4 choices, show final summary
-    renderFinalSummary();
-  } else {
-    // Move to next choice
-    renderChoice(choiceIndex + 1);
-  }
-}
-
-function renderMidFeedback() {
-  const feedback = stage1Content.midFeedback;
-  const content = feedback.getContent(gameState.choices);
-  const container = document.getElementById('game-container');
-
-  container.innerHTML = `
-    
-    <div class="screen feedback-screen fade-in">
-      <div class="stage-indicator">Stage 1 of 5: Multiple Choice</div>
-      <h2>${feedback.title}</h2>
-
-      <div class="feedback-box summary-box">
-        ${content.summary.map(line => `<p class="summary-line"><strong>${line}</strong></p>`).join('')}
-      </div>
-
-      <div class="feedback-box reflection-box">
-        <h3>Reflection Prompt</h3>
-        ${content.reflection.map(line => `<p>${line}</p>`).join('')}
-      </div>
-
-      <div class="feedback-box prompts-box">
-        ${content.prompts.map(prompt => `<p class="prompt-line">${prompt}</p>`).join('')}
-      </div>
-
-      <button class="primary-button" onclick="renderChoice(2)">${feedback.buttonText}</button>
-  `;
-}
-
-function renderFinalSummary() {
-  const summary = stage1Content.finalSummary;
-  const content = summary.getContent(gameState.choices);
-  const container = document.getElementById('game-container');
-
-  container.innerHTML = `
-    
-    <div class="screen summary-screen fade-in">
-      <div class="stage-indicator">Stage 1 Complete</div>
-      <h2>${summary.title}</h2>
-
-      <div class="feedback-box profile-box">
-        <h3>Your Authorial Profile: "${content.profileName}"</h3>
-      </div>
-
-      <div class="feedback-box choices-summary">
-        <h3>Your Compositional Decisions</h3>
-        ${content.choicesSummary.map(line => `<p class="summary-line">✓ ${line}</p>`).join('')}
-      </div>
-
-      <div class="feedback-box descriptive-box">
-        <h3>What This Means</h3>
-        <p>${content.descriptive}</p>
-      </div>
-
-      <div class="feedback-box reflection-box">
-        <h3>Reflection</h3>
-        ${content.reflection.map(line => `<p class="prompt-line">${line}</p>`).join('')}
-        <p class="closing-prompt"><strong>Think about:</strong> How would this same event look if you wrote about it 10 years later, after Constantine's victory?</p>
-      </div>
-
-      <button class="primary-button" onclick="proceedToStage2()">${summary.buttonText}</button>
-  `;
-}
-
-// ===== STAGE 2 FUNCTIONS =====
+// ===== SCREEN 3: STAGE 2 - BUILD STRUCTURE =====
 
 function proceedToStage2() {
   gameState.currentStage = 'stage2';
-  // Reset Stage 2 state when entering fresh
   gameState.selectedComponents = [];
   gameState.componentSequence = [];
   gameState.rationalization = '';
   saveGameState();
-  renderStage2Intro();
+  renderStage2();
 }
 
-function renderStage2Intro() {
-  const content = stage2Content.intro;
+function renderStage2() {
   const container = document.getElementById('game-container');
+  const components = getAllComponents();
+  const budget = getBudget();
+  const prompt = getRationalizationPrompt();
+  const isAugustine = gameState.selectedAuthor === 'augustine';
 
-  container.innerHTML = `
-    
-    <div class="screen intro-screen fade-in">
-      <div class="stage-indicator">Stage 2 of 5: Structure Your Composition</div>
-      <h1>${content.title}</h1>
-      ${content.paragraphs.map(p => `<p>${p}</p>`).join('')}
-      <button class="primary-button" onclick="renderComponentSelection()">${content.buttonText}</button>
-  `;
-}
-
-function getAvailableComponents() {
-  const components = [];
-  const choices = gameState.choices;
-
-  // Get components for each choice made in Stage 1
-  Object.keys(choices).forEach(choiceKey => {
-    const choiceValue = choices[choiceKey];
-    if (stage2Content.componentsByChoice[choiceKey] && stage2Content.componentsByChoice[choiceKey][choiceValue]) {
-      components.push(...stage2Content.componentsByChoice[choiceKey][choiceValue]);
-    }
-  });
-
-  return components;
-}
-
-function renderComponentSelection() {
-  const components = getAvailableComponents();
-  const budget = stage2Content.budget;
-  const container = document.getElementById('game-container');
-
-  // Clean up selectedComponents - remove duplicates and invalid IDs
+  // Clean up selected components
   const validComponentIds = new Set(components.map(c => c.id));
   gameState.selectedComponents = [...new Set(gameState.selectedComponents)].filter(id => validComponentIds.has(id));
+  gameState.componentSequence = gameState.componentSequence.filter(id => validComponentIds.has(id));
   saveGameState();
 
+  const count = gameState.selectedComponents.length;
+  const hasEnoughSelected = count >= budget.min && count <= budget.max;
+
+  // Build sequence items
+  const sequenceHTML = hasEnoughSelected ? buildSequenceList() : `<p class="help-text">Select at least ${budget.min} components above to begin arranging.</p>`;
+
+  // Continue button state
+  const canContinue = hasEnoughSelected && gameState.rationalization.trim().length >= 20;
+
   container.innerHTML = `
-    
-    <div class="screen component-selection-screen fade-in">
-      <div class="stage-indicator">Stage 2 of 5: Component Selection</div>
-      <h2>Select Your Narrative Components</h2>
+    <div class="${isAugustine ? 'augustine-stage' : ''}">
+    <div class="screen fade-in">
+      <div class="stage-indicator">Stage 2 of 4: Structure Your Composition</div>
+      <h2>${isAugustine ? 'Structure Your Confessions' : 'Structure Your Composition'}</h2>
 
-      <div class="budget-indicator">
-        <p><strong>${budget.message}</strong></p>
-        <p class="selection-count">Selected: <span id="selected-count">0</span> / ${budget.max}</p>
+      <!-- Section 1: Select Components -->
+      <div class="stage2-section" id="selection-section">
+        <h3>1. Select Your Narrative Components</h3>
+        <div class="budget-indicator">
+          <p><strong>${budget.message}</strong></p>
+          <p class="selection-count">Selected: <span id="selected-count">${count}</span> / ${budget.max}</p>
+        </div>
+        <div class="components-grid">
+          ${components.map(comp => `
+            <div class="component-item" data-component-id="${comp.id}">
+              <label class="component-label">
+                <input type="checkbox"
+                       class="component-checkbox"
+                       value="${comp.id}"
+                       ${gameState.selectedComponents.includes(comp.id) ? 'checked' : ''}
+                       onchange="toggleComponent('${comp.id}', this.checked)">
+                <span class="component-text">${comp.text}</span>
+              </label>
+            </div>
+          `).join('')}
+        </div>
+        <p class="help-text" id="selection-help">${getSelectionHelpText(count, budget)}</p>
       </div>
 
-      <div class="components-grid">
-        ${components.map(comp => `
-          <div class="component-item" data-component-id="${comp.id}">
-            <label class="component-label">
-              <input type="checkbox"
-                     class="component-checkbox"
-                     value="${comp.id}"
-                     onchange="toggleComponent('${comp.id}', this.checked)">
-              <span class="component-text">${comp.text}</span>
-            </label>
-          </div>
-        `).join('')}
+      <!-- Section 2: Sequence -->
+      <div class="stage2-section ${hasEnoughSelected ? '' : 'section-disabled'}" id="sequencing-section">
+        <h3>2. Arrange Your Narrative Structure</h3>
+        <p class="instruction">Drag and drop to arrange components in the order they'll appear in your narrative.</p>
+        <div class="sequence-container" id="sequence-container">
+          ${sequenceHTML}
+        </div>
       </div>
 
-      <div class="component-actions">
-        <button class="primary-button" id="continue-to-sequencing" onclick="proceedToSequencing()" disabled>
-          Continue to Sequencing →
+      <!-- Section 3: Explain -->
+      <div class="stage2-section ${hasEnoughSelected ? '' : 'section-disabled'}" id="rationalization-section">
+        <h3>3. ${prompt.title}</h3>
+        <div class="rationalization-prompt">
+          <p class="guidance">${prompt.guidance}</p>
+        </div>
+        <textarea
+          id="rationalization-input"
+          class="rationalization-textarea"
+          placeholder="${prompt.placeholder}"
+          maxlength="500"
+          oninput="updateRationalization(this.value)"
+          ${hasEnoughSelected ? '' : 'disabled'}
+        >${gameState.rationalization || ''}</textarea>
+      </div>
+
+      <!-- Continue -->
+      <div class="stage-actions">
+        <button class="secondary-button" onclick="resetAndRestart()">Start Over</button>
+        <button class="secondary-button" onclick="backToStage1()">← Back to Choices</button>
+        <button class="primary-button" id="continue-to-stage3" onclick="proceedToStage3()" ${canContinue ? '' : 'disabled'}>
+          Proceed to Stage 3: Write Your Narrative →
         </button>
-        <p class="help-text" id="selection-help">Please select at least ${budget.min} components.</p>
       </div>
+    </div>
+    </div>
   `;
 
-  // Restore previous selections if any
-  if (gameState.selectedComponents.length > 0) {
-    gameState.selectedComponents.forEach(compId => {
-      const checkbox = container.querySelector(`input[value="${compId}"]`);
-      if (checkbox) checkbox.checked = true;
-    });
+  // Initialize drag and drop if sequence is ready
+  if (hasEnoughSelected) {
+    initializeDragAndDrop();
   }
+}
 
-  // Update count after restoring
-  updateComponentCount();
+function getSelectionHelpText(count, budget) {
+  if (count < budget.min) return `Please select at least ${budget.min} components (${budget.min - count} more needed).`;
+  if (count > budget.max) return `Maximum ${budget.max} components. Please deselect ${count - budget.max}.`;
+  return `Good! You've selected ${count} components.`;
+}
+
+function buildSequenceList() {
+  const components = getAllComponents();
+  const sequencedComponents = gameState.componentSequence
+    .map(id => components.find(c => c.id === id))
+    .filter(c => c !== undefined);
+
+  return sequencedComponents.map((comp, index) => `
+    <div class="sequence-item" draggable="true" data-component-id="${comp.id}" data-index="${index}">
+      <div class="sequence-number">${index + 1}</div>
+      <div class="sequence-content">
+        <div class="sequence-text">${comp.text}</div>
+        <div class="sequence-category">${comp.category}</div>
+      </div>
+      <div class="sequence-handle">⋮⋮</div>
+    </div>
+  `).join('');
 }
 
 function toggleComponent(componentId, isChecked) {
-  const budget = stage2Content.budget;
+  const budget = getBudget();
 
   if (isChecked) {
     if (gameState.selectedComponents.length < budget.max) {
       gameState.selectedComponents.push(componentId);
+      if (!gameState.componentSequence.includes(componentId)) {
+        gameState.componentSequence.push(componentId);
+      }
     } else {
-      // Uncheck if over budget
       const checkbox = document.querySelector(`input[value="${componentId}"]`);
       if (checkbox) checkbox.checked = false;
       return;
     }
   } else {
     gameState.selectedComponents = gameState.selectedComponents.filter(id => id !== componentId);
+    gameState.componentSequence = gameState.componentSequence.filter(id => id !== componentId);
   }
 
-  updateComponentCount();
   saveGameState();
+  updateStage2UI();
 }
 
-function updateComponentCount() {
-  const budget = stage2Content.budget;
+function updateStage2UI() {
+  const budget = getBudget();
   const count = gameState.selectedComponents.length;
-  const countDisplay = document.getElementById('selected-count');
-  const continueBtn = document.getElementById('continue-to-sequencing');
-  const helpText = document.getElementById('selection-help');
+  const hasEnough = count >= budget.min && count <= budget.max;
 
-  if (countDisplay) countDisplay.textContent = count;
+  // Update count
+  const countEl = document.getElementById('selected-count');
+  if (countEl) countEl.textContent = count;
 
-  if (count >= budget.min && count <= budget.max) {
-    if (continueBtn) continueBtn.disabled = false;
-    if (helpText) helpText.textContent = `Good! You've selected ${count} components.`;
-  } else if (count < budget.min) {
-    if (continueBtn) continueBtn.disabled = true;
-    if (helpText) helpText.textContent = `Please select at least ${budget.min} components (${budget.min - count} more needed).`;
+  // Update help text
+  const helpEl = document.getElementById('selection-help');
+  if (helpEl) helpEl.textContent = getSelectionHelpText(count, budget);
+
+  // Update sequencing section
+  const seqSection = document.getElementById('sequencing-section');
+  const seqContainer = document.getElementById('sequence-container');
+  const ratSection = document.getElementById('rationalization-section');
+  const ratInput = document.getElementById('rationalization-input');
+
+  if (hasEnough) {
+    seqSection?.classList.remove('section-disabled');
+    ratSection?.classList.remove('section-disabled');
+    if (ratInput) ratInput.disabled = false;
+    if (seqContainer) {
+      seqContainer.innerHTML = buildSequenceList();
+      initializeDragAndDrop();
+    }
   } else {
-    if (continueBtn) continueBtn.disabled = true;
-    if (helpText) helpText.textContent = `Maximum ${budget.max} components. Please deselect ${count - budget.max}.`;
+    seqSection?.classList.add('section-disabled');
+    ratSection?.classList.add('section-disabled');
+    if (ratInput) ratInput.disabled = true;
+    if (seqContainer) {
+      seqContainer.innerHTML = `<p class="help-text">Select at least ${budget.min} components above to begin arranging.</p>`;
+    }
   }
+
+  // Update continue button
+  updateStage2ContinueButton();
 }
 
-function proceedToSequencing() {
-  if (gameState.selectedComponents.length < stage2Content.budget.min) {
-    return;
-  }
-
-  // Initialize sequence if not already set
-  if (gameState.componentSequence.length === 0) {
-    gameState.componentSequence = [...gameState.selectedComponents];
-  }
-
+function updateRationalization(value) {
+  gameState.rationalization = value;
   saveGameState();
-  renderSequencing();
+  updateStage2ContinueButton();
 }
 
-function renderSequencing() {
-  const container = document.getElementById('game-container');
-  const allComponents = getAvailableComponents();
-  const sequencedComponents = gameState.componentSequence.map(id =>
-    allComponents.find(c => c.id === id)
-  ).filter(c => c !== undefined);
-
-  container.innerHTML = `
-    
-    <div class="screen sequencing-screen fade-in">
-      <div class="stage-indicator">Stage 2 of 5: Sequence Components</div>
-      <h2>Arrange Your Components in Order</h2>
-
-      <p class="instruction">Drag and drop the components to arrange them in the order they will appear in your narrative. The first component will set the tone; the last will conclude your account.</p>
-
-      <div class="sequence-container" id="sequence-container">
-        ${sequencedComponents.map((comp, index) => `
-          <div class="sequence-item" draggable="true" data-component-id="${comp.id}" data-index="${index}">
-            <div class="sequence-number">${index + 1}</div>
-            <div class="sequence-content">
-              <div class="sequence-text">${comp.text}</div>
-              <div class="sequence-category">${comp.category}</div>
-            </div>
-            <div class="sequence-handle">⋮⋮</div>
-          </div>
-        `).join('')}
-      </div>
-
-      <div class="sequencing-actions">
-        <button class="secondary-button" onclick="renderComponentSelection()">← Back to Selection</button>
-        <button class="primary-button" onclick="proceedToRationalization()">Continue to Explanation →</button>
-      </div>
-  `;
-
-  // Initialize drag and drop
-  initializeDragAndDrop();
+function updateStage2ContinueButton() {
+  const budget = getBudget();
+  const count = gameState.selectedComponents.length;
+  const hasEnough = count >= budget.min && count <= budget.max;
+  const hasRationalization = gameState.rationalization.trim().length >= 20;
+  const btn = document.getElementById('continue-to-stage3');
+  if (btn) btn.disabled = !(hasEnough && hasRationalization);
 }
 
+function backToStage1() {
+  gameState.currentStage = 'stage1';
+  saveGameState();
+  if (gameState.selectedAuthor === 'augustine') {
+    renderAugustineStage1();
+  } else {
+    renderEusebiusStage1();
+  }
+}
+
+// Drag and drop
 function initializeDragAndDrop() {
   const container = document.getElementById('sequence-container');
   if (!container) return;
 
   let draggedElement = null;
-  let draggedIndex = null;
 
   container.addEventListener('dragstart', (e) => {
     if (e.target.classList.contains('sequence-item')) {
       draggedElement = e.target;
-      draggedIndex = parseInt(e.target.dataset.index);
       e.target.style.opacity = '0.5';
     }
   });
@@ -2877,8 +1825,6 @@ function updateSequenceFromDOM() {
   items.forEach((item, index) => {
     const compId = item.dataset.componentId;
     newSequence.push(compId);
-
-    // Update visual numbering
     const numberEl = item.querySelector('.sequence-number');
     if (numberEl) numberEl.textContent = index + 1;
     item.dataset.index = index;
@@ -2888,209 +1834,57 @@ function updateSequenceFromDOM() {
   saveGameState();
 }
 
-function proceedToRationalization() {
-  renderRationalization();
-}
-
-function renderRationalization() {
-  const prompt = stage2Content.rationalizationPrompt;
-  const container = document.getElementById('game-container');
-  const allComponents = getAvailableComponents();
-  const sequencedComponents = gameState.componentSequence.map(id =>
-    allComponents.find(c => c.id === id)
-  ).filter(c => c !== undefined);
-
-  container.innerHTML = `
-    
-    <div class="screen rationalization-screen fade-in">
-      <div class="stage-indicator">Stage 2 of 5: Explain Your Structure</div>
-      <h2>${prompt.title}</h2>
-
-      <div class="feedback-box">
-        <h3>Your Narrative Sequence</h3>
-        <ol class="structure-list compact-list">
-          ${sequencedComponents.map(comp => `
-            <li><strong>${comp.text}</strong> <span class="category-tag">(${comp.category})</span></li>
-          `).join('')}
-        </ol>
-      </div>
-
-      <div class="rationalization-prompt">
-        <h3>${prompt.question}</h3>
-        <p class="guidance">${prompt.guidance}</p>
-      </div>
-
-      <textarea
-        id="rationalization-input"
-        class="rationalization-textarea"
-        placeholder="${prompt.placeholder}"
-        rows="6"
-        oninput="updateRationalization(this.value)"
-      >${gameState.rationalization}</textarea>
-
-      <div class="rationalization-actions">
-        <button class="secondary-button" onclick="renderSequencing()">← Back to Sequencing</button>
-        <button class="primary-button" id="continue-to-summary" onclick="renderStage2Summary()" ${gameState.rationalization.trim() ? '' : 'disabled'}>
-          See Your Structure →
-        </button>
-      </div>
-      <p class="help-text" id="rationalization-help">${gameState.rationalization.trim() ? 'Looking good!' : 'Please explain your reasoning before continuing.'}</p>
-  `;
-}
-
-function updateRationalization(value) {
-  gameState.rationalization = value;
-  saveGameState();
-
-  const continueBtn = document.getElementById('continue-to-summary');
-  const helpText = document.getElementById('rationalization-help');
-
-  if (value.trim()) {
-    if (continueBtn) continueBtn.disabled = false;
-    if (helpText) helpText.textContent = 'Looking good!';
-  } else {
-    if (continueBtn) continueBtn.disabled = true;
-    if (helpText) helpText.textContent = 'Please explain your reasoning before continuing.';
-  }
-}
-
-function renderStage2Summary() {
-  const container = document.getElementById('game-container');
-  const allComponents = getAvailableComponents();
-  const sequencedComponents = gameState.componentSequence.map(id =>
-    allComponents.find(c => c.id === id)
-  ).filter(c => c !== undefined);
-
-  const suggestions = generateStructureSuggestions(sequencedComponents);
-
-  container.innerHTML = `
-    
-    <div class="screen summary-screen fade-in">
-      <div class="stage-indicator">Stage 2 Complete</div>
-      <h2>Your Compositional Structure</h2>
-
-      <div class="feedback-box">
-        <h3>Your Narrative Sequence</h3>
-        <ol class="structure-list">
-          ${sequencedComponents.map(comp => `
-            <li><strong>${comp.text}</strong> <span class="category-tag">(${comp.category})</span></li>
-          `).join('')}
-        </ol>
-      </div>
-
-      <div class="feedback-box">
-        <h3>Your Reasoning</h3>
-        <p class="rationalization-display">${gameState.rationalization}</p>
-      </div>
-
-      <div class="feedback-box reflection-box">
-        <h3>Observations on Your Structure</h3>
-        ${suggestions.map(suggestion => `<p class="prompt-line">${suggestion}</p>`).join('')}
-      </div>
-
-      <div class="stage-actions">
-        <button class="secondary-button" onclick="renderRationalization()">← Revise Structure</button>
-        <button class="primary-button" onclick="proceedToStage3()">Proceed to Stage 3: Write Your Narrative →</button>
-      </div>
-  `;
-}
-
-function generateStructureSuggestions(components) {
-  const suggestions = [];
-
-  // Analyze structure patterns
-  const categories = components.map(c => c.category);
-  const firstCategory = categories[0];
-  const lastCategory = categories[categories.length - 1];
-
-  // Opening observation
-  if (firstCategory === 'emphasis') {
-    suggestions.push("→ You begin by establishing your thematic focus - this sets reader expectations early.");
-  } else if (firstCategory === 'protagonist') {
-    suggestions.push("→ You introduce your protagonist first - readers will understand events through this lens.");
-  } else if (firstCategory === 'violence') {
-    suggestions.push("→ You address the violence question immediately - a direct approach that shapes interpretation.");
-  }
-
-  // Ending observation
-  if (lastCategory === 'endpoint') {
-    suggestions.push("→ You conclude with your chosen ending - this determines how readers remember the story.");
-  }
-
-  // Pattern observations
-  const emphasisCount = categories.filter(c => c === 'emphasis').length;
-  const protagonistCount = categories.filter(c => c === 'protagonist').length;
-
-  if (emphasisCount > protagonistCount) {
-    suggestions.push("→ Your structure prioritizes thematic emphasis over character development.");
-  } else if (protagonistCount > emphasisCount) {
-    suggestions.push("→ Your structure is character-driven, building through protagonist focus.");
-  }
-
-  // Typical pattern comparison
-  suggestions.push("→ Ancient historians often moved from: event description → protagonist actions → theological meaning. Consider how your structure compares.");
-
-  return suggestions;
-}
-
-// ===== STAGE 3 FUNCTIONS =====
+// ===== SCREEN 4: STAGE 3 - WRITE =====
 
 function proceedToStage3() {
   gameState.currentStage = 'stage3';
-  // Clear narrative when entering Stage 3 fresh from Stage 2
-  gameState.studentNarrative = '';
+  if (!gameState.studentNarrative) {
+    gameState.studentNarrative = '';
+  }
   saveGameState();
-  renderStage3Intro();
+  renderStage3();
 }
 
-function renderStage3Intro() {
-  const content = stage3Content.intro;
+function renderStage3() {
   const container = document.getElementById('game-container');
+  const content = getWritingContent();
+  const isAugustine = gameState.selectedAuthor === 'augustine';
+
+  const allComponents = getAllComponents();
+  const sequencedComponents = gameState.componentSequence.map(id =>
+    allComponents.find(c => c.id === id)
+  ).filter(c => c !== undefined);
+
+  const text = gameState.studentNarrative.trim();
+  const wordCount = text === '' ? 0 : text.split(/\s+/).length;
+  const canContinue = wordCount >= content.minWords;
 
   container.innerHTML = `
-
-    <div class="screen intro-screen fade-in">
-      <div class="stage-indicator">Stage 3 of 5: Write Your Narrative</div>
-      <h2>${content.title}</h2>
-
-      ${content.paragraphs.map(p => `<p>${p}</p>`).join('')}
-
+    <div class="${isAugustine ? 'augustine-stage' : ''}">
+    <div class="screen writing-screen fade-in">
+      <div class="stage-indicator">Stage 3 of 4: Write Your Narrative</div>
       <div class="intro-visual">
-        <img src="Images/eusebius_writing.png" alt="Eusebius Writing" class="intro-illustration-img">
+        <img src="Images/${isAugustine ? 'confessions.png' : 'eusebius_writing.png'}"
+             alt="${isAugustine ? 'Augustine writing the Confessions' : 'Eusebius writing'}"
+             class="intro-illustration-img" style="max-height:200px;">
       </div>
+      <h2>${content.title}</h2>
+      <p class="prompt-text">${content.prompt}</p>
 
       <div class="info-box">
         <h3>Guidelines</h3>
         <ul>
-          ${content.guidelines.map(g => `<li>${g}</li>`).join('')}
+          <li>Write up to ${content.targetWords} words (1-2 paragraphs)</li>
+          <li>Follow the sequence of components you arranged</li>
+          <li>Use first-person perspective</li>
+          <li>Your work auto-saves as you type</li>
         </ul>
       </div>
-
-      <button class="primary-button" onclick="renderWritingInterface()">${content.buttonText}</button>
-  `;
-}
-
-function renderWritingInterface() {
-  const content = stage3Content.writingPrompt;
-  const container = document.getElementById('game-container');
-
-  // Get the components and sequence from Stage 2
-  const allComponents = getAvailableComponents();
-  const sequencedComponents = gameState.componentSequence.map(id =>
-    allComponents.find(c => c.id === id)
-  ).filter(c => c !== undefined);
-
-  container.innerHTML = `
-    
-    <div class="screen writing-screen fade-in">
-      <div class="stage-indicator">Stage 3 of 5: Write Your Narrative</div>
-      <h2>${content.title}</h2>
-      <p class="prompt-text">${content.prompt}</p>
 
       <div class="writing-layout">
         <div class="writing-main">
           <div class="word-count-indicator">
-            <span id="word-count">0</span> words
+            <span id="word-count">${wordCount}</span> words
             <span class="target-indicator">(target: ${content.targetWords} words)</span>
           </div>
 
@@ -3102,8 +1896,11 @@ function renderWritingInterface() {
           >${gameState.studentNarrative}</textarea>
 
           <div class="writing-actions">
-            <button class="secondary-button" onclick="renderStage2Summary()">← Back to Structure</button>
-            <button class="primary-button" id="continue-btn" onclick="validateAndContinue()" disabled>Continue to Evaluation →</button>
+            <button class="secondary-button" onclick="resetAndRestart()">Start Over</button>
+            <button class="secondary-button" onclick="backToStage2()">← Back to Structure</button>
+            <button class="primary-button" id="continue-btn" onclick="proceedToStage4()" ${canContinue ? '' : 'disabled'}>
+              Continue to Export →
+            </button>
           </div>
         </div>
 
@@ -3122,14 +1919,15 @@ function renderWritingInterface() {
           </div>
         </div>
       </div>
+    </div>
+    </div>
   `;
 
-  // Initialize word count
-  updateWordCount();
+  // Update word count color
+  updateWordCountColor(wordCount);
 
-  // Focus on textarea
   setTimeout(() => {
-    document.getElementById('narrative-textarea').focus();
+    document.getElementById('narrative-textarea')?.focus();
   }, 100);
 }
 
@@ -3137,84 +1935,86 @@ function handleNarrativeInput() {
   const textarea = document.getElementById('narrative-textarea');
   gameState.studentNarrative = textarea.value;
   saveGameState();
-  updateWordCount();
-}
 
-function updateWordCount() {
   const text = gameState.studentNarrative.trim();
   const wordCount = text === '' ? 0 : text.split(/\s+/).length;
+  const content = getWritingContent();
+
   const wordCountEl = document.getElementById('word-count');
+  if (wordCountEl) wordCountEl.textContent = wordCount;
+  updateWordCountColor(wordCount);
+
   const continueBtn = document.getElementById('continue-btn');
+  if (continueBtn) continueBtn.disabled = wordCount < content.minWords;
+}
 
-  if (wordCountEl) {
-    wordCountEl.textContent = wordCount;
+function updateWordCountColor(wordCount) {
+  const content = getWritingContent();
+  const wordCountEl = document.getElementById('word-count');
+  if (!wordCountEl) return;
 
-    // Update color based on target
-    const minWords = stage3Content.writingPrompt.minWords;
-    const targetWords = stage3Content.writingPrompt.targetWords;
-    const maxWords = stage3Content.writingPrompt.maxWords;
-
-    if (wordCount < minWords) {
-      wordCountEl.style.color = '#dc2626'; // red
-    } else if (wordCount >= minWords && wordCount <= maxWords) {
-      wordCountEl.style.color = '#059669'; // green
-    } else {
-      wordCountEl.style.color = '#d97706'; // orange
-    }
-  }
-
-  // Enable/disable continue button
-  if (continueBtn) {
-    continueBtn.disabled = wordCount < stage3Content.writingPrompt.minWords;
+  if (wordCount < content.minWords) {
+    wordCountEl.style.color = '#dc2626';
+  } else if (wordCount <= content.maxWords) {
+    wordCountEl.style.color = '#059669';
+  } else {
+    wordCountEl.style.color = '#d97706';
   }
 }
 
-function validateAndContinue() {
-  const text = gameState.studentNarrative.trim();
-  const wordCount = text === '' ? 0 : text.split(/\s+/).length;
-  const minWords = stage3Content.writingPrompt.minWords;
-
-  if (wordCount < minWords) {
-    alert(`Please write at least ${minWords} words before continuing.`);
-    return;
-  }
-
-  proceedToStage4();
+function backToStage2() {
+  gameState.currentStage = 'stage2';
+  saveGameState();
+  renderStage2();
 }
+
+// ===== SCREEN 5: STAGE 4 - EXPORT =====
 
 function proceedToStage4() {
+  const text = gameState.studentNarrative.trim();
+  const wordCount = text === '' ? 0 : text.split(/\s+/).length;
+  const content = getWritingContent();
+
+  if (wordCount < content.minWords) return;
+
   gameState.currentStage = 'stage4';
   saveGameState();
-  renderStage4Export();
+  renderStage4();
 }
 
-function renderStage4Export() {
-  const container = document.getElementById('game-container');
+function renderStage4() {
+  if (gameState.selectedAuthor === 'augustine') {
+    renderAugustineExport();
+  } else {
+    renderEusebiusExport();
+  }
+}
 
-  // Get all components for display
+function renderEusebiusExport() {
+  const container = document.getElementById('game-container');
   const allComponents = getAvailableComponents();
   const sequencedComponents = gameState.componentSequence.map(id =>
     allComponents.find(c => c.id === id)
   ).filter(c => c !== undefined);
 
-  // Calculate word count
   const text = gameState.studentNarrative.trim();
   const wordCount = text === '' ? 0 : text.split(/\s+/).length;
 
-  // Get Stage 1 choices summary
-  const stage1Summary = Object.keys(gameState.choices).map((key, idx) => {
-    const choiceText = getChoiceText(idx, gameState.choices[key]);
-    return `<p class="summary-line"><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${choiceText}</p>`;
+  const stage1Summary = stage1Content.choices.map(choice => {
+    const optionId = gameState.choices[choice.id];
+    if (!optionId) return '';
+    const option = choice.options.find(o => o.id === optionId);
+    const text = option ? option.text : '';
+    return `<p class="summary-line"><strong>${choice.id.charAt(0).toUpperCase() + choice.id.slice(1)}:</strong> ${text}</p>`;
   }).join('');
 
   container.innerHTML = `
-    
     <div class="screen export-screen fade-in">
-      <div class="stage-indicator">Stage 4 of 5: Export Your Work</div>
+      <div class="stage-indicator">Stage 4 of 4: Export Your Work</div>
       <h2>Your Complete Work Summary</h2>
 
       <div class="export-intro">
-        <p>You've completed the composition process. Review your work below and download it for submission.</p>
+        <p>Review your work below and download it for submission.</p>
       </div>
 
       <div class="feedback-box">
@@ -3245,42 +2045,136 @@ function renderStage4Export() {
       </div>
 
       <div class="export-actions">
-        <button class="secondary-button" onclick="renderWritingInterface()">← Revise Narrative</button>
+        <button class="secondary-button" onclick="backToStage3()">← Revise Narrative</button>
         <button class="primary-button export-button" onclick="downloadWorkAsJSON()">
           <span class="download-icon">↓</span> Download Work as JSON
         </button>
       </div>
 
-      <div class="info-box">
-        <h3>Next Steps</h3>
-        <p>Download your work and submit it to your instructor for evaluation. The JSON file contains all your choices, structure, reasoning, and narrative.</p>
+      <div class="stage-actions" style="margin-top: 2rem;">
+        <button class="secondary-button" onclick="resetAndRestart()">Start Over</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderAugustineExport() {
+  const container = document.getElementById('game-container');
+  const allComponents = getAugustineAvailableComponents();
+  const sequencedComponents = gameState.componentSequence.map(id =>
+    allComponents.find(c => c.id === id)
+  ).filter(c => c !== undefined);
+
+  const text = gameState.studentNarrative.trim();
+  const wordCount = text === '' ? 0 : text.split(/\s+/).length;
+
+  const choicesSummary = [
+    { label: "Main Purpose", value: getMainPurposeText(gameState.choices.mainPurpose) },
+    { label: "Role of Will", value: getWillPositionText(gameState.choices.role_of_will) },
+    { label: "Revision Decision", value: getRevisionDecisionText(gameState.choices.revision_decision) }
+  ];
+
+  const mainPurpose = gameState.choices.mainPurpose;
+  if (mainPurpose && augustineStage1Content.branchedQuestions[mainPurpose]) {
+    augustineStage1Content.branchedQuestions[mainPurpose].forEach(q => {
+      if (gameState.choices[q.id]) {
+        choicesSummary.push({
+          label: q.id.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+          value: getAugustineBranchedText(q.id, gameState.choices[q.id])
+        });
+      }
+    });
+  }
+
+  const stage1Summary = choicesSummary.map(choice =>
+    `<p class="summary-line"><strong>${choice.label}:</strong> ${choice.value}</p>`
+  ).join('');
+
+  container.innerHTML = `
+    <div class="augustine-stage">
+    <div class="screen export-screen fade-in">
+      <div class="stage-indicator">Stage 4 of 4: Export Your Work</div>
+      <h2>Your Complete Confessions Summary</h2>
+
+      <div class="export-intro">
+        <p>Review your work below and download it for submission.</p>
+      </div>
+
+      <div class="feedback-box">
+        <h3>Stage 1: Your Compositional Decisions</h3>
+        ${stage1Summary}
+      </div>
+
+      <div class="feedback-box">
+        <h3>Stage 2: Your Narrative Structure</h3>
+        <p><strong>Selected Components (${sequencedComponents.length}):</strong></p>
+        <ol class="structure-list compact-list">
+          ${sequencedComponents.map(comp => `
+            <li><strong>${comp.text}</strong> <span class="category-tag">(${comp.category})</span></li>
+          `).join('')}
+        </ol>
+        <div class="rationalization-summary">
+          <p><strong>Your Structural Reasoning:</strong></p>
+          <p class="quoted-text">"${gameState.rationalization}"</p>
+        </div>
+      </div>
+
+      <div class="feedback-box">
+        <h3>Stage 3: Your Confessions Narrative (${wordCount} words)</h3>
+        <div class="narrative-display">
+          ${gameState.studentNarrative.split('\n').map(para => `<p>${para}</p>`).join('')}
+        </div>
+      </div>
+
+      <div class="export-actions">
+        <button class="secondary-button" onclick="backToStage3()">← Edit Narrative</button>
+        <button class="primary-button" onclick="downloadAugustineWork()">Download Complete Work</button>
+      </div>
+
+      <div class="feedback-box reflection-box" style="margin-top: 24px;">
+        <h3>Reflection</h3>
+        <p>You've shaped a memory into a narrative, just as Augustine did in 397 CE.</p>
+        <p class="prompt-line">→ Your choices about purpose shaped what components you selected</p>
+        <p class="prompt-line">→ Your component sequence shaped how the story unfolds</p>
+        <p class="prompt-line">→ Your theological position shaped how you explained the conversion</p>
+        <p class="closing-prompt"><strong>Think about:</strong> If you wrote this story again with different purposes, how would it change?</p>
       </div>
 
       <div class="stage-actions" style="margin-top: 2rem;">
         <button class="secondary-button" onclick="resetAndRestart()">Start Over</button>
       </div>
+    </div>
+    </div>
   `;
 }
 
+function backToStage3() {
+  gameState.currentStage = 'stage3';
+  saveGameState();
+  renderStage3();
+}
+
+// ===== DOWNLOAD FUNCTIONS =====
+
 function downloadWorkAsJSON() {
-  // Calculate word count
   const text = gameState.studentNarrative.trim();
   const wordCount = text === '' ? 0 : text.split(/\s+/).length;
 
-  // Get all components for export
   const allComponents = getAvailableComponents();
   const sequencedComponents = gameState.componentSequence.map(id => {
     const comp = allComponents.find(c => c.id === id);
     return comp ? { id: comp.id, text: comp.text, category: comp.category } : null;
   }).filter(c => c !== null);
 
-  // Get readable choice labels
   const stage1ChoicesReadable = {};
-  Object.keys(gameState.choices).forEach((key, idx) => {
-    stage1ChoicesReadable[key] = getChoiceText(idx, gameState.choices[key]);
+  stage1Content.choices.forEach(choice => {
+    const optionId = gameState.choices[choice.id];
+    if (optionId) {
+      const option = choice.options.find(o => o.id === optionId);
+      stage1ChoicesReadable[choice.id] = option ? option.text : '';
+    }
   });
 
-  // Create JSON structure
   const exportData = {
     metadata: {
       timestamp: new Date().toISOString(),
@@ -3304,10 +2198,7 @@ function downloadWorkAsJSON() {
     }
   };
 
-  // Convert to JSON string with nice formatting
   const jsonString = JSON.stringify(exportData, null, 2);
-
-  // Create blob and download
   const blob = new Blob([jsonString], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -3318,15 +2209,74 @@ function downloadWorkAsJSON() {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 
-  // Show confirmation
+  showDownloadConfirmation();
+}
+
+function downloadAugustineWork() {
+  const text = gameState.studentNarrative.trim();
+  const wordCount = text === '' ? 0 : text.split(/\s+/).length;
+
+  const allComponents = getAugustineAvailableComponents();
+  const sequencedComponents = gameState.componentSequence.map(id => {
+    const comp = allComponents.find(c => c.id === id);
+    return comp ? { id: comp.id, text: comp.text, category: comp.category } : null;
+  }).filter(c => c !== null);
+
+  const stage1ChoicesReadable = {
+    mainPurpose: getMainPurposeText(gameState.choices.mainPurpose),
+    role_of_will: getWillPositionText(gameState.choices.role_of_will),
+    revision_decision: getRevisionDecisionText(gameState.choices.revision_decision)
+  };
+
+  const mainPurpose = gameState.choices.mainPurpose;
+  if (mainPurpose && augustineStage1Content.branchedQuestions[mainPurpose]) {
+    augustineStage1Content.branchedQuestions[mainPurpose].forEach(q => {
+      if (gameState.choices[q.id]) {
+        stage1ChoicesReadable[q.id] = getAugustineBranchedText(q.id, gameState.choices[q.id]);
+      }
+    });
+  }
+
+  const exportData = {
+    metadata: {
+      author: "Augustine of Hippo",
+      timestamp: new Date().toISOString(),
+      dateCompleted: new Date().toLocaleString(),
+      wordCount: wordCount,
+      version: "1.0"
+    },
+    stage1: {
+      choices: gameState.choices,
+      choicesReadable: stage1ChoicesReadable
+    },
+    stage2: {
+      selectedComponentIds: gameState.selectedComponents,
+      componentSequence: sequencedComponents,
+      rationalization: gameState.rationalization
+    },
+    stage3: {
+      narrative: gameState.studentNarrative,
+      wordCount: wordCount
+    }
+  };
+
+  const jsonString = JSON.stringify(exportData, null, 2);
+  const blob = new Blob([jsonString], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `shaping-history-augustine-${Date.now()}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
   showDownloadConfirmation();
 }
 
 function showDownloadConfirmation() {
   const existingConfirmation = document.querySelector('.download-confirmation');
-  if (existingConfirmation) {
-    existingConfirmation.remove();
-  }
+  if (existingConfirmation) existingConfirmation.remove();
 
   const confirmation = document.createElement('div');
   confirmation.className = 'download-confirmation fade-in';
@@ -3348,11 +2298,11 @@ function showDownloadConfirmation() {
 function resetAndRestart() {
   if (confirm('Are you sure you want to start over? This will erase all your current work.')) {
     resetGameState();
-    renderIntro();
+    renderWelcome();
   }
 }
 
-// ===== LOCAL STORAGE =====
+// ===== STATE MANAGEMENT =====
 
 function saveGameState() {
   localStorage.setItem('shapingHistory_gameState', JSON.stringify(gameState));
@@ -3363,10 +2313,8 @@ function loadGameState() {
   if (saved) {
     const savedState = JSON.parse(saved);
 
-    // Check version compatibility
     if (savedState.version !== GAME_VERSION) {
       console.log(`Version mismatch: saved=${savedState.version}, current=${GAME_VERSION}. Starting fresh.`);
-      // Don't load old state - let user start from title page
       localStorage.removeItem('shapingHistory_gameState');
       return;
     }
@@ -3378,10 +2326,7 @@ function loadGameState() {
 function resetGameState() {
   localStorage.removeItem('shapingHistory_gameState');
   gameState.version = GAME_VERSION;
-  gameState.currentStage = 'title';
-  gameState.currentScreen = 0;
-  gameState.onboardingStep = 0;
-  gameState.hasSeenOnboarding = false;
+  gameState.currentStage = 'welcome';
   gameState.selectedAuthor = null;
   gameState.choices = {};
   gameState.narrativeProfile = null;
@@ -3394,71 +2339,46 @@ function resetGameState() {
 // ===== INITIALIZATION =====
 
 window.addEventListener('DOMContentLoaded', () => {
-  console.log('=== Shaping History v2.1 Initializing ===');
+  console.log('=== Shaping History v3.0 Initializing ===');
 
   try {
     loadGameState();
     console.log('Game state loaded:', gameState.currentStage);
 
-    // Route to appropriate screen based on game state
     switch (gameState.currentStage) {
-      case 'title':
-        console.log('Rendering title page');
-        renderTitlePage();
-        break;
-      case 'onboarding':
-        console.log('Rendering onboarding');
-        renderOnboarding();
-        break;
-      case 'authorChoice':
-        console.log('Rendering author choice');
-        renderAuthorChoice();
-        break;
-      case 'bio':
-        console.log('Rendering bio');
-        if (gameState.selectedAuthor === 'augustine') {
-          renderAugustineBio();
-        } else {
-          renderEusebiusBio();
-        }
-        break;
-      case 'intro':
-        console.log('Rendering intro');
-        renderIntro();
+      case 'welcome':
+        renderWelcome();
         break;
       case 'stage1':
-        console.log('Rendering stage 1');
-        renderChoice(gameState.currentScreen);
+        if (gameState.selectedAuthor === 'augustine') {
+          renderAugustineStage1();
+        } else {
+          renderEusebiusStage1();
+        }
         break;
       case 'stage2':
-        console.log('Rendering stage 2');
-        renderStage2Intro();
+        renderStage2();
         break;
       case 'stage3':
-        console.log('Rendering stage 3');
-        renderStage3Intro();
+        renderStage3();
         break;
       case 'stage4':
-        console.log('Rendering stage 4');
-        renderStage4Export();
+        renderStage4();
         break;
       default:
-        console.log('Rendering title page (default)');
-        renderTitlePage();
+        renderWelcome();
     }
 
     console.log('=== Initialization complete ===');
   } catch (error) {
     console.error('Initialization error:', error);
-    // Fallback: show error message
     document.getElementById('game-container').innerHTML = `
       <div class="screen">
-        <h1>Error Loading Game</h1>
+        <h1>Error Loading</h1>
         <p>Something went wrong. Please try:</p>
         <ol>
           <li>Refresh the page</li>
           <li>Clear your browser cache</li>
-          <li>Check the console for errors (F12)</li>
         </ol>
         <button class="primary-button" onclick="localStorage.clear(); location.reload();">
           Clear Data and Restart
