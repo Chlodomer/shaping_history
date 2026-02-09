@@ -1220,6 +1220,7 @@ function selectAuthor(authorId) {
   } else {
     renderAugustineStage1();
   }
+  window.scrollTo(0, 0);
 }
 
 // ===== SCREEN 2: EUSEBIUS STAGE 1 =====
@@ -1558,6 +1559,7 @@ function proceedToStage2() {
   gameState.rationalization = '';
   saveGameState();
   renderStage2();
+  window.scrollTo(0, 0);
 }
 
 function renderStage2() {
@@ -1765,6 +1767,7 @@ function backToStage1() {
   } else {
     renderEusebiusStage1();
   }
+  window.scrollTo(0, 0);
 }
 
 // Drag and drop
@@ -1843,6 +1846,7 @@ function proceedToStage3() {
   }
   saveGameState();
   renderStage3();
+  window.scrollTo(0, 0);
 }
 
 function renderStage3() {
@@ -1966,6 +1970,7 @@ function backToStage2() {
   gameState.currentStage = 'stage2';
   saveGameState();
   renderStage2();
+  window.scrollTo(0, 0);
 }
 
 // ===== SCREEN 5: STAGE 4 - EXPORT =====
@@ -1980,6 +1985,7 @@ function proceedToStage4() {
   gameState.currentStage = 'stage4';
   saveGameState();
   renderStage4();
+  window.scrollTo(0, 0);
 }
 
 function renderStage4() {
@@ -2152,6 +2158,7 @@ function backToStage3() {
   gameState.currentStage = 'stage3';
   saveGameState();
   renderStage3();
+  window.scrollTo(0, 0);
 }
 
 // ===== DOWNLOAD FUNCTIONS =====
@@ -2299,6 +2306,7 @@ function resetAndRestart() {
   if (confirm('Are you sure you want to start over? This will erase all your current work.')) {
     resetGameState();
     renderWelcome();
+    window.scrollTo(0, 0);
   }
 }
 
